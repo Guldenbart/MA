@@ -1,6 +1,6 @@
 package expressions;
 
-public interface Start {
-	Intermediate expr(double value);
-	Intermediate expr(Expr e);
+public interface Start<T> {
+	Intermediate<T> expr(double value);
+	Intermediate<T> expr(Expr e);
 }

@@ -1,77 +1,81 @@
 package expressions;
 
-public class ExpressionBuilder implements Start {
+public class ExpressionBuilder {
 	
+	//private final ExpressionScope expressionScope;
 	private final IntermediateScope intermediateScope;
 	private Expr e;
 	
 	private ExpressionBuilder() {
+		//this.expressionScope = this.new ExpressionScope();
 		this.intermediateScope = this.new IntermediateScope();
 	}
 	
-	public static ExpressionBuilder begin() {
-		return new ExpressionBuilder();
+	public static ExpressionScope begin() {
+		return new ExpressionBuilder().new ExpressionScope();
 	}	
 
-	@Override
-	public IntermediateScope expr(final double value) {
-		ExpressionBuilder.this.e = new Value(value);
-		return ExpressionBuilder.this.intermediateScope;
-	}
-
-	@Override
-	public IntermediateScope expr(Expr e) {
-		ExpressionBuilder.this.e = e;
-		return ExpressionBuilder.this.intermediateScope;
+	public class ExpressionScope implements Start<Expr> {
+		@Override
+		public IntermediateScope expr(final double value) {
+			ExpressionBuilder.this.e = new Value(value);
+			return ExpressionBuilder.this.intermediateScope;
+		}
+	
+		@Override
+		public IntermediateScope expr(Expr e) {
+			ExpressionBuilder.this.e = e;
+			return ExpressionBuilder.this.intermediateScope;
+		}
 	}
 
 	
-	public class IntermediateScope implements Intermediate {
+	public class IntermediateScope implements Intermediate<Expr> {
 
 		@Override
-		public Intermediate plus(double value) {
+		public Intermediate<Expr> plus(double value) {
 			ExpressionBuilder.this.e = new Operation(ExpressionBuilder.this.e, '+', new Value(value));
 			return this;
 		}
 
 		@Override
-		public Intermediate plus(Expr right) {
+		public Intermediate<Expr> plus(Expr right) {
 			ExpressionBuilder.this.e = new Operation(ExpressionBuilder.this.e, '+', right);
             return this;
 		}
 
 		@Override
-		public Intermediate minus(double value) {
+		public Intermediate<Expr> minus(double value) {
 			ExpressionBuilder.this.e = new Operation(ExpressionBuilder.this.e, '-', new Value(value));
 			return this;
 		}
 
 		@Override
-		public Intermediate minus(Expr right) {
+		public Intermediate<Expr> minus(Expr right) {
 			ExpressionBuilder.this.e = new Operation(ExpressionBuilder.this.e, '-', right);
             return this;
 		}
 
 		@Override
-		public Intermediate times(double value) {
+		public Intermediate<Expr> times(double value) {
 			ExpressionBuilder.this.e = new Operation(ExpressionBuilder.this.e, '*', new Value(value));
 			return this;
 		}
 
 		@Override
-		public Intermediate times(Expr right) {
+		public Intermediate<Expr> times(Expr right) {
 			ExpressionBuilder.this.e = new Operation(ExpressionBuilder.this.e, '*', right);
             return this;
 		}
 
 		@Override
-		public Intermediate divided(double value) {
+		public Intermediate<Expr> divided(double value) {
 			ExpressionBuilder.this.e = new Operation(ExpressionBuilder.this.e, '/', new Value(value));
 			return this;
 		}
 
 		@Override
-		public Intermediate divided(Expr right) {
+		public Intermediate<Expr> divided(Expr right) {
 			ExpressionBuilder.this.e = new Operation(ExpressionBuilder.this.e, '/', right);
             return this;
 		}

@@ -4,7 +4,7 @@
 		jooq-3.7.0.jar
 		jooq-codegen-3.7.0.jar
 		jooq-meta-3.7.0.jar
-		mysql-connector-java-5.1.37-bin.jar-->
+		mysql-connector-java-5.1.37-bin.jar -->
 
 
 <configuration xmlns="http://www.jooq.org/xsd/jooq-codegen-3.7.0.xsd">

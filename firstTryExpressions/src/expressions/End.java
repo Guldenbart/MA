@@ -1,5 +1,5 @@
 package expressions;
 
-public interface End {
+public interface End<T> {
 	Expr end();
 }
