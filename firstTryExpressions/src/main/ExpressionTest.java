@@ -14,7 +14,7 @@ public class ExpressionTest {
 
 
         // arithmetischer Ausdruck mit Klammerung:
-        Expr y = ExpressionBuilder.begin().expr(ExpressionBuilder.begin().expr(1).plus(2).end()).times(3).minus(ExpressionBuilder.begin().expr(4).divided(5).end()).end();
+        Expr y = ExpressionBuilder.begin().expr(ExpressionBuilder.begin().expr(1).plus(2).end()).times(3).minus(ExpressionBuilder.begin().expr(4).plus(1).divided(5).end()).end();
         System.out.printf("%s = %f%n", y, y.getValue());
 	}
 
