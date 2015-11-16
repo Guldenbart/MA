@@ -6,5 +6,5 @@ import classes.Scope;
 
 public interface Start<T> {
 	Intermediate<T> expr(double value);
-	Intermediate<T> expr(Tree tree);
+	Intermediate<T> expr(ArrayList<Scope> tree);
 }

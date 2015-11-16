@@ -1,5 +1,9 @@
 package interfaces;
 
+import java.util.ArrayList;
+
+import classes.Scope;
+
 public interface End<T> {
-	Tree end();
+	ArrayList<Scope> end();
 }
