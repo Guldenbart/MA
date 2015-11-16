@@ -10,6 +10,6 @@ public final class ScopeList extends ArrayList<Scope>{
 		for (int i=0; i<this.size(); i++) {
 			this.get(i).print(printScopes);
 		}
+		System.out.print('\n');
 	}
-
 }

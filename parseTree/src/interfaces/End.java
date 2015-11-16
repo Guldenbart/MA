@@ -1,9 +1,7 @@
 package interfaces;
 
-import java.util.ArrayList;
-
-import classes.Scope;
+import classes.ScopeList;
 
 public interface End<T> {
-	ArrayList<Scope> end();
+	ScopeList end();
 }

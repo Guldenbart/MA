@@ -1,19 +1,17 @@
 package interfaces;
 
-import java.util.ArrayList;
-
-import classes.Scope;
+import classes.ScopeList;
 
 public interface Intermediate<T> extends End{
 	Intermediate<T> plus(double value);
-	Intermediate<T> plus(ArrayList<Scope> tree);
+	Intermediate<T> plus(ScopeList tree);
 	
 	Intermediate<T> minus(double value);
-	Intermediate<T> minus(ArrayList<Scope> tree);
+	Intermediate<T> minus(ScopeList tree);
 	
 	Intermediate<T> times(double value);
-	Intermediate<T> times(ArrayList<Scope> tree);
+	Intermediate<T> times(ScopeList tree);
 	
 	Intermediate<T> divided(double value);
-	Intermediate<T> divided(ArrayList<Scope> tree);
+	Intermediate<T> divided(ScopeList tree);
 }

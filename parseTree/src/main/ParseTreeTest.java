@@ -1,18 +1,20 @@
 package main;
 
+import classes.ScopeList;
+import classes.TreeBuilder;
+
 public class ParseTreeTest {
 
 	public static void main(String[] args) {
-		/*
+		
 		// arithmetischer Ausdruck ohne Klammerung:
-        Expr x = ExpressionBuilder.begin().expr(1).plus(2).times(3).minus(4).divided(5).end();
-        System.out.printf("%s = %f%n", x, x.getValue());
+        ScopeList x = TreeBuilder.begin().expr(1).plus(2).times(3).minus(4).divided(5).end();
+        x.print(false);
 
 
         // arithmetischer Ausdruck mit Klammerung:
-        Expr y = ExpressionBuilder.begin().expr(ExpressionBuilder.begin().expr(1).plus(2).end()).times(3).minus(ExpressionBuilder.begin().expr(4).divided(5).end()).end();
-        System.out.printf("%s = %f%n", y, y.getValue());
-        */
+        ScopeList y = TreeBuilder.begin().expr(TreeBuilder.begin().expr(1).plus(2).end()).times(3).minus(TreeBuilder.begin().expr(4).divided(5).end()).end();
+        y.print(true);
 
 	}
 

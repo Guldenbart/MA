@@ -2,5 +2,5 @@ package interfaces;
 
 public interface IMethod {
 	
-	void print();
+	void print(boolean printScopes);
 }

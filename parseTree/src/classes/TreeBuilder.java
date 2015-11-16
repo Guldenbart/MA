@@ -1,6 +1,6 @@
 package classes;
 
-import java.util.ArrayList;
+import classes.ScopeList;
 
 import interfaces.Intermediate;
 import interfaces.Start;
@@ -8,10 +8,11 @@ import interfaces.Start;
 
 public class TreeBuilder {
 
-	private ArrayList<Scope> scopeList;
+	private ScopeList scopeList;
 	private final IntermediateScope intermediateScope;
 	
 	private TreeBuilder() {
+		this.scopeList = new ScopeList();
 		this.intermediateScope = this.new IntermediateScope();
 	}
 	
@@ -20,32 +21,32 @@ public class TreeBuilder {
 	}
 
 	private void checkLatestScope(String interfaceName) {
-		if (scopeList.get(scopeList.size()-1).getInterfaceName().compareTo(interfaceName) != 0) {
+		if (scopeList.isEmpty() || scopeList.get(scopeList.size()-1).getInterfaceName().compareTo(interfaceName) != 0) {
 			Scope scope = new Scope(interfaceName);
 			scopeList.add(scope);
 		}
 		//scopeList.get(scopeList.size()-1).addMethod(methodName, arguments);
 	}
 	
-	public class StartScope implements Start< ArrayList<Scope> > {
+	public class StartScope implements Start< ScopeList > {
 
 		@Override
 		public IntermediateScope expr(double value) {
 			String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
 			
-			// TODO schauen, ob man hier das richtige Interface bekommt:
-			checkLatestScope(this.getClass().getInterfaces()[0].toString());
+			Class<?>[] interfaces = this.getClass().getInterfaces();
+			checkLatestScope(interfaces[0].toString());
 			scopeList.get(scopeList.size()-1).addMethod(methodName, value);
 			
 			return TreeBuilder.this.intermediateScope;
 		}
 
 		@Override
-		public IntermediateScope expr(ArrayList<Scope> list) {
+		public IntermediateScope expr(ScopeList list) {
 			String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
 			
-			// TODO schauen, ob man hier das richtige Interface bekommt:
-			checkLatestScope(this.getClass().getInterfaces()[0].toString());
+			Class<?>[] interfaces = this.getClass().getInterfaces();
+			checkLatestScope(interfaces[0].toString());
 			scopeList.get(scopeList.size()-1).addMethod(methodName, list);
 			
 			return TreeBuilder.this.intermediateScope;
@@ -53,10 +54,10 @@ public class TreeBuilder {
 		
 	}
 	
-	public class IntermediateScope implements Intermediate < ArrayList<Scope> > {
+	public class IntermediateScope implements Intermediate <ScopeList> {
 
 		@Override
-		public Intermediate< ArrayList<Scope> > plus(double value) {
+		public Intermediate<ScopeList> plus(double value) {
 			String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
 			
 			checkLatestScope(this.getClass().getInterfaces()[0].toString());
@@ -66,7 +67,7 @@ public class TreeBuilder {
 		}
 
 		@Override
-		public Intermediate< ArrayList<Scope> > plus(ArrayList<Scope> list) {
+		public Intermediate<ScopeList> plus(ScopeList list) {
 			String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
 			
 			checkLatestScope(this.getClass().getInterfaces()[0].toString());
@@ -76,7 +77,7 @@ public class TreeBuilder {
 		}
 
 		@Override
-		public Intermediate< ArrayList<Scope> > minus(double value) {
+		public Intermediate<ScopeList> minus(double value) {
 			String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
 			
 			checkLatestScope(this.getClass().getInterfaces()[0].toString());
@@ -86,7 +87,7 @@ public class TreeBuilder {
 		}
 
 		@Override
-		public Intermediate< ArrayList<Scope> > minus(ArrayList<Scope> list) {
+		public Intermediate<ScopeList> minus(ScopeList list) {
 			String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
 			
 			checkLatestScope(this.getClass().getInterfaces()[0].toString());
@@ -96,7 +97,7 @@ public class TreeBuilder {
 		}
 
 		@Override
-		public Intermediate< ArrayList<Scope> > times(double value) {
+		public Intermediate<ScopeList> times(double value) {
 			String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
 			
 			checkLatestScope(this.getClass().getInterfaces()[0].toString());
@@ -106,7 +107,7 @@ public class TreeBuilder {
 		}
 
 		@Override
-		public Intermediate< ArrayList<Scope> > times(ArrayList<Scope> list) {
+		public Intermediate<ScopeList> times(ScopeList list) {
 			String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
 			
 			checkLatestScope(this.getClass().getInterfaces()[0].toString());
@@ -116,7 +117,7 @@ public class TreeBuilder {
 		}
 
 		@Override
-		public Intermediate< ArrayList<Scope> > divided(double value) {
+		public Intermediate<ScopeList> divided(double value) {
 			String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
 			
 			checkLatestScope(this.getClass().getInterfaces()[0].toString());
@@ -126,7 +127,7 @@ public class TreeBuilder {
 		}
 
 		@Override
-		public Intermediate< ArrayList<Scope> > divided(ArrayList<Scope> list) {
+		public Intermediate<ScopeList> divided(ScopeList list) {
 			String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
 			
 			checkLatestScope(this.getClass().getInterfaces()[0].toString());
@@ -136,7 +137,11 @@ public class TreeBuilder {
 		}
 		
 		@Override
-		public ArrayList<Scope> end() {
+		public ScopeList end() {
+			String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+			
+			checkLatestScope(this.getClass().getInterfaces()[0].toString());
+			scopeList.get(scopeList.size()-1).addMethod(methodName);
 			return TreeBuilder.this.scopeList;
 		}
 		

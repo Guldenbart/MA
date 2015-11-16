@@ -11,24 +11,25 @@ public class Scope {
 	
 	public Scope(String sInterfaceName) {
 		interfaceName = sInterfaceName;
+		methods = new ArrayList<IMethod>();
 	}
 
 	public void print(boolean printScopes) {
 		if (printScopes) {
-			
-		} else {
-			for (int i=0; i<methods.size(); i++) {
-				methods.get(i).print();
-				if (i < (methods.size()-1)) {
-					System.out.print('.');
-				}
+			System.out.print('<' + interfaceName + ">[");
+		}
+		for (int i=0; i<methods.size(); i++) {
+			methods.get(i).print(printScopes);
+			if (i < (methods.size()-1)) {
+				System.out.print('.');
 			}
 		}
-		System.out.print("\n");
+		if (printScopes) {
+			System.out.print(']');
+		}
 	}
 	
-	// TODO herausfinden, ob hier die richtige Funktion ausgewählt wird
-	public void addMethod(String methodName, ArrayList<Scope> arguments) {
+	public void addMethod(String methodName, ScopeList arguments) {
 		methods.add(new NestedMethod(methodName, arguments));
 	}
 	

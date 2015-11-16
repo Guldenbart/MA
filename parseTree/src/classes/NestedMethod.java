@@ -1,22 +1,22 @@
 package classes;
 
-import java.util.ArrayList;
-
 import interfaces.IMethod;
 
 public class NestedMethod implements IMethod {
 	
 	private String name;
-	private ArrayList<Scope> arguments;
+	private ScopeList arguments;
 	
-	public NestedMethod(String methodName, ArrayList<Scope> s) {
+	public NestedMethod(String methodName, ScopeList s) {
 		name = methodName;
 		arguments = s;
 	}
 
 	@Override
-	public void print() {
-		System.out.print(name + '(' + getArgumentString() + ')');
+	public void print(boolean printScopes) {
+		System.out.print(name + '(');
+		arguments.print(printScopes);
+		System.out.print(name + ')');
 	}
 
 }
