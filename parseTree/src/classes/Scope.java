@@ -1,19 +1,30 @@
 package classes;
 
-import interfaces.Tree;
+import java.util.ArrayList;
 
-public class Scope implements Tree {
+public class Scope {
 	
-	private String iface;
-	private Method[] methods;
+	private String interfaceName;
+	private ArrayList<Method> methods;
+	
+	public Scope(String sInterfaceName) {
+		interfaceName = sInterfaceName;
+	}
 
-	@Override
 	public void print() {
-		System.out.println("used interface: " + iface);
+		System.out.println("used interface: " + interfaceName);
 		for (Method m : methods) {
 			m.print();
 		}
 
+	}
+	
+	public void addMethod(String methodName, Object...arguments) {
+		methods.add(new Method(methodName, arguments));
+	}
+	
+	public String getInterfaceName() {
+		return interfaceName;
 	}
 
 }

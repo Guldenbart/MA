@@ -1,16 +1,17 @@
 package classes;
 
-import interfaces.Tree;
-
-public class Method implements Tree {
+public class Method {
 	
 	private String name;
-	Object[] arguments;
+	private Object[] arguments;
+	
+	public Method(String mName, Object... mArguments) {
+		name = mName;
+		arguments = mArguments;
+	}
 
-	@Override
 	public void print() {
 		System.out.print("Method: " + name + getArgumentString() + " | ");
-
 	}
 	
 	private String getArgumentString() {
