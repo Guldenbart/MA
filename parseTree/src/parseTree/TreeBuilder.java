@@ -2,123 +2,115 @@ package parseTree;
 
 import exprDSL.Intermediate;
 import exprDSL.Start;
-import parseTree.ScopeList;
+import parseTree.ParseTree;
 
 
 public class TreeBuilder {
 
-	private ScopeList scopeList;
+	private ParseTree parseTree;
 	private final IntermediateScope intermediateScope;
 	
 	private TreeBuilder() {
-		this.scopeList = new ScopeList();
+		this.parseTree = new ParseTree();
 		this.intermediateScope = this.new IntermediateScope();
 	}
 	
 	public static StartScope begin() {
 		return new TreeBuilder().new StartScope();
 	}
-
-	private void checkLatestScope(String interfaceName) {
-		if (scopeList.isEmpty() || scopeList.get(scopeList.size()-1).getInterfaceName().compareTo(interfaceName) != 0) {
-			Scope scope = new Scope(interfaceName);
-			scopeList.add(scope);
-		}
-		//scopeList.get(scopeList.size()-1).addMethod(methodName, arguments);
-	}
 	
-	public class StartScope implements Start<ScopeList> {
+	public class StartScope implements Start<ParseTree> {
 
 		@Override
 		public IntermediateScope expr(double value) {
-			checkLatestScope("Start");
-			scopeList.get(scopeList.size()-1).addMethod("expr", value);
+			parseTree.checkLatestScope("Start");
+			parseTree.appendMethod("expr", value);
 			
 			return TreeBuilder.this.intermediateScope;
 		}
 
 		@Override
-		public IntermediateScope expr(ScopeList list) {
-			checkLatestScope("Start");
-			scopeList.get(scopeList.size()-1).addMethod("expr", list);
+		public IntermediateScope expr(ParseTree list) {
+			parseTree.checkLatestScope("Start");
+			parseTree.appendMethod("expr", list);
 			
 			return TreeBuilder.this.intermediateScope;
 		}
 		
 	}
 	
-	public class IntermediateScope implements Intermediate <ScopeList> {
+	public class IntermediateScope implements Intermediate <ParseTree> {
 
 		@Override
-		public Intermediate<ScopeList> plus(double value) {
-			checkLatestScope("Intermediate");
-			scopeList.get(scopeList.size()-1).addMethod("plus", value);
+		public Intermediate<ParseTree> plus(double value) {
+			parseTree.checkLatestScope("Intermediate");
+			parseTree.appendMethod("plus", value);
 			
 			return this;
 		}
 
 		@Override
-		public Intermediate<ScopeList> plus(ScopeList list) {
-			checkLatestScope("Intermediate");
-			scopeList.get(scopeList.size()-1).addMethod("plus", list);
+		public Intermediate<ParseTree> plus(ParseTree list) {
+			parseTree.checkLatestScope("Intermediate");
+			parseTree.appendMethod("plus", list);
 			
 			return this;
 		}
 
 		@Override
-		public Intermediate<ScopeList> minus(double value) {
-			checkLatestScope("Intermediate");
-			scopeList.get(scopeList.size()-1).addMethod("minus", value);
+		public Intermediate<ParseTree> minus(double value) {
+			parseTree.checkLatestScope("Intermediate");
+			parseTree.appendMethod("minus", value);
 			
 			return this;
 		}
 
 		@Override
-		public Intermediate<ScopeList> minus(ScopeList list) {
-			checkLatestScope("Intermediate");
-			scopeList.get(scopeList.size()-1).addMethod("minus", list);
+		public Intermediate<ParseTree> minus(ParseTree list) {
+			parseTree.checkLatestScope("Intermediate");
+			parseTree.appendMethod("minus", list);
 			
 			return this;
 		}
 
 		@Override
-		public Intermediate<ScopeList> times(double value) {
-			checkLatestScope("Intermediate");
-			scopeList.get(scopeList.size()-1).addMethod("times", value);
+		public Intermediate<ParseTree> times(double value) {
+			parseTree.checkLatestScope("Intermediate");
+			parseTree.appendMethod("times", value);
 			
 			return this;
 		}
 
 		@Override
-		public Intermediate<ScopeList> times(ScopeList list) {
-			checkLatestScope("Intermediate");
-			scopeList.get(scopeList.size()-1).addMethod("times", list);
+		public Intermediate<ParseTree> times(ParseTree list) {
+			parseTree.checkLatestScope("Intermediate");
+			parseTree.appendMethod("times", list);
 			
 			return this;
 		}
 
 		@Override
-		public Intermediate<ScopeList> divided(double value) {
-			checkLatestScope("Intermediate");
-			scopeList.get(scopeList.size()-1).addMethod("divided", value);
+		public Intermediate<ParseTree> divided(double value) {
+			parseTree.checkLatestScope("Intermediate");
+			parseTree.appendMethod("divided", value);
 			
 			return this;
 		}
 
 		@Override
-		public Intermediate<ScopeList> divided(ScopeList list) {
-			checkLatestScope("Intermediate");
-			scopeList.get(scopeList.size()-1).addMethod("divided", list);
+		public Intermediate<ParseTree> divided(ParseTree list) {
+			parseTree.checkLatestScope("Intermediate");
+			parseTree.appendMethod("divided", list);
 			
 			return this;
 		}
 		
 		@Override
-		public ScopeList end() {
-			checkLatestScope("Intermediate");
-			scopeList.get(scopeList.size()-1).addMethod("end");
+		public ParseTree end() {
+			parseTree.checkLatestScope("Intermediate");
+			parseTree.appendMethod("end");
 			
-			return TreeBuilder.this.scopeList;
+			return TreeBuilder.this.parseTree;
 		}
 		
 	}

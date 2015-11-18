@@ -34,7 +34,7 @@ public class Scope {
 		return sb.toString();
 	}
 	
-	public void addMethod(String methodName, ScopeList arguments) {
+	public void addMethod(String methodName, ParseTree arguments) {
 		methods.add(new NestedMethod(methodName, arguments));
 	}
 	

@@ -5,9 +5,9 @@ import interfaces.IMethod;
 public class NestedMethod implements IMethod {
 	
 	private String name;
-	private ScopeList arguments;
+	private ParseTree arguments;
 	
-	public NestedMethod(String methodName, ScopeList s) {
+	public NestedMethod(String methodName, ParseTree s) {
 		name = methodName;
 		arguments = s;
 	}
