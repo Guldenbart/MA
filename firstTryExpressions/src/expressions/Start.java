@@ -2,5 +2,5 @@ package expressions;
 
 public interface Start<T> {
 	Intermediate<T> expr(double value);
-	Intermediate<T> expr(Expr e);
+	Intermediate<T> expr(T e);
 }
