@@ -1,4 +1,4 @@
-package classes;
+package parseTree;
 
 import interfaces.IMethod;
 
@@ -16,7 +16,7 @@ public class NestedMethod implements IMethod {
 	public void print(boolean printScopes) {
 		System.out.print(name + '(');
 		arguments.print(printScopes);
-		System.out.print(name + ')');
+		System.out.print(')');
 	}
 
 }

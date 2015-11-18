@@ -1,4 +1,4 @@
-package classes;
+package parseTree;
 
 import java.util.ArrayList;
 
@@ -12,4 +12,13 @@ public final class ScopeList extends ArrayList<Scope>{
 		}
 		System.out.print('\n');
 	}
+	
+	/*
+	public void printExpression() {
+		for (int i=0; i<this.size(); i++) {
+			this.get(i).printExpression();
+		}
+		System.out.print('\n');
+	}
+	*/
 }

@@ -1,9 +1,8 @@
-package classes;
+package parseTree;
 
-import classes.ScopeList;
-
-import interfaces.Intermediate;
-import interfaces.Start;
+import exprDSL.Intermediate;
+import exprDSL.Start;
+import parseTree.ScopeList;
 
 
 public class TreeBuilder {
@@ -28,7 +27,7 @@ public class TreeBuilder {
 		//scopeList.get(scopeList.size()-1).addMethod(methodName, arguments);
 	}
 	
-	public class StartScope implements Start< ScopeList > {
+	public class StartScope implements Start<ScopeList> {
 
 		@Override
 		public IntermediateScope expr(double value) {

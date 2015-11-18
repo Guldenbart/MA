@@ -1,7 +1,7 @@
 package main;
 
-import classes.ScopeList;
-import classes.TreeBuilder;
+import parseTree.ScopeList;
+import parseTree.TreeBuilder;
 
 public class ParseTreeTest {
 
@@ -13,7 +13,11 @@ public class ParseTreeTest {
 
 
         // arithmetischer Ausdruck mit Klammerung:
-        ScopeList y = TreeBuilder.begin().expr(TreeBuilder.begin().expr(1).plus(2).end()).times(3).minus(TreeBuilder.begin().expr(4).divided(5).end()).end();
+        ScopeList y = TreeBuilder.begin()
+        		.expr(TreeBuilder.begin().expr(1).plus(2).end())
+        		.times(3)
+        		.minus(TreeBuilder.begin().expr(4).divided(5).end())
+        		.end();
         y.print(true);
 
 	}
