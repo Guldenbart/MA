@@ -15,7 +15,7 @@ public class NestedMethod implements IMethod {
 	@Override
 	public void print(boolean printScopes) {
 		System.out.print(name + '(');
-		arguments.print(printScopes);
+		arguments.print(true);
 		System.out.print(')');
 	}
 

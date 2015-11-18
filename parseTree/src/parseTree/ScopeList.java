@@ -6,11 +6,17 @@ public final class ScopeList extends ArrayList<Scope>{
 
 	private static final long serialVersionUID = -2347749301870699299L;
 	
-	public void print(boolean printScopes) {
+	public void print() {
+		print(false);
+	}
+	
+	protected void print(boolean isNested) {
 		for (int i=0; i<this.size(); i++) {
-			this.get(i).print(printScopes);
+			this.get(i).print(i == this.size()-1);
 		}
-		System.out.print('\n');
+		if (!isNested) {
+			System.out.print(";\n");
+		}
 	}
 	
 	/*

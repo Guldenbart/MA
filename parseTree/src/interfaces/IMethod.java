@@ -2,5 +2,5 @@ package interfaces;
 
 public interface IMethod {
 	
-	void print(boolean printScopes);
+	void print(boolean isLastScope);
 }

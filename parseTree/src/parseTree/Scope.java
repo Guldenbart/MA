@@ -14,18 +14,19 @@ public class Scope {
 		methods = new ArrayList<IMethod>();
 	}
 
-	public void print(boolean printScopes) {
-		if (printScopes) {
-			System.out.print('<' + interfaceName + ">[");
-		}
-		for (int i=0; i<methods.size(); i++) {
-			methods.get(i).print(printScopes);
-			if (i < (methods.size()-1)) {
+	public void print(boolean isLastScope) {
+		if (!isLastScope) {
+			for (int i=0; i<methods.size(); i++) {
+				methods.get(i).print(false);
 				System.out.print('.');
 			}
-		}
-		if (printScopes) {
-			System.out.print(']');
+		} else {
+			for (int i=0; i<methods.size(); i++) {
+				methods.get(i).print(false);
+				if (i < (methods.size()-1)) {
+					System.out.print('.');
+				}
+			}
 		}
 	}
 	

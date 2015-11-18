@@ -13,7 +13,7 @@ public class SimpleMethod implements IMethod{
 	}
 
 	@Override
-	public void print(boolean printScopes) {
+	public void print(boolean isLastString) {
 		System.out.print(name + '(' + getArgumentString() + ')');
 	}
 	

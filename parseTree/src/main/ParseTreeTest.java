@@ -9,16 +9,16 @@ public class ParseTreeTest {
 		
 		// arithmetischer Ausdruck ohne Klammerung:
         ScopeList x = TreeBuilder.begin().expr(1).plus(2).times(3).minus(4).divided(5).end();
-        x.print(false);
+        x.print();
 
 
         // arithmetischer Ausdruck mit Klammerung:
         ScopeList y = TreeBuilder.begin()
         		.expr(TreeBuilder.begin().expr(1).plus(2).end())
         		.times(3)
-        		.minus(TreeBuilder.begin().expr(4).divided(5).end())
+        		.minus(TreeBuilder.begin().expr(4).plus(1).divided(5).end())
         		.end();
-        y.print(true);
+        y.print();
 
 	}
 
