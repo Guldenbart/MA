@@ -1,15 +1,24 @@
 package parseTree;
 
-import interfaces.IMethod;
+import visitor.Visitor;
 
 public class NestedMethod implements IMethod {
 	
 	private String name;
-	private ParseTree arguments;
+	private ParseTree parseTree;
 	
 	public NestedMethod(String methodName, ParseTree s) {
 		name = methodName;
-		arguments = s;
+		parseTree = s;
+	}
+	
+	@Override
+	public String name() {
+		return name;
+	}
+
+	public ParseTree parseTree() {
+		return parseTree;
 	}
 
 	@Override
@@ -17,10 +26,14 @@ public class NestedMethod implements IMethod {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(name + '(');
-		sb.append(arguments.toString(true));
+		sb.append(parseTree.toString(true));
 		sb.append(')');
 		
 		return sb.toString();
 	}
 
+	@Override
+	public void accept(Visitor visitor) {
+		visitor.visit(this);
+	}
 }

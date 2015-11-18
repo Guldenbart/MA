@@ -1,6 +1,6 @@
 package parseTree;
 
-import interfaces.IMethod;
+import visitor.Visitor;
 
 public class SimpleMethod implements IMethod{
 	
@@ -10,6 +10,15 @@ public class SimpleMethod implements IMethod{
 	public SimpleMethod(String mName, Object... mArguments) {
 		name = mName;
 		arguments = mArguments;
+	}
+	
+	@Override
+	public String name() {
+		return name;
+	}
+	
+	public Object[] arguments() {
+		return arguments;
 	}
 
 	@Override
@@ -30,6 +39,11 @@ public class SimpleMethod implements IMethod{
 		}
 		
 		return sb.toString();
+	}
+
+	@Override
+	public void accept(Visitor visitor) {
+		visitor.visit(this);
 	}
 
 }

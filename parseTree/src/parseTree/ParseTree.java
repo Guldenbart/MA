@@ -2,7 +2,10 @@ package parseTree;
 
 import java.util.ArrayList;
 
-public final class ParseTree{
+import visitor.Visitable;
+import visitor.Visitor;
+
+public final class ParseTree implements Visitable{
 
 	private ArrayList<Scope> list;
 	
@@ -40,6 +43,14 @@ public final class ParseTree{
 		if (list.isEmpty() || list.get(list.size()-1).getInterfaceName().compareTo(interfaceName) != 0) {
 			Scope scope = new Scope(interfaceName);
 			list.add(scope);
+		}
+	}
+
+	@Override
+	public void accept(Visitor visitor) {
+		// TODO darf/sollte hier stattdessen nur 'visitor.visit(this);' stehen?
+		for (Scope scope : list) {
+			scope.accept(visitor);
 		}
 	}
 }

@@ -2,9 +2,10 @@ package parseTree;
 
 import java.util.ArrayList;
 
-import interfaces.IMethod;
+import visitor.Visitable;
+import visitor.Visitor;
 
-public class Scope {
+public class Scope implements Visitable{
 	
 	private String interfaceName;
 	private ArrayList<IMethod> methods;
@@ -44,6 +45,14 @@ public class Scope {
 	
 	public String getInterfaceName() {
 		return interfaceName;
+	}
+
+	@Override
+	public void accept(Visitor visitor) {
+		// TODO darf/sollte hier stattdessen nur 'visitor.visit(this);' stehen?
+		for (IMethod method : methods) {
+			method.accept(visitor);
+		}
 	}
 
 }
