@@ -14,20 +14,24 @@ public class Scope {
 		methods = new ArrayList<IMethod>();
 	}
 
-	public void print(boolean isLastScope) {
+	public String toString(boolean isLastScope) {
+		StringBuilder sb = new StringBuilder();
+		
 		if (!isLastScope) {
 			for (int i=0; i<methods.size(); i++) {
-				methods.get(i).print(false);
-				System.out.print('.');
+				sb.append(methods.get(i).toString(false));
+				sb.append('.');
 			}
 		} else {
 			for (int i=0; i<methods.size(); i++) {
-				methods.get(i).print(false);
+				sb.append(methods.get(i).toString(false));
 				if (i < (methods.size()-1)) {
-					System.out.print('.');
+					sb.append('.');
 				}
 			}
 		}
+		
+		return sb.toString();
 	}
 	
 	public void addMethod(String methodName, ScopeList arguments) {

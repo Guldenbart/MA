@@ -9,7 +9,7 @@ public class ParseTreeTest {
 		
 		// arithmetischer Ausdruck ohne Klammerung:
         ScopeList x = TreeBuilder.begin().expr(1).plus(2).times(3).minus(4).divided(5).end();
-        x.print();
+        System.out.printf("%s = %s%n", "x", x.toString());
 
 
         // arithmetischer Ausdruck mit Klammerung:
@@ -18,7 +18,9 @@ public class ParseTreeTest {
         		.times(3)
         		.minus(TreeBuilder.begin().expr(4).plus(1).divided(5).end())
         		.end();
-        y.print();
+        y.toString();
+        
+        System.out.printf("%s = %s%n", "y", y.toString());
 
 	}
 

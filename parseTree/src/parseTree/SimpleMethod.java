@@ -13,8 +13,8 @@ public class SimpleMethod implements IMethod{
 	}
 
 	@Override
-	public void print(boolean isLastString) {
-		System.out.print(name + '(' + getArgumentString() + ')');
+	public String toString(boolean isLastScope) {
+		return (name + '(' + getArgumentString() + ')');
 	}
 	
 	private String getArgumentString() {

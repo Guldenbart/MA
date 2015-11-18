@@ -13,10 +13,14 @@ public class NestedMethod implements IMethod {
 	}
 
 	@Override
-	public void print(boolean printScopes) {
-		System.out.print(name + '(');
-		arguments.print(true);
-		System.out.print(')');
+	public String toString(boolean printScopes) {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(name + '(');
+		sb.append(arguments.toString(true));
+		sb.append(')');
+		
+		return sb.toString();
 	}
 
 }

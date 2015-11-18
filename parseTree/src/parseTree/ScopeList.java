@@ -6,25 +6,21 @@ public final class ScopeList extends ArrayList<Scope>{
 
 	private static final long serialVersionUID = -2347749301870699299L;
 	
-	public void print() {
-		print(false);
+	public String toString() {
+		return toString(false);
 	}
 	
-	protected void print(boolean isNested) {
+	protected String toString(boolean isNested) {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("TreeBuilder.begin().");
 		for (int i=0; i<this.size(); i++) {
-			this.get(i).print(i == this.size()-1);
+			sb.append(this.get(i).toString(i == this.size()-1));
 		}
 		if (!isNested) {
-			System.out.print(";\n");
+			sb.append(";\n");
 		}
+		
+		return sb.toString();
 	}
-	
-	/*
-	public void printExpression() {
-		for (int i=0; i<this.size(); i++) {
-			this.get(i).printExpression();
-		}
-		System.out.print('\n');
-	}
-	*/
 }
