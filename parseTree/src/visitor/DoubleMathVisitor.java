@@ -8,6 +8,9 @@ public class DoubleMathVisitor implements Visitor {
 	
 	private double result;
 	
+	/**
+	 * Class Constructor
+	 */
 	public DoubleMathVisitor() {
 		result = 0.0;
 	}

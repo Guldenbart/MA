@@ -3,8 +3,6 @@ package mainPackage;
 //For convenience, always static import your generated tables and
 //jOOQ functions to decrease verbosity:
 import static jooq.generated.Tables.*;
-import static org.jooq.impl.DSL.*;
-
 import java.sql.*;
 
 import org.jooq.*;
