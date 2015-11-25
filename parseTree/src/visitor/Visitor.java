@@ -14,17 +14,25 @@ import parseTree.SimpleMethod;
 public interface Visitor {
 	
 	/**
-	 * Processes objects of the class {@link Scope}
+	 * Processes objects of the type {@link Scope}
 	 * 
 	 * @param scope Scope that gets visited
 	 */
 	public void visit(Scope scope);
 	
+	
 	/**
-	 * Processes objects of the class 
+	 * Processes objects of the type {@link SimpleMethod}
 	 * 
-	 * @param sm
+	 * @param sm SimpleMethod that gets visited
 	 */
 	public void visit(SimpleMethod sm);
+	
+	
+	/**
+	 * Processes objects of the type {@link NestedMethod}
+	 *
+	 * @param nm NestedMethod that gets visited
+	 */
 	public void visit(NestedMethod nm);
 }
