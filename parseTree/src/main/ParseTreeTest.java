@@ -3,6 +3,7 @@ package main;
 import parseTree.ParseTree;
 import parseTree.TreeBuilder;
 import visitor.DoubleMathVisitor;
+import visitor.ExpressionBuildVisitor;
 
 public class ParseTreeTest {
 
@@ -24,13 +25,29 @@ public class ParseTreeTest {
         
         System.out.printf("%s = %s%n", "y", y.toString());
         
-        DoubleMathVisitor visitorX = new DoubleMathVisitor();
-        x.accept(visitorX);
-        System.out.printf("%s = %f%n", "Ergebnis des Ausdrucks x:", visitorX.result());
+        // DoubleMathVisitor test
+        System.out.println("DoubleMathVisitor:");
         
-        DoubleMathVisitor visitorY = new DoubleMathVisitor();
-        y.accept(visitorY);
-        System.out.printf("%s = %f%n", "Ergebnis des Ausdrucks y:", visitorY.result());
+        DoubleMathVisitor dmvX = new DoubleMathVisitor();
+        x.accept(dmvX);
+        System.out.printf("%s = %f%n", "Ergebnis des Ausdrucks x:", dmvX.result());
+        
+        DoubleMathVisitor dmvY = new DoubleMathVisitor();
+        y.accept(dmvY);
+        System.out.printf("%s = %f%n", "Ergebnis des Ausdrucks y:", dmvY.result());
+        
+        // ExpressionBuildVisitor test
+        System.out.println("ExpressionBuildVisitor:");
+        
+        ExpressionBuildVisitor ebvX = new ExpressionBuildVisitor();
+        x.accept(ebvX);
+        System.out.printf("%s = %f%n", "Ergebnis des Ausdrucks x:", ebvX.expression().getValue());
+        
+        ExpressionBuildVisitor ebvY = new ExpressionBuildVisitor();
+        y.accept(ebvY);
+        System.out.printf("%s = %f%n", "Ergebnis des Ausdrucks y:", ebvY.expression().getValue());
+        
+        
 
 	}
 
