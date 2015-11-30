@@ -14,6 +14,14 @@ public class Scope implements Visitable{
 		interfaceName = sInterfaceName;
 		methods = new ArrayList<IMethod>();
 	}
+	
+	public int size() {
+		return methods.size();
+	}
+	
+	public IMethod get(int index) {
+		return methods.get(index);
+	}
 
 	public String toString(boolean isLastScope) {
 		StringBuilder sb = new StringBuilder();
@@ -47,12 +55,18 @@ public class Scope implements Visitable{
 		return interfaceName;
 	}
 
+	/* alte Methode
 	@Override
 	public void accept(Visitor visitor) {
-		// TODO darf/sollte hier stattdessen nur 'visitor.visit(this);' stehen?
 		for (IMethod method : methods) {
 			method.accept(visitor);
 		}
+	}
+	*/
+	
+	@Override
+	public void accept(Visitor visitor) {
+		visitor.visit(this);
 	}
 
 }

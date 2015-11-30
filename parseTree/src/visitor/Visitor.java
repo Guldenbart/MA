@@ -1,6 +1,7 @@
 package visitor;
 
 import parseTree.NestedMethod;
+import parseTree.ParseTree;
 import parseTree.Scope;
 import parseTree.SimpleMethod;
 
@@ -12,6 +13,14 @@ import parseTree.SimpleMethod;
  * @author Daniel Fritz
  */
 public interface Visitor {
+	
+	/**
+	 * Processes object of the type {@link ParseTree}
+	 * 
+	 * @param parseTree
+	 */
+	public void visit(ParseTree parseTree);
+	
 	
 	/**
 	 * Processes objects of the type {@link Scope}

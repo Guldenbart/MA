@@ -7,9 +7,9 @@ public class NestedMethod implements IMethod {
 	private String name;
 	private ParseTree parseTree;
 	
-	public NestedMethod(String methodName, ParseTree s) {
+	public NestedMethod(String methodName, ParseTree t) {
 		name = methodName;
-		parseTree = s;
+		parseTree = t;
 	}
 	
 	@Override

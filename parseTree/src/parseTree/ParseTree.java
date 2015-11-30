@@ -13,6 +13,14 @@ public final class ParseTree implements Visitable{
 		list = new ArrayList<Scope>();
 	}
 	
+	public int size() {
+		return list.size();
+	}
+	
+	public Scope get(int index) {
+		return list.get(index);
+	}
+	
 	public String toString() {
 		return toString(false);
 	}
@@ -46,11 +54,17 @@ public final class ParseTree implements Visitable{
 		}
 	}
 
+	/* alte Version
 	@Override
 	public void accept(Visitor visitor) {
-		// TODO darf/sollte hier stattdessen nur 'visitor.visit(this);' stehen?
 		for (Scope scope : list) {
 			scope.accept(visitor);
 		}
+	}
+	*/
+	
+	@Override
+	public void accept(Visitor visitor) {
+		visitor.visit(this);
 	}
 }

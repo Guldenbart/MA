@@ -1,6 +1,7 @@
 package visitor;
 
 import parseTree.NestedMethod;
+import parseTree.ParseTree;
 import parseTree.Scope;
 import parseTree.SimpleMethod;
 
@@ -18,11 +19,19 @@ public class DoubleMathVisitor implements Visitor {
 	public double result() {
 		return result;
 	}
+	
+	@Override
+	public void visit(ParseTree parseTree) {
+		for (int i=0; i<parseTree.size(); i++) {
+			parseTree.get(i).accept(this);
+		}
+	}
 
 	@Override
 	public void visit(Scope scope) {
-		// TODO Auto-generated method stub
-
+		for (int i=0; i<scope.size(); i++) {
+			scope.get(i).accept(this);
+		}
 	}
 
 	@Override
@@ -42,6 +51,9 @@ public class DoubleMathVisitor implements Visitor {
 			break;
 		case "divided":
 			result /= (double) sm.arguments()[0];
+			break;
+		case "end":
+			// TODO was soll bei 'end' getan werden?
 			break;
 		}
 	}
@@ -69,5 +81,7 @@ public class DoubleMathVisitor implements Visitor {
 			break;
 		}
 	}
+	
+	// TODO overload oder gleicher Name in mehreren Interfaces
 
 }
