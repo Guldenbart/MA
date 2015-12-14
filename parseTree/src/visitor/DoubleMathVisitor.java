@@ -53,7 +53,7 @@ public class DoubleMathVisitor implements Visitor {
 			result /= (double) sm.arguments()[0];
 			break;
 		case "end":
-			// TODO was soll bei 'end' getan werden?
+			// nothing to do here
 			break;
 		}
 	}

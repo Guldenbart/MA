@@ -49,7 +49,7 @@ public class ExpressionBuildVisitor implements Visitor {
 			e = new Operation(e, '/', new Value( (double)sm.arguments()[0]));
 			break;
 		case "end":
-			// TODO was soll bei 'end' getan werden?
+			// nothing to do here
 		}
 	}
 
@@ -75,7 +75,7 @@ public class ExpressionBuildVisitor implements Visitor {
 			e = new Operation(e, '/', nestedVisitor.expression());
 			break;
 		case "end":
-			// TODO was soll bei 'end' getan werden?
+			// nothing to do here
 		}
 	}
 
