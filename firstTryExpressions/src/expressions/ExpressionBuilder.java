@@ -2,12 +2,10 @@ package expressions;
 
 public class ExpressionBuilder {
 	
-	//private final ExpressionScope expressionScope;
 	private final IntermediateScope intermediateScope;
 	private Expr e;
 	
 	private ExpressionBuilder() {
-		//this.expressionScope = this.new ExpressionScope();
 		this.intermediateScope = this.new IntermediateScope();
 	}
 	

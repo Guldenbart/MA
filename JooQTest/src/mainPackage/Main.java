@@ -21,7 +21,16 @@ public class Main {
 		// Connection is the only JDBC resource that we need
 		// PreparedStatement and ResultSet are handled by jOOQ, internally
 		try (Connection conn = DriverManager.getConnection(url, userName, password)) {
-			DSLContext create = DSL.using(conn, SQLDialect.MYSQL);
+			DSLContext create = DSL.using(conn, SQLDialect.MYSQL); // Typ von create: 'DefaultDSLContext'
+			
+			/*
+			 * select: org.jooq.impl.DefaultDSLContext.java
+			 * 		line. 1430
+			 * from: 	SelectIntoStep extends SelectFromStep
+			 * 			SelectDistinctOnStep extends SelectIntoStep
+			 * 			SelectSelectStep extends SelectDistinctOnStep
+			 * 			
+			 */
 			Result<Record> result = create.select().from(AUTHOR).fetch();
 		
 			for (Record r : result) {
