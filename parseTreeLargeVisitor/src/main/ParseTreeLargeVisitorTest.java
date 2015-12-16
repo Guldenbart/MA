@@ -6,7 +6,7 @@ import visitor.DoubleMathVisitor;
 //import visitor.DoubleMathVisitor;
 import visitor.ExpressionBuildVisitor;
 
-public class ParseTreeTest {
+public class ParseTreeLargeVisitorTest {
 
 	public static void main(String[] args) {
 		

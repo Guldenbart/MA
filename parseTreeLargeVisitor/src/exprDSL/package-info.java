@@ -9,8 +9,6 @@
  * With the implementation in Every expression has to start with <code>expr</code> and end with
  * <code>end</code>. 
  * 
- * TODO würde hier schon der Hinweis auf die Scopes stehen? 
- * 
  * @author Daniel Fritz
  */
 
