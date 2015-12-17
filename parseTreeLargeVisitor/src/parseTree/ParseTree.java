@@ -8,8 +8,8 @@ public final class ParseTree implements Visitable{
 
 	private ArrayList<Scope> list;
 	
-	public ParseTree() {
-		list = new ArrayList<Scope>();
+	public ParseTree(ArrayList<Scope> list) {
+		this.list = list;
 	}
 	
 	public int size() {
@@ -30,17 +30,6 @@ public final class ParseTree implements Visitable{
 		}
 		
 		return sb.toString();
-	}
-	
-	public void appendVisitable(Visitable v) {
-		list.get(list.size()-1).addVisitable(v);
-	}
-	
-	public void checkLatestScope(String interfaceName) {
-		if (list.isEmpty() || list.get(list.size()-1).getInterfaceName().compareTo(interfaceName) != 0) {
-			Scope scope = new Scope(interfaceName);
-			list.add(scope);
-		}
 	}
 	
 	@Override

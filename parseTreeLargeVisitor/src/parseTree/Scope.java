@@ -2,17 +2,11 @@ package parseTree;
 
 import java.util.ArrayList;
 
-import visitor.Visitor;
-
-public class Scope implements Visitable{
+public abstract class Scope implements Visitable{
 	
-	private String interfaceName;
-	private ArrayList<Visitable> methods;
-	
-	public Scope(String sInterfaceName) {
-		interfaceName = sInterfaceName;
-		methods = new ArrayList<Visitable>();
-	}
+	protected String interfaceName;
+	protected ArrayList<Visitable> methods;
+	// TODO Frage: Wäre es sinnvoll, dafür zu sorgen, dass hier nur Methoden reinkönnen, oder kann ich mich einfach darauf verlassen, dass es so ist?
 	
 	public int size() {
 		return methods.size();
@@ -39,12 +33,6 @@ public class Scope implements Visitable{
 	
 	public void addVisitable(Visitable v) {
 		methods.add(v);
-	}
-
-	
-	@Override
-	public void accept(Visitor visitor) {
-		visitor.visit(this);
 	}
 
 }

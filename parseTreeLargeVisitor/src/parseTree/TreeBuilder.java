@@ -1,18 +1,20 @@
 package parseTree;
 
+import java.util.ArrayList;
+
 import exprDSL.Intermediate;
 import exprDSL.Start;
 import parseTree.ParseTree;
-
 
 public class TreeBuilder {
 
 	private ParseTree parseTree;
 	private final IntermediateScope intermediateScope;
+	private ArrayList<Scope> scopeList;
 	
 	private TreeBuilder() {
-		this.parseTree = new ParseTree();
 		this.intermediateScope = this.new IntermediateScope();
+		this.scopeList = new ArrayList<Scope>();
 	}
 	
 	public static StartScope begin() {
@@ -20,21 +22,33 @@ public class TreeBuilder {
 	}
 	
 	public class StartScope implements Start<ParseTree> {
+		
+		private ArrayList<Visitable> startList;
+		
+		private StartScope() {
+			startList = new ArrayList<Visitable>();
+		}
 
 		@Override
 		public IntermediateScope expr(double value) {
-			parseTree.checkLatestScope("Start");
 			Visitable v = new MethodExprSimple(value);
-			parseTree.appendVisitable(v);
+			startList.add(v);
+			
+			// new Scope
+			Scope scopeStart = new ScopeStart(startList);
+			TreeBuilder.this.scopeList.add(scopeStart);
 			
 			return TreeBuilder.this.intermediateScope;
 		}
 
 		@Override
 		public IntermediateScope expr(ParseTree list) {
-			parseTree.checkLatestScope("Start");
 			Visitable v = new MethodExprNested(list);
-			parseTree.appendVisitable(v);
+			startList.add(v);
+			
+			// new Scope
+			Scope scopeStart = new ScopeStart(startList);
+			TreeBuilder.this.scopeList.add(scopeStart);
 			
 			return TreeBuilder.this.intermediateScope;
 		}
@@ -42,84 +56,88 @@ public class TreeBuilder {
 	}
 	
 	public class IntermediateScope implements Intermediate <ParseTree> {
+		
+		private ArrayList<Visitable> intermediateList;
+		
+		private IntermediateScope() {
+			intermediateList = new ArrayList<Visitable>();
+		}
 
 		@Override
 		public Intermediate<ParseTree> plus(double value) {
-			parseTree.checkLatestScope("Intermediate");
 			Visitable v = new MethodPlusSimple(value);
-			parseTree.appendVisitable(v);
+			intermediateList.add(v);
 			
 			return this;
 		}
 
 		@Override
 		public Intermediate<ParseTree> plus(ParseTree list) {
-			parseTree.checkLatestScope("Intermediate");
 			Visitable v = new MethodPlusNested(list);
-			parseTree.appendVisitable(v);
+			intermediateList.add(v);
 			
 			return this;
 		}
 
 		@Override
 		public Intermediate<ParseTree> minus(double value) {
-			parseTree.checkLatestScope("Intermediate");
 			Visitable v = new MethodMinusSimple(value);
-			parseTree.appendVisitable(v);
+			intermediateList.add(v);
 			
 			return this;
 		}
 
 		@Override
 		public Intermediate<ParseTree> minus(ParseTree list) {
-			parseTree.checkLatestScope("Intermediate");
 			Visitable v = new MethodMinusNested(list);
-			parseTree.appendVisitable(v);
+			intermediateList.add(v);
 			
 			return this;
 		}
 
 		@Override
 		public Intermediate<ParseTree> times(double value) {
-			parseTree.checkLatestScope("Intermediate");
 			Visitable v = new MethodTimesSimple(value);
-			parseTree.appendVisitable(v);
+			intermediateList.add(v);
 			
 			return this;
 		}
 
 		@Override
 		public Intermediate<ParseTree> times(ParseTree list) {
-			parseTree.checkLatestScope("Intermediate");
 			Visitable v = new MethodTimesNested(list);
-			parseTree.appendVisitable(v);
+			intermediateList.add(v);
 			
 			return this;
 		}
 
 		@Override
 		public Intermediate<ParseTree> divided(double value) {
-			parseTree.checkLatestScope("Intermediate");
 			Visitable v = new MethodDividedSimple(value);
-			parseTree.appendVisitable(v);
+			intermediateList.add(v);
 			
 			return this;
 		}
 
 		@Override
 		public Intermediate<ParseTree> divided(ParseTree list) {
-			parseTree.checkLatestScope("Intermediate");
 			Visitable v = new MethodDividedNested(list);
-			parseTree.appendVisitable(v);
+			intermediateList.add(v);
 			
 			return this;
 		}
 		
 		@Override
 		public ParseTree end() {
-			parseTree.checkLatestScope("Intermediate");
 			Visitable v = new MethodEnd();
-			parseTree.appendVisitable(v);
+			intermediateList.add(v);
+			
+			// new Scope
+			Scope scopeIntermediate = new ScopeIntermediate(intermediateList);
+			scopeList.add(scopeIntermediate);
+			
+			// new ParseTree
+			parseTree = new ParseTree(scopeList);
 			
 			return TreeBuilder.this.parseTree;
 		}

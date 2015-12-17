@@ -14,7 +14,8 @@ import parseTree.MethodPlusSimple;
 import parseTree.MethodTimesNested;
 import parseTree.MethodTimesSimple;
 import parseTree.ParseTree;
-import parseTree.Scope;
+import parseTree.ScopeIntermediate;
+import parseTree.ScopeStart;
 
 public class ExpressionBuildVisitor implements Visitor {
 	
@@ -24,7 +25,7 @@ public class ExpressionBuildVisitor implements Visitor {
 		return e;
 	}
 
-	// TODO auch als default-Implementierung ins Interface?
+	// TODO Frage: auch als default-Implementierung ins Interface?
 	@Override
 	public void visit(ParseTree parseTree) {
 		for (int i=0; i<parseTree.size(); i++) {
@@ -33,9 +34,16 @@ public class ExpressionBuildVisitor implements Visitor {
 	}
 
 	@Override
-	public void visit(Scope scope) {
-		for (int i=0; i<scope.size(); i++) {
-			scope.get(i).accept(this);
+	public void visit(ScopeStart scopeStart) {
+		for (int i=0; i<scopeStart.size(); i++) {
+			scopeStart.get(i).accept(this);
+		}
+	}
+	
+	@Override
+	public void visit(ScopeIntermediate scopeIntermediate) {
+		for (int i=0; i<scopeIntermediate.size(); i++) {
+			scopeIntermediate.get(i).accept(this);
 		}
 	}
 

@@ -12,7 +12,8 @@ import parseTree.MethodPlusSimple;
 import parseTree.MethodTimesNested;
 import parseTree.MethodTimesSimple;
 import parseTree.ParseTree;
-import parseTree.Scope;
+import parseTree.ScopeIntermediate;
+import parseTree.ScopeStart;
 
 /**
  * Interface for all classes that want to implement a visitor.
@@ -24,7 +25,9 @@ import parseTree.Scope;
 public interface Visitor {
 	
 	default void visit(ParseTree parseTree) {}
-	default void visit(Scope scope) {}
+	
+	default void visit(ScopeStart scopeStart) {}
+	default void visit(ScopeIntermediate scopeIntermediate) {}
 	
 	
 	default void visit(MethodExprSimple mes) {}

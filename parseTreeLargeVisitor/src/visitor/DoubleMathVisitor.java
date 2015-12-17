@@ -11,7 +11,8 @@ import parseTree.MethodPlusSimple;
 import parseTree.MethodTimesNested;
 import parseTree.MethodTimesSimple;
 import parseTree.ParseTree;
-import parseTree.Scope;
+import parseTree.ScopeIntermediate;
+import parseTree.ScopeStart;
 
 public class DoubleMathVisitor implements Visitor {
 	
@@ -33,9 +34,16 @@ public class DoubleMathVisitor implements Visitor {
 	}
 
 	@Override
-	public void visit(Scope scope) {
-		for (int i=0; i<scope.size(); i++) {
-			scope.get(i).accept(this);
+	public void visit(ScopeStart scopeStart) {
+		for (int i=0; i<scopeStart.size(); i++) {
+			scopeStart.get(i).accept(this);
+		}
+	}
+	
+	@Override
+	public void visit(ScopeIntermediate scopeIntermediate) {
+		for (int i=0; i<scopeIntermediate.size(); i++) {
+			scopeIntermediate.get(i).accept(this);
 		}
 	}
 	

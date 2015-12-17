@@ -1,10 +1,3 @@
-/*
- * Für die Method*Simple-Klassen böte sich eine gemeinsame Oberklasse SimpleMethod an,
- * die name und value samt getter aufnimmt, für die Method*Nested-Klassen entsprechend
- * eine Oberklasse NestedMethod, die name und parseTree samt getter aufnimmt.
- * Man hätte dann deutliche weniger Coderedundanz.
- */
-
 package parseTree;
 
 public abstract class MethodSimple implements Visitable {
