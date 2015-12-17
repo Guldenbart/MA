@@ -23,16 +23,16 @@ public class TreeBuilder {
 	
 	public class StartScope implements Start<ParseTree> {
 		
-		private ArrayList<Visitable> startList;
+		private ArrayList<AMethod> startList;
 		
 		private StartScope() {
-			startList = new ArrayList<Visitable>();
+			startList = new ArrayList<AMethod>();
 		}
 
 		@Override
 		public IntermediateScope expr(double value) {
-			Visitable v = new MethodExprSimple(value);
-			startList.add(v);
+			AMethod m = new MethodExprSimple(value);
+			startList.add(m);
 			
 			// new Scope
 			Scope scopeStart = new ScopeStart(startList);
@@ -43,8 +43,8 @@ public class TreeBuilder {
 
 		@Override
 		public IntermediateScope expr(ParseTree list) {
-			Visitable v = new MethodExprNested(list);
-			startList.add(v);
+			AMethod m = new MethodExprNested(list);
+			startList.add(m);
 			
 			// new Scope
 			Scope scopeStart = new ScopeStart(startList);
@@ -57,80 +57,80 @@ public class TreeBuilder {
 	
 	public class IntermediateScope implements Intermediate <ParseTree> {
 		
-		private ArrayList<Visitable> intermediateList;
+		private ArrayList<AMethod> intermediateList;
 		
 		private IntermediateScope() {
-			intermediateList = new ArrayList<Visitable>();
+			intermediateList = new ArrayList<AMethod>();
 		}
 
 		@Override
 		public Intermediate<ParseTree> plus(double value) {
-			Visitable v = new MethodPlusSimple(value);
-			intermediateList.add(v);
+			AMethod m = new MethodPlusSimple(value);
+			intermediateList.add(m);
 			
 			return this;
 		}
 
 		@Override
 		public Intermediate<ParseTree> plus(ParseTree list) {
-			Visitable v = new MethodPlusNested(list);
-			intermediateList.add(v);
+			AMethod m = new MethodPlusNested(list);
+			intermediateList.add(m);
 			
 			return this;
 		}
 
 		@Override
 		public Intermediate<ParseTree> minus(double value) {
-			Visitable v = new MethodMinusSimple(value);
-			intermediateList.add(v);
+			AMethod m = new MethodMinusSimple(value);
+			intermediateList.add(m);
 			
 			return this;
 		}
 
 		@Override
 		public Intermediate<ParseTree> minus(ParseTree list) {
-			Visitable v = new MethodMinusNested(list);
-			intermediateList.add(v);
+			AMethod m = new MethodMinusNested(list);
+			intermediateList.add(m);
 			
 			return this;
 		}
 
 		@Override
 		public Intermediate<ParseTree> times(double value) {
-			Visitable v = new MethodTimesSimple(value);
-			intermediateList.add(v);
+			AMethod m = new MethodTimesSimple(value);
+			intermediateList.add(m);
 			
 			return this;
 		}
 
 		@Override
 		public Intermediate<ParseTree> times(ParseTree list) {
-			Visitable v = new MethodTimesNested(list);
-			intermediateList.add(v);
+			AMethod m = new MethodTimesNested(list);
+			intermediateList.add(m);
 			
 			return this;
 		}
 
 		@Override
 		public Intermediate<ParseTree> divided(double value) {
-			Visitable v = new MethodDividedSimple(value);
-			intermediateList.add(v);
+			AMethod m = new MethodDividedSimple(value);
+			intermediateList.add(m);
 			
 			return this;
 		}
 
 		@Override
 		public Intermediate<ParseTree> divided(ParseTree list) {
-			Visitable v = new MethodDividedNested(list);
-			intermediateList.add(v);
+			AMethod m = new MethodDividedNested(list);
+			intermediateList.add(m);
 			
 			return this;
 		}
 		
 		@Override
 		public ParseTree end() {
-			Visitable v = new MethodEnd();
-			intermediateList.add(v);
+			AMethod m = new MethodEnd();
+			intermediateList.add(m);
 			
 			// new Scope
 			Scope scopeIntermediate = new ScopeIntermediate(intermediateList);

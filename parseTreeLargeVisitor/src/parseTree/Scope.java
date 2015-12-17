@@ -5,8 +5,7 @@ import java.util.ArrayList;
 public abstract class Scope implements Visitable{
 	
 	protected String interfaceName;
-	protected ArrayList<Visitable> methods;
-	// TODO Frage: Wäre es sinnvoll, dafür zu sorgen, dass hier nur Methoden reinkönnen, oder kann ich mich einfach darauf verlassen, dass es so ist?
+	protected ArrayList<AMethod> methods;
 	
 	public int size() {
 		return methods.size();
@@ -25,14 +24,6 @@ public abstract class Scope implements Visitable{
 		}
 		
 		return sb.toString();
-	}
-	
-	public String getInterfaceName() {
-		return interfaceName;
-	}
-	
-	public void addVisitable(Visitable v) {
-		methods.add(v);
 	}
 
 }

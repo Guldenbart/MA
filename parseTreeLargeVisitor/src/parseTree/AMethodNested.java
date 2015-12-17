@@ -1,14 +1,14 @@
 package parseTree;
 
-public abstract class MethodNested implements Visitable {
+public abstract class AMethodNested extends AMethod{
 
 	protected ParseTree _parseTree;
-	protected String name;
 	
 	public ParseTree parseTree() {
 		return _parseTree;
 	}
 	
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		

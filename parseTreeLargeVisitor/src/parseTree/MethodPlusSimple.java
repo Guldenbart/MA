@@ -2,7 +2,7 @@ package parseTree;
 
 import visitor.Visitor;
 
-public class MethodPlusSimple extends MethodSimple {
+public class MethodPlusSimple extends AMethodSimple {
 	
 	public MethodPlusSimple(double value) {
 		_value = value;

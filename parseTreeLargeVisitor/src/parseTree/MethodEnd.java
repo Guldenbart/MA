@@ -2,9 +2,11 @@ package parseTree;
 
 import visitor.Visitor;
 
-public class MethodEnd implements Visitable {
+public class MethodEnd extends AMethod {
 	
-	private final String name = "end";
+	public MethodEnd() {
+		name = "end";
+	}
 	
 	public String toString() {
 		return name + "()";

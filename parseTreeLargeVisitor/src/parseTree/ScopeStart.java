@@ -6,7 +6,7 @@ import visitor.Visitor;
 
 public class ScopeStart extends Scope {
 	
-	public ScopeStart(ArrayList<Visitable> list) {
+	public ScopeStart(ArrayList<AMethod> list) {
 		interfaceName = "Start";
 		methods = list;
 	}

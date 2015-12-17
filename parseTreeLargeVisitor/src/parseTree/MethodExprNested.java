@@ -2,7 +2,7 @@ package parseTree;
 
 import visitor.Visitor;
 
-public class MethodExprNested extends MethodNested {
+public class MethodExprNested extends AMethodNested {
 	
 	public MethodExprNested(ParseTree parseTree) {
 		_parseTree = parseTree;

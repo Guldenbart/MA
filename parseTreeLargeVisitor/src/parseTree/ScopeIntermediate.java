@@ -6,7 +6,7 @@ import visitor.Visitor;
 
 public class ScopeIntermediate extends Scope {
 	
-	public ScopeIntermediate(ArrayList<Visitable> list) {
+	public ScopeIntermediate(ArrayList<AMethod> list) {
 		interfaceName = "Intermediate";
 		methods = list;
 	}
