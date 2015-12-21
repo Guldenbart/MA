@@ -56,7 +56,6 @@ public class DoubleMathVisitor implements Visitor {
 	public void visit(MethodExprNested men) {
 		DoubleMathVisitor nestedVisitor = new DoubleMathVisitor();
 		men.parseTree().accept(nestedVisitor);
-		
 		result = nestedVisitor.result();
 	}
 	
@@ -69,7 +68,6 @@ public class DoubleMathVisitor implements Visitor {
 	public void visit(MethodPlusNested mpn) {
 		DoubleMathVisitor nestedVisitor = new DoubleMathVisitor();
 		mpn.parseTree().accept(nestedVisitor);
-		
 		result += nestedVisitor.result();
 	}
 	
@@ -82,7 +80,6 @@ public class DoubleMathVisitor implements Visitor {
 	public void visit(MethodMinusNested mmn) {
 		DoubleMathVisitor nestedVisitor = new DoubleMathVisitor();
 		mmn.parseTree().accept(nestedVisitor);
-		
 		result -= nestedVisitor.result();
 	}
 	
@@ -95,7 +92,6 @@ public class DoubleMathVisitor implements Visitor {
 	public void visit(MethodTimesNested mtn) {
 		DoubleMathVisitor nestedVisitor = new DoubleMathVisitor();
 		mtn.parseTree().accept(nestedVisitor);
-		
 		result *= nestedVisitor.result();
 	}
 	
@@ -108,7 +104,6 @@ public class DoubleMathVisitor implements Visitor {
 	public void visit(MethodDividedNested mdn) {
 		DoubleMathVisitor nestedVisitor = new DoubleMathVisitor();
 		mdn.parseTree().accept(nestedVisitor);
-		
 		result /= nestedVisitor.result();
 	}
 

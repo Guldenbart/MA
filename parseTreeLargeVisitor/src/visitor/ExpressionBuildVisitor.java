@@ -55,7 +55,7 @@ public class ExpressionBuildVisitor implements Visitor {
 	@Override
 	public void visit(MethodExprNested men) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
-		nestedVisitor.visit(men.parseTree());
+		men.parseTree().accept(nestedVisitor);
 		e = nestedVisitor.expression();
 	}
 
@@ -67,7 +67,7 @@ public class ExpressionBuildVisitor implements Visitor {
 	@Override
 	public void visit(MethodPlusNested mpn) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
-		nestedVisitor.visit(mpn.parseTree());
+		mpn.parseTree().accept(nestedVisitor);
 		e = new Operation(e, '+', nestedVisitor.expression());
 	}
 
@@ -79,7 +79,7 @@ public class ExpressionBuildVisitor implements Visitor {
 	@Override
 	public void visit(MethodMinusNested mmn) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
-		nestedVisitor.visit(mmn.parseTree());
+		mmn.parseTree().accept(nestedVisitor);
 		e = new Operation(e, '-', nestedVisitor.expression());
 	}
 
@@ -91,7 +91,7 @@ public class ExpressionBuildVisitor implements Visitor {
 	@Override
 	public void visit(MethodTimesNested mtn) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
-		nestedVisitor.visit(mtn.parseTree());
+		mtn.parseTree().accept(nestedVisitor);
 		e = new Operation(e, '*', nestedVisitor.expression());
 	}
 
@@ -103,7 +103,7 @@ public class ExpressionBuildVisitor implements Visitor {
 	@Override
 	public void visit(MethodDividedNested mdn) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
-		nestedVisitor.visit(mdn.parseTree());
+		mdn.parseTree().accept(nestedVisitor);
 		e = new Operation(e, '*', nestedVisitor.expression());
 	}
 
