@@ -31,7 +31,7 @@ public class TreeBuilder {
 
 		@Override
 		public IntermediateScope expr(double value) {
-			AMethod m = new MethodExprSimple(value);
+			AMethod m = new SimpleMethodExpr(value);
 			startList.add(m);
 			
 			// new Scope
@@ -43,7 +43,7 @@ public class TreeBuilder {
 
 		@Override
 		public IntermediateScope expr(ParseTree list) {
-			AMethod m = new MethodExprNested(list);
+			AMethod m = new NestedMethodExpr(list);
 			startList.add(m);
 			
 			// new Scope
@@ -65,7 +65,7 @@ public class TreeBuilder {
 
 		@Override
 		public Intermediate<ParseTree> plus(double value) {
-			AMethod m = new MethodPlusSimple(value);
+			AMethod m = new SimpleMethodPlus(value);
 			intermediateList.add(m);
 			
 			return this;
@@ -73,7 +73,7 @@ public class TreeBuilder {
 
 		@Override
 		public Intermediate<ParseTree> plus(ParseTree list) {
-			AMethod m = new MethodPlusNested(list);
+			AMethod m = new NestedMethodPlus(list);
 			intermediateList.add(m);
 			
 			return this;
@@ -81,7 +81,7 @@ public class TreeBuilder {
 
 		@Override
 		public Intermediate<ParseTree> minus(double value) {
-			AMethod m = new MethodMinusSimple(value);
+			AMethod m = new SimpleMethodMinus(value);
 			intermediateList.add(m);
 			
 			return this;
@@ -89,7 +89,7 @@ public class TreeBuilder {
 
 		@Override
 		public Intermediate<ParseTree> minus(ParseTree list) {
-			AMethod m = new MethodMinusNested(list);
+			AMethod m = new NestedMethodMinus(list);
 			intermediateList.add(m);
 			
 			return this;
@@ -97,7 +97,7 @@ public class TreeBuilder {
 
 		@Override
 		public Intermediate<ParseTree> times(double value) {
-			AMethod m = new MethodTimesSimple(value);
+			AMethod m = new SimpleMethodTimes(value);
 			intermediateList.add(m);
 			
 			return this;
@@ -105,7 +105,7 @@ public class TreeBuilder {
 
 		@Override
 		public Intermediate<ParseTree> times(ParseTree list) {
-			AMethod m = new MethodTimesNested(list);
+			AMethod m = new NestedMethodTimes(list);
 			intermediateList.add(m);
 			
 			return this;
@@ -113,7 +113,7 @@ public class TreeBuilder {
 
 		@Override
 		public Intermediate<ParseTree> divided(double value) {
-			AMethod m = new MethodDividedSimple(value);
+			AMethod m = new SimpleMethodDivided(value);
 			intermediateList.add(m);
 			
 			return this;
@@ -121,7 +121,7 @@ public class TreeBuilder {
 
 		@Override
 		public Intermediate<ParseTree> divided(ParseTree list) {
-			AMethod m = new MethodDividedNested(list);
+			AMethod m = new NestedMethodDivided(list);
 			intermediateList.add(m);
 			
 			return this;

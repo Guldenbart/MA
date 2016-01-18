@@ -3,16 +3,16 @@ package visitor;
 import expressions.Expr;
 import expressions.Operation;
 import expressions.Value;
-import parseTree.MethodDividedNested;
-import parseTree.MethodDividedSimple;
-import parseTree.MethodExprNested;
-import parseTree.MethodExprSimple;
-import parseTree.MethodMinusNested;
-import parseTree.MethodMinusSimple;
-import parseTree.MethodPlusNested;
-import parseTree.MethodPlusSimple;
-import parseTree.MethodTimesNested;
-import parseTree.MethodTimesSimple;
+import parseTree.NestedMethodDivided;
+import parseTree.SimpleMethodDivided;
+import parseTree.NestedMethodExpr;
+import parseTree.SimpleMethodExpr;
+import parseTree.NestedMethodMinus;
+import parseTree.SimpleMethodMinus;
+import parseTree.NestedMethodPlus;
+import parseTree.SimpleMethodPlus;
+import parseTree.NestedMethodTimes;
+import parseTree.SimpleMethodTimes;
 import parseTree.ParseTree;
 import parseTree.ScopeIntermediate;
 import parseTree.ScopeStart;
@@ -48,60 +48,60 @@ public class ExpressionBuildVisitor implements Visitor {
 	}
 
 	@Override
-	public void visit(MethodExprSimple mes) {
+	public void visit(SimpleMethodExpr mes) {
 		e = new Value(mes.value());		
 	}
 
 	@Override
-	public void visit(MethodExprNested men) {
+	public void visit(NestedMethodExpr men) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
 		men.parseTree().accept(nestedVisitor);
 		e = nestedVisitor.expression();
 	}
 
 	@Override
-	public void visit(MethodPlusSimple mps) {
+	public void visit(SimpleMethodPlus mps) {
 		e = new Operation(e, '+', new Value(mps.value()));
 	}
 
 	@Override
-	public void visit(MethodPlusNested mpn) {
+	public void visit(NestedMethodPlus mpn) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
 		mpn.parseTree().accept(nestedVisitor);
 		e = new Operation(e, '+', nestedVisitor.expression());
 	}
 
 	@Override
-	public void visit(MethodMinusSimple mms) {
+	public void visit(SimpleMethodMinus mms) {
 		e = new Operation(e, '-', new Value(mms.value()));
 	}
 
 	@Override
-	public void visit(MethodMinusNested mmn) {
+	public void visit(NestedMethodMinus mmn) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
 		mmn.parseTree().accept(nestedVisitor);
 		e = new Operation(e, '-', nestedVisitor.expression());
 	}
 
 	@Override
-	public void visit(MethodTimesSimple mts) {
+	public void visit(SimpleMethodTimes mts) {
 		e = new Operation(e, '*', new Value(mts.value()));
 	}
 
 	@Override
-	public void visit(MethodTimesNested mtn) {
+	public void visit(NestedMethodTimes mtn) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
 		mtn.parseTree().accept(nestedVisitor);
 		e = new Operation(e, '*', nestedVisitor.expression());
 	}
 
 	@Override
-	public void visit(MethodDividedSimple mds) {
+	public void visit(SimpleMethodDivided mds) {
 		e = new Operation(e, '/', new Value(mds.value()));
 	}
 
 	@Override
-	public void visit(MethodDividedNested mdn) {
+	public void visit(NestedMethodDivided mdn) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
 		mdn.parseTree().accept(nestedVisitor);
 		e = new Operation(e, '*', nestedVisitor.expression());

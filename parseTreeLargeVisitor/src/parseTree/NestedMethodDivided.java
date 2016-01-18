@@ -2,13 +2,13 @@ package parseTree;
 
 import visitor.Visitor;
 
-public class MethodDividedSimple extends AMethodSimple {
+public class NestedMethodDivided extends ANestedMethod {
 	
-	public MethodDividedSimple(double value) {
-		_value = value;
+	public NestedMethodDivided(ParseTree parseTree) {
+		this.parseTree = parseTree;
 		name = "divided";
 	}
-	
+
 	@Override
 	public void accept(Visitor visitor) {
 		visitor.visit(this);

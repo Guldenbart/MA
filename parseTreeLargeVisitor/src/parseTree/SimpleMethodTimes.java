@@ -2,10 +2,10 @@ package parseTree;
 
 import visitor.Visitor;
 
-public class MethodTimesNested extends AMethodNested {
+public class SimpleMethodTimes extends ASimpleMethod {
 	
-	public MethodTimesNested(ParseTree parseTree) {
-		_parseTree = parseTree;
+	public SimpleMethodTimes(double value) {
+		this.value = value;
 		name = "times";
 	}
 

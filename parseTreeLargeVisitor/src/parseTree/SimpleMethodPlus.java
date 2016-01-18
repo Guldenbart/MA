@@ -2,11 +2,11 @@ package parseTree;
 
 import visitor.Visitor;
 
-public class MethodMinusSimple extends AMethodSimple {
+public class SimpleMethodPlus extends ASimpleMethod {
 	
-	public MethodMinusSimple(double value) {
-		_value = value;
-		name = "minus";
+	public SimpleMethodPlus(double value) {
+		this.value = value;
+		name = "plus";
 	}
 
 	@Override

@@ -1,16 +1,16 @@
 package visitor;
 
-import parseTree.MethodDividedNested;
-import parseTree.MethodDividedSimple;
+import parseTree.NestedMethodDivided;
+import parseTree.SimpleMethodDivided;
 import parseTree.MethodEnd;
-import parseTree.MethodExprNested;
-import parseTree.MethodExprSimple;
-import parseTree.MethodMinusNested;
-import parseTree.MethodMinusSimple;
-import parseTree.MethodPlusNested;
-import parseTree.MethodPlusSimple;
-import parseTree.MethodTimesNested;
-import parseTree.MethodTimesSimple;
+import parseTree.NestedMethodExpr;
+import parseTree.SimpleMethodExpr;
+import parseTree.NestedMethodMinus;
+import parseTree.SimpleMethodMinus;
+import parseTree.NestedMethodPlus;
+import parseTree.SimpleMethodPlus;
+import parseTree.NestedMethodTimes;
+import parseTree.SimpleMethodTimes;
 import parseTree.ParseTree;
 import parseTree.ScopeIntermediate;
 import parseTree.ScopeStart;
@@ -30,20 +30,20 @@ public interface Visitor {
 	default void visit(ScopeIntermediate scopeIntermediate) {}
 	
 	
-	default void visit(MethodExprSimple mes) {}
-	default void visit(MethodExprNested men) {}
+	default void visit(SimpleMethodExpr mes) {}
+	default void visit(NestedMethodExpr men) {}
 	
-	default void visit(MethodPlusSimple mps) {}
-	default void visit(MethodPlusNested mpn) {}
+	default void visit(SimpleMethodPlus mps) {}
+	default void visit(NestedMethodPlus mpn) {}
 	
-	default void visit(MethodMinusSimple mms) {}
-	default void visit(MethodMinusNested mmn) {}
+	default void visit(SimpleMethodMinus mms) {}
+	default void visit(NestedMethodMinus mmn) {}
 	
-	default void visit(MethodTimesSimple mts) {}
-	default void visit(MethodTimesNested mtn) {}
+	default void visit(SimpleMethodTimes mts) {}
+	default void visit(NestedMethodTimes mtn) {}
 	
-	default void visit(MethodDividedSimple mds) {}
-	default void visit(MethodDividedNested mdn) {}
+	default void visit(SimpleMethodDivided mds) {}
+	default void visit(NestedMethodDivided mdn) {}
 	
 	default void visit(MethodEnd me) {}
 	

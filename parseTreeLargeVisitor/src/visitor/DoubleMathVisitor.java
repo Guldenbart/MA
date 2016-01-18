@@ -1,15 +1,15 @@
 package visitor;
 
-import parseTree.MethodDividedNested;
-import parseTree.MethodDividedSimple;
-import parseTree.MethodExprNested;
-import parseTree.MethodExprSimple;
-import parseTree.MethodMinusNested;
-import parseTree.MethodMinusSimple;
-import parseTree.MethodPlusNested;
-import parseTree.MethodPlusSimple;
-import parseTree.MethodTimesNested;
-import parseTree.MethodTimesSimple;
+import parseTree.NestedMethodDivided;
+import parseTree.SimpleMethodDivided;
+import parseTree.NestedMethodExpr;
+import parseTree.SimpleMethodExpr;
+import parseTree.NestedMethodMinus;
+import parseTree.SimpleMethodMinus;
+import parseTree.NestedMethodPlus;
+import parseTree.SimpleMethodPlus;
+import parseTree.NestedMethodTimes;
+import parseTree.SimpleMethodTimes;
 import parseTree.ParseTree;
 import parseTree.ScopeIntermediate;
 import parseTree.ScopeStart;
@@ -48,60 +48,60 @@ public class DoubleMathVisitor implements Visitor {
 	}
 	
 	@Override
-	public void visit(MethodExprSimple mes) {
+	public void visit(SimpleMethodExpr mes) {
 		result = mes.value();
 	}
 	
 	@Override
-	public void visit(MethodExprNested men) {
+	public void visit(NestedMethodExpr men) {
 		DoubleMathVisitor nestedVisitor = new DoubleMathVisitor();
 		men.parseTree().accept(nestedVisitor);
 		result = nestedVisitor.result();
 	}
 	
 	@Override
-	public void visit(MethodPlusSimple mps) {
+	public void visit(SimpleMethodPlus mps) {
 		result += mps.value();
 	}
 	
 	@Override
-	public void visit(MethodPlusNested mpn) {
+	public void visit(NestedMethodPlus mpn) {
 		DoubleMathVisitor nestedVisitor = new DoubleMathVisitor();
 		mpn.parseTree().accept(nestedVisitor);
 		result += nestedVisitor.result();
 	}
 	
 	@Override
-	public void visit(MethodMinusSimple mms) {
+	public void visit(SimpleMethodMinus mms) {
 		result -= mms.value();
 	}
 	
 	@Override
-	public void visit(MethodMinusNested mmn) {
+	public void visit(NestedMethodMinus mmn) {
 		DoubleMathVisitor nestedVisitor = new DoubleMathVisitor();
 		mmn.parseTree().accept(nestedVisitor);
 		result -= nestedVisitor.result();
 	}
 	
 	@Override
-	public void visit(MethodTimesSimple mts) {
+	public void visit(SimpleMethodTimes mts) {
 		result *= mts.value();
 	}
 	
 	@Override
-	public void visit(MethodTimesNested mtn) {
+	public void visit(NestedMethodTimes mtn) {
 		DoubleMathVisitor nestedVisitor = new DoubleMathVisitor();
 		mtn.parseTree().accept(nestedVisitor);
 		result *= nestedVisitor.result();
 	}
 	
 	@Override
-	public void visit(MethodDividedSimple mds) {
+	public void visit(SimpleMethodDivided mds) {
 		result /= mds.value();
 	}
 	
 	@Override
-	public void visit(MethodDividedNested mdn) {
+	public void visit(NestedMethodDivided mdn) {
 		DoubleMathVisitor nestedVisitor = new DoubleMathVisitor();
 		mdn.parseTree().accept(nestedVisitor);
 		result /= nestedVisitor.result();

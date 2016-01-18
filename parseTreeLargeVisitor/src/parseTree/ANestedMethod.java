@@ -1,11 +1,11 @@
 package parseTree;
 
-public abstract class AMethodNested extends AMethod{
+public abstract class ANestedMethod extends AMethod{
 
-	protected ParseTree _parseTree;
+	protected ParseTree parseTree;
 	
 	public ParseTree parseTree() {
-		return _parseTree;
+		return parseTree;
 	}
 	
 	@Override
@@ -13,7 +13,7 @@ public abstract class AMethodNested extends AMethod{
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(name + '(');
-		sb.append(_parseTree.toString());
+		sb.append(parseTree.toString());
 		sb.append(").");
 		
 		return sb.toString();

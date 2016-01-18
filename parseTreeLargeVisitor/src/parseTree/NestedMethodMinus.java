@@ -2,10 +2,10 @@ package parseTree;
 
 import visitor.Visitor;
 
-public class MethodMinusNested extends AMethodNested {
+public class NestedMethodMinus extends ANestedMethod {
 	
-	public MethodMinusNested(ParseTree parseTree) {
-		_parseTree = parseTree;
+	public NestedMethodMinus(ParseTree parseTree) {
+		this.parseTree = parseTree;
 		name = "minus";
 	}
 

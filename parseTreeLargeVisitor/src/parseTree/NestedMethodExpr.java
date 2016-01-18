@@ -2,10 +2,10 @@ package parseTree;
 
 import visitor.Visitor;
 
-public class MethodExprSimple extends AMethodSimple {
-
-	public MethodExprSimple(double value) {
-		_value = value;
+public class NestedMethodExpr extends ANestedMethod {
+	
+	public NestedMethodExpr(ParseTree parseTree) {
+		this.parseTree = parseTree;
 		name = "expr";
 	}
 
