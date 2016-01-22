@@ -10,34 +10,40 @@ import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 
+import templates.TemplateRunner;
+
 public class TemplateTest {
 
 	public static void main(String[] args) {
 		
 		final String dslName = "exprDSL";
 		
+		TemplateRunner tr = new TemplateRunner(dslName, "./src/");
+		tr.runAll();
+		
 		String path = "./src/" + dslName;
 		StringBuilder tempString = new StringBuilder();
 		
 		File actual = new File(path);
-        for( File f : actual.listFiles()){
-            if (f.getName().contentEquals("package-info.java")) {
-            	// nothing to do here
-            	continue;
-            }
-            // TODO andere Ausnahmen neben package-info?
-            
-            System.out.println( f.getName() );
-            String interfaceName = f.getName().substring(0, f.getName().lastIndexOf("."));
-            Class c;
+		for( File f : actual.listFiles()){
+			if (f.getName().contentEquals("package-info.java")) {
+				// nothing to do here
+				continue;
+			}
+			// TODO andere Ausnahmen neben package-info?
+			
+			System.out.println( f.getName() );
+			Class<?> c;
 			try {
-				c = Class.forName("exprDSL." + interfaceName);
+				String interfaceName = f.getName().substring(0, f.getName().lastIndexOf("."));
+				c = Class.forName(dslName + '.' + interfaceName); // TODO geht das auch ohne package-Name?
+				
 				if (!c.isInterface()) {
 					System.err.println("class " + c.getName() + " is not an interface!");
 					continue;
 				}
 				
-				STGroup group = new STGroupFile("./src/templates/parseTreeTemplate.stg");
+				STGroup group = new STGroupFile("./src/templates/parseTreeMethod.stg");
 				ST st = group.getInstanceOf("class");
 				
 				//pw.write(st.render());
@@ -51,32 +57,31 @@ public class TemplateTest {
 					}
 					ST methodTemp = group.getInstanceOf("method");
 					
-					methodTemp.add("interfaceName", interfaceName);
-					methodTemp.add("interfaceChanges", interfaceName.equals(m.getReturnType().getSimpleName()));
+					methodTemp.add("dslName", toUC(dslName));
+					methodTemp.add("iNameUC", toUC(interfaceName));
+					methodTemp.add("iNameLC", toLC(interfaceName));
+					methodTemp.add("scopeEnds", !interfaceName.equals(m.getReturnType().getSimpleName()));
 					
 					//return type
-					System.out.println(m.getReturnType().getSimpleName());
-					if (!m.getReturnType().getSimpleName().equals("Object")) {
-						methodTemp.add("returnType", m.getReturnType().getSimpleName());
-					}
+					methodTemp.add("returnType", m.getReturnType().getSimpleName());
+					
+					// später müsste man hier schauen, ob der Typ einem Interface der DSL entspricht oder nicht
+					methodTemp.add("treeEnds", m.getReturnType().getSimpleName().equals("ParseTree"));
 					
 					// method name
-					methodTemp.add("name", m.getName());
+					methodTemp.add("mNameUC", toUC(m.getName()));
+					methodTemp.add("mNameLC", toLC(m.getName()));
 					
 					if (m.getParameters().length == 1) {
 						// argument type
-						if (!m.getParameters()[0].getType().equals(Class.forName("java.lang.Object"))) {
-							methodTemp.add("argType", m.getParameters()[0].getType());
-							System.out.println("  Argument Type:" + m.getParameters()[0].getType());
-						}
+						methodTemp.add("argType", m.getParameters()[0].getType().getSimpleName());
 							
 						// argument name; make sure it's upper case
-						String argName = m.getParameters()[0].getName().substring(0,1).toUpperCase() + m.getParameters()[0].getName().substring(1); 
+						String argName = m.getParameters()[0].getName(); 
 						methodTemp.add("argName", argName);
 					}
 					
 					tempString.append(methodTemp.render());
-					//System.out.println("  " + m);
 				}
 				
 			} catch (ClassNotFoundException e) {
@@ -99,6 +104,26 @@ public class TemplateTest {
 		}
         
         // get classes from package
+	}
+	
+	public static String toUC(String s) {
+		if (s.length() == 0) {
+			return "";
+		} else if(s.length() == 1) {
+			return s.toUpperCase();
+		} else {
+			return s.substring(0,1).toUpperCase() + s.substring(1);
+		}
+	}
+	
+	public static String toLC(String s) {
+		if (s.length() == 0) {
+			return "";
+		} else if(s.length() == 1) {
+			return s.toLowerCase();
+		} else {
+			return s.substring(0,1).toLowerCase() + s.substring(1);
+		}
 	}
 
 }
