@@ -5,8 +5,7 @@ import visitor.Visitor;
 public class NestedMethodTimes extends ANestedMethod {
 	
 	public NestedMethodTimes(ParseTree parseTree) {
-		this.parseTree = parseTree;
-		name = "times";
+		super("times", parseTree);
 	}
 
 	@Override

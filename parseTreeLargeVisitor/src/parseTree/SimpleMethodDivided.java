@@ -5,8 +5,7 @@ import visitor.Visitor;
 public class SimpleMethodDivided extends ASimpleMethod {
 	
 	public SimpleMethodDivided(double value) {
-		this.value = value;
-		name = "divided";
+		super("divided", value);
 	}
 	
 	@Override

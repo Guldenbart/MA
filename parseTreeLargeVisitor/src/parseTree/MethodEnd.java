@@ -5,11 +5,11 @@ import visitor.Visitor;
 public class MethodEnd extends AMethod {
 	
 	public MethodEnd() {
-		name = "end";
+		super("end");
 	}
 	
 	public String toString() {
-		return name + "()";
+		return name() + "()";
 	}
 
 	@Override

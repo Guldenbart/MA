@@ -25,7 +25,6 @@ public class ExpressionBuildVisitor implements Visitor {
 		return e;
 	}
 
-	// TODO Frage: auch als default-Implementierung ins Interface?
 	@Override
 	public void visit(ParseTree parseTree) {
 		for (int i=0; i<parseTree.size(); i++) {

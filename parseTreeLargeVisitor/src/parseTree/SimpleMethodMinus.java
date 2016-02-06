@@ -5,8 +5,7 @@ import visitor.Visitor;
 public class SimpleMethodMinus extends ASimpleMethod {
 	
 	public SimpleMethodMinus(double value) {
-		this.value = value;
-		name = "minus";
+		super("minus", value);
 	}
 
 	@Override

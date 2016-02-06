@@ -2,7 +2,12 @@ package parseTree;
 
 public abstract class ASimpleMethod extends AMethod {
 	
-	protected double value;
+	private double value;
+	
+	public ASimpleMethod(String name, double value) {
+		super(name);
+		this.value = value;
+	}
 	
 	public double value() {
 		return value;
@@ -10,7 +15,7 @@ public abstract class ASimpleMethod extends AMethod {
 	
 	@Override
 	public String toString() {
-		return name + '(' + value + ").";
+		return name() + '(' + value + ").";
 	}	
 
 }

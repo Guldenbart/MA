@@ -5,8 +5,7 @@ import visitor.Visitor;
 public class NestedMethodDivided extends ANestedMethod {
 	
 	public NestedMethodDivided(ParseTree parseTree) {
-		this.parseTree = parseTree;
-		name = "divided";
+		super("divided", parseTree);
 	}
 
 	@Override

@@ -5,8 +5,7 @@ import visitor.Visitor;
 public class NestedMethodPlus extends ANestedMethod {
 	
 	public NestedMethodPlus(ParseTree parseTree) {
-		this.parseTree = parseTree;
-		name = "plus";
+		super("plus", parseTree);
 	}
 
 	@Override
