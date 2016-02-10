@@ -4,8 +4,7 @@ lope(dslName, iNameUC) ::= <<
 public class Lope<iNameUC> extends Lope {
 	
 	public Lope<iNameUC>(ArrayList\<AMethod> list) {
-		interfaceName = "<iNameUC>";
-		methods = list;
+		super("<iNameUC>", list);
 	}
 	
 	@Override
