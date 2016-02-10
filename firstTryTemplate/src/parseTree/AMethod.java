@@ -1,5 +1,13 @@
 package parseTree;
 
 public abstract class AMethod implements Visitable {
-	protected String name;
+	private String name;
+	
+	public AMethod(String name) {
+		this.name = name;
+	}
+	
+	public String name() {
+		return name;
+	}
 }

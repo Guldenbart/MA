@@ -1,0 +1,21 @@
+visitorSuperClass(dslName, interfaces, methods, simpleMethods, nestedMethods) ::= <<
+package visitorGen;
+
+import visitor.AVisitor;
+
+<methods:{mNameUC | import parseTreeGen.Method<mNameUC>; <\n>}>
+<interfaces:{iNameUC | import parseTreeGen.Lope<iNameUC>; <\n>}>
+<simpleMethods:{mNameUC | import parseTreeGen.SimpleMethod<mNameUC>; <\n>}>
+<nestedMethods:{mNameUC | import parseTreeGen.NestedMethod<mNameUC>; <\n>}>
+public abstract class A<dslName>Visitor extends AVisitor {
+	<interfaces:{iNameUC | public void visit(Lope<iNameUC> lope<iNameUC>) {\} <\n>}>
+	
+
+	<methods:{mNameUC | public void visit(Method<mNameUC> method<mNameUC>) {\} <\n>}>
+	
+	<simpleMethods:{mNameUC | public void visit(SimpleMethod<mNameUC> simpleMethod<mNameUC>) {\} <\n>}>
+	
+	<nestedMethods:{mNameUC | public void visit(NestedMethod<mNameUC> nestedMethod<mNameUC>) {\} <\n>}>
+}
+
+>>

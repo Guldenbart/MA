@@ -1,16 +1,21 @@
 package parseTree;
 
-public abstract class ASimpleMethod extends AMethod {
+public abstract class ASimpleMethod<T> extends AMethod {
 	
-	protected double value;
+	private T value;
 	
-	public double value() {
+	public ASimpleMethod(String name, T value) {
+		super(name);
+		this.value = value;
+	}
+	
+	public T value() {
 		return value;
 	}
 	
 	@Override
 	public String toString() {
-		return name + '(' + value + ").";
+		return name() + '(' + value + ").";
 	}	
 
 }

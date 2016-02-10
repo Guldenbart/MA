@@ -1,0 +1,12 @@
+scope(interfaceName, methodsString) ::= <<
+public class <interfaceName>Scope implements <interfaceName> {
+
+	private ArrayList\<AMethod> methodList_<interfaceName>;
+	
+	private <interfaceName>Scope() {
+		methodList_<interfaceName> = new ArrayList\<AMethod>();
+	}
+	
+	<methodsString>
+}
+>>

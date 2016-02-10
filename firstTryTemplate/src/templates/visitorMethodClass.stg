@@ -1,0 +1,77 @@
+visitorMethod(dslName, mNameUC, mNameLC) ::= <<
+<getVisitorMethodHeader(dslName)>
+import parseTree.AMethod;
+
+public class Method<mNameUC> extends AMethod {
+	public Method<mNameUC>() {
+		super("<mNameLC>");
+	}
+	
+	public String toString() {
+		return name() + "()";
+	}
+	
+	<getAcceptMethod(dslName)>
+	
+}
+>>
+
+
+visitorSimpleMethod(dslName, mNameUC, mNameLC, argType) ::= <<
+<getVisitorMethodHeader(dslName)>
+import parseTree.ASimpleMethod;
+
+public class SimpleMethod<mNameUC> extends ASimpleMethod\< <getArgType(argType)> > {
+
+	public SimpleMethod<mNameUC>(<getArgType(argType)> value) {
+		super("<mNameLC>", value);
+	}
+	
+	<getAcceptMethod(dslName)>
+	
+}
+>>
+
+visitorNestedMethod(dslName, mNameUC, mNameLC) ::= <<
+<getVisitorMethodHeader(dslName)>
+import parseTree.ParseTree;
+import parseTree.ANestedMethod;
+
+public class NestedMethod<mNameUC> extends ANestedMethod {
+
+	public NestedMethod<mNameUC>(ParseTree parseTree) {
+		super("<mNameLC>", parseTree);
+	}
+	
+	<getAcceptMethod(dslName)>
+	
+}
+>>
+
+getArgType(argType) ::= <%<primitiveTypeMap.(argType)>%> 
+
+primitiveTypeMap ::= [
+	"boolean":"Boolean",
+	"byte":"Byte",
+	"char":"Char",
+	"float":"Float",
+	"int":"Integer",
+	"long":"Long",
+	"short":"Short",
+	"double":"Double",
+	default:{argType}
+]
+
+getVisitorMethodHeader(dslName) ::= <<
+package parseTreeGen;
+
+import visitorGen.A<dslName>Visitor;
+import visitor.AVisitor;
+>>
+
+getAcceptMethod(dslName) ::= <<
+@Override
+public void accept(AVisitor visitor) {
+	((A<dslName>Visitor)visitor).visit(this);
+}
+>>

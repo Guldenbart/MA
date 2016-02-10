@@ -6,8 +6,10 @@
  * covered.
  * Only the four basic arithmetic operations are implemented.
  * <p>
- * With the implementation in Every expression has to start with <code>expr</code> and end with
- * <code>end</code>. 
+ * With the implementation in Every expression has to start with
+ * <code>expr</code> and end with <code>end</code>. 
+ * <p>
+ * 
  * 
  * @author Daniel Fritz
  */

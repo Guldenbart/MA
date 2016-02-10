@@ -1,129 +1,41 @@
 package main;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Method;
-
-import org.stringtemplate.v4.ST;
-import org.stringtemplate.v4.STGroup;
-import org.stringtemplate.v4.STGroupFile;
-
-import templates.TemplateRunner;
+import parseTree.ParseTree;
+import parseTreeGen.ExprDSLTreeBuilder;
+import visitor.ExpressionBuildVisitor;
 
 public class TemplateTest {
 
 	public static void main(String[] args) {
 		
-		final String dslName = "exprDSL";
-		
-		TemplateRunner tr = new TemplateRunner(dslName, "./src/");
-		tr.runAll();
-		
-		String path = "./src/" + dslName;
-		StringBuilder tempString = new StringBuilder();
-		
-		File actual = new File(path);
-		for( File f : actual.listFiles()){
-			if (f.getName().contentEquals("package-info.java")) {
-				// nothing to do here
-				continue;
-			}
-			// TODO andere Ausnahmen neben package-info?
-			
-			System.out.println( f.getName() );
-			Class<?> c;
-			try {
-				String interfaceName = f.getName().substring(0, f.getName().lastIndexOf("."));
-				c = Class.forName(dslName + '.' + interfaceName); // TODO geht das auch ohne package-Name?
-				
-				if (!c.isInterface()) {
-					System.err.println("class " + c.getName() + " is not an interface!");
-					continue;
-				}
-				
-				STGroup group = new STGroupFile("./src/templates/parseTreeMethod.stg");
-				ST st = group.getInstanceOf("class");
-				
-				//pw.write(st.render());
-				
-				
-				Method[] methods = c.getDeclaredMethods();
-				for (Method m : methods) {
-					if (m.getParameters().length > 1) {
-						System.err.println("only one argument per Method allowed!");
-						continue;
-					}
-					ST methodTemp = group.getInstanceOf("method");
-					
-					methodTemp.add("dslName", toUC(dslName));
-					methodTemp.add("iNameUC", toUC(interfaceName));
-					methodTemp.add("iNameLC", toLC(interfaceName));
-					methodTemp.add("scopeEnds", !interfaceName.equals(m.getReturnType().getSimpleName()));
-					
-					//return type
-					methodTemp.add("returnType", m.getReturnType().getSimpleName());
-					
-					// später müsste man hier schauen, ob der Typ einem Interface der DSL entspricht oder nicht
-					methodTemp.add("treeEnds", m.getReturnType().getSimpleName().equals("ParseTree"));
-					
-					// method name
-					methodTemp.add("mNameUC", toUC(m.getName()));
-					methodTemp.add("mNameLC", toLC(m.getName()));
-					
-					if (m.getParameters().length == 1) {
-						// argument type
-						methodTemp.add("argType", m.getParameters()[0].getType().getSimpleName());
-							
-						// argument name; make sure it's upper case
-						String argName = m.getParameters()[0].getName(); 
-						methodTemp.add("argName", argName);
-					}
-					
-					tempString.append(methodTemp.render());
-				}
-				
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		// arithmetischer Ausdruck ohne Klammerung:
+        ParseTree x = ExprDSLTreeBuilder.begin().expr(1).plus(2).times(3).minus(4).divided(5).end();
+        System.out.printf("%s = %s%n", "x", x.toString());
+
+
+        // arithmetischer Ausdruck mit Klammerung:
+        ParseTree y = 
+        		ExprDSLTreeBuilder.begin().expr(
+        			ExprDSLTreeBuilder.begin().expr(1).plus(2).end()
+        		).times(3).minus(
+        			ExprDSLTreeBuilder.begin().expr(4).plus(1).divided(5).end()
+        		).end();
+        y.toString();
         
-        PrintWriter pw;
-		try {
-			pw = new PrintWriter("./src-gen/parseTreeGen/" + dslName + "ParseTree.java", "UTF-8");
-			pw.write(tempString.toString());
-			pw.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        System.out.printf("%s = %s%n", "y", y.toString());
         
-        // get classes from package
-	}
-	
-	public static String toUC(String s) {
-		if (s.length() == 0) {
-			return "";
-		} else if(s.length() == 1) {
-			return s.toUpperCase();
-		} else {
-			return s.substring(0,1).toUpperCase() + s.substring(1);
-		}
-	}
-	
-	public static String toLC(String s) {
-		if (s.length() == 0) {
-			return "";
-		} else if(s.length() == 1) {
-			return s.toLowerCase();
-		} else {
-			return s.substring(0,1).toLowerCase() + s.substring(1);
-		}
+        
+        // ExpressionBuildVisitor test
+        System.out.println("ExpressionBuildVisitor:");
+        
+        ExpressionBuildVisitor ebvX = new ExpressionBuildVisitor();
+        x.accept(ebvX);
+        System.out.printf("%s = %f%n", "Ergebnis des Ausdrucks x:", ebvX.expression().getValue());
+        
+        ExpressionBuildVisitor ebvY = new ExpressionBuildVisitor();
+        y.accept(ebvY);
+        System.out.printf("%s = %f%n", "Ergebnis des Ausdrucks y:", ebvY.expression().getValue());
+		
 	}
 
 }

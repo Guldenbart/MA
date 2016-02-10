@@ -1,0 +1,31 @@
+class(dslNameUC, dslName, firstInterfaceName, interfaceNamesUC, interfaceNamesLC, scopesString) ::= <<
+package parseTreeGen;
+
+import java.util.ArrayList;
+
+import parseTree.ParseTree;
+import parseTree.Lope;
+import parseTree.AMethod;
+import <dslName>.<firstInterfaceName>;
+<interfaceNamesUC:{iuc | import <dslName>.<iuc>;<\n>}>
+
+public class <dslNameUC>TreeBuilder {
+	private ParseTree parseTree;
+	<interfaceNamesUC, interfaceNamesLC:{iuc, ilc | private final <iuc>Scope <ilc>Scope;<\n>}>
+	private ArrayList\<Lope> lopeList;
+	
+	private <dslNameUC>TreeBuilder() {
+		<interfaceNamesUC, interfaceNamesLC:{iuc, ilc | this.<ilc>Scope = this.new <iuc>Scope();<\n>}>
+		this.lopeList = new ArrayList\<Lope>();
+	}
+	
+	public static <firstInterfaceName>Scope begin() {
+		return new <dslNameUC>TreeBuilder().new <firstInterfaceName>Scope();
+	}
+	
+	<scopesString>
+	
+}
+>>
+
+getImportStatement(interfaceName) ::= "import parseTree.<interfaceName>;<\n>"

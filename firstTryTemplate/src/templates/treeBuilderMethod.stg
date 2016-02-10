@@ -1,0 +1,37 @@
+treeMethod(dslName, iNameUC, iNameLC, scopeEnds, treeEnds, returnTypeUC, returnTypeLC, mNameUC, mNameLC, argType, argName) ::= <<
+@Override
+public <getReturnType(returnTypeUC)> <mNameLC>(<getSignature(argType, argName)>) {
+	AMethod m = new <if(argType)><methodTypeMap.(argType)><endif>Method<mNameUC>(<argName>);
+	methodList_<iNameUC>.add(m);
+	
+	<if(scopeEnds)>
+	// new Lope
+	Lope lope<iNameUC> = new Lope<iNameUC>(methodList_<iNameUC>);
+	<dslName>TreeBuilder.this.lopeList.add(lope<iNameUC>);
+	
+	<endif>
+	<if(treeEnds)>
+	// new ParseTree
+	parseTree = new ParseTree(lopeList);
+	<endif>
+	
+	return <getReturnLine(scopeEnds, treeEnds, iNameLC, dslName)>;	
+}
+
+
+>>
+
+getReturnType(returnTypeUC) ::= "<returnTypeUC><if(scopeEnds&&!treeEnds)>Scope<endif>"
+
+getSignature(argType, argName) ::= "<if(argName)><getArgType(argType)> <argName><endif>"
+
+getArgType(argType) ::= "<argType>"
+
+getReturnLine(scopeEnds, treeEnds, iNameLC, dslName) ::= <<
+<if(scopeEnds)><dslName>TreeBuilder.<endif>this<if(treeEnds)>.parseTree<elseif(scopeEnds)>.<returnTypeLC>Scope<endif>
+>>
+
+methodTypeMap ::= [
+	"ParseTree":"Nested",
+	default:"Simple"
+]

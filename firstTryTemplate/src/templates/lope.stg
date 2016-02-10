@@ -1,0 +1,27 @@
+lope(dslName, iNameUC) ::= <<
+<getHeader(dslName)>
+
+public class Lope<iNameUC> extends Lope {
+	
+	public Lope<iNameUC>(ArrayList\<AMethod> list) {
+		interfaceName = "<iNameUC>";
+		methods = list;
+	}
+	
+	@Override
+	public void accept(AVisitor visitor) {
+		((A<dslName>Visitor)visitor).visit(this);
+	}
+}
+>>
+
+getHeader(dslName) ::= <<
+package parseTreeGen;
+
+import java.util.ArrayList;
+
+import visitorGen.A<dslName>Visitor;
+import parseTree.AMethod;
+import parseTree.Lope;
+import visitor.AVisitor;
+>>

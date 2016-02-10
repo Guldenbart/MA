@@ -2,7 +2,7 @@ package parseTree;
 
 import java.util.ArrayList;
 
-import visitor.Visitor;
+import visitor.AVisitor;
 
 public final class ParseTree implements Visitable{
 
@@ -33,11 +33,9 @@ public final class ParseTree implements Visitable{
 	}
 	
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(AVisitor visitor) {
 		visitor.visit(this);
 	}
 	
 	// TODO Kann die Eigenschaft "generics" durch Reflection ausgelesen werden?
-	// TODO Gliederung/Abschätzung
-	// TODO abstract!
 }
