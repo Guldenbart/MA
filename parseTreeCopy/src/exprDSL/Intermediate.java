@@ -2,16 +2,16 @@ package exprDSL;
 
 import parseTree.ParseTree;
 
-public interface Intermediate<T> extends End{
-	Intermediate<T> plus(T value);
-	Intermediate<T> plus(ParseTree tree);
+public interface Intermediate extends End{
+	Intermediate plus(double value);
+	Intermediate plus(ParseTree tree);
 	
-	Intermediate<T> minus(T value);
-	Intermediate<T> minus(ParseTree tree);
+	Intermediate minus(double value);
+	Intermediate minus(ParseTree tree);
 	
-	Intermediate<T> times(T value);
-	Intermediate<T> times(ParseTree tree);
+	Intermediate times(double value);
+	Intermediate times(ParseTree tree);
 	
-	Intermediate<T> divided(T value);
-	Intermediate<T> divided(ParseTree tree);
+	Intermediate divided(double value);
+	Intermediate divided(ParseTree tree);
 }
