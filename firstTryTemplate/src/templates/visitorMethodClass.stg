@@ -2,12 +2,13 @@ visitorMethod(dslName, mNameUC, mNameLC) ::= <<
 <getVisitorMethodHeader(dslName)>
 import parseTree.AMethod;
 
-public class Method<mNameUC> extends AMethod {
+public final class Method<mNameUC> extends AMethod {
 	public Method<mNameUC>() {
 		super("<mNameLC>");
 	}
 	
-	public String toString() {
+	@Override
+	public final String toString() {
 		return name() + "()";
 	}
 	
@@ -21,9 +22,9 @@ visitorSimpleMethod(dslName, mNameUC, mNameLC, argType) ::= <<
 <getVisitorMethodHeader(dslName)>
 import parseTree.ASimpleMethod;
 
-public class SimpleMethod<mNameUC> extends ASimpleMethod\< <getArgType(argType)> > {
+public final class SimpleMethod<mNameUC> extends ASimpleMethod\<<getArgType(argType)>\> {
 
-	public SimpleMethod<mNameUC>(<getArgType(argType)> value) {
+	public SimpleMethod<mNameUC>(final <getArgType(argType)> value) {
 		super("<mNameLC>", value);
 	}
 	
@@ -37,9 +38,9 @@ visitorNestedMethod(dslName, mNameUC, mNameLC) ::= <<
 import parseTree.ParseTree;
 import parseTree.ANestedMethod;
 
-public class NestedMethod<mNameUC> extends ANestedMethod {
+public final class NestedMethod<mNameUC> extends ANestedMethod {
 
-	public NestedMethod<mNameUC>(ParseTree parseTree) {
+	public NestedMethod<mNameUC>(final ParseTree parseTree) {
 		super("<mNameLC>", parseTree);
 	}
 	
@@ -71,7 +72,7 @@ import visitor.AVisitor;
 
 getAcceptMethod(dslName) ::= <<
 @Override
-public void accept(AVisitor visitor) {
-	((A<dslName>Visitor)visitor).visit(this);
+public final void accept(final AVisitor visitor) {
+	((A<dslName>Visitor) visitor).visit(this);
 }
 >>

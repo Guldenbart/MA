@@ -8,5 +8,10 @@ import parseTree.ParseTree;
  * @author Daniel Fritz
  */
 public interface End {
+	
+	/**
+	 * marks the end of an expression.
+	 * @return the {@link ParseTree} that results from this expression.
+	 */
 	ParseTree end();
 }

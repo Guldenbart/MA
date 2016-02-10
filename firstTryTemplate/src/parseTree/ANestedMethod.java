@@ -1,20 +1,32 @@
 package parseTree;
 
-public abstract class ANestedMethod extends AMethod{
+public abstract class ANestedMethod extends AMethod {
 
-	private ParseTree parseTree;
+	/**
+	 * 
+	 */
+	private final ParseTree parseTree;
 	
-	public ANestedMethod(String name, ParseTree parseTree) {
+	/**
+	 * constructor that initializes name and parse tree of the method.
+	 * @param name name that the method is given
+	 * @param tree parse tree of the expression that is nested into this method
+	 */
+	public ANestedMethod(final String name, final ParseTree tree) {
 		super(name);
-		this.parseTree = parseTree;
-	}
+		this.parseTree = tree;
+	}	
 	
-	public ParseTree parseTree() {
+	/**
+	 * gets the method's parse tree.
+	 * @return parse tree of the method
+	 */
+	public final ParseTree parseTree() {
 		return parseTree;
 	}
 	
 	@Override
-	public String toString() {
+	public final String toString() {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(name() + '(');

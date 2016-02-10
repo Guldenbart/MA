@@ -2,34 +2,34 @@ package parseTree;
 
 import java.util.ArrayList;
 
-public abstract class Lope implements Visitable{
+public abstract class Lope implements Visitable {
 	
-	private String interfaceName;
-	private ArrayList<AMethod> methods;
+	private final String interfaceName;
+	private final ArrayList<AMethod> methods;
 	
-	public Lope(String interfaceName, ArrayList<AMethod> methods) {
-		this.interfaceName = interfaceName;
-		this.methods = methods;
+	public Lope(final String iName, final ArrayList<AMethod> methodList) {
+		this.interfaceName = iName;
+		this.methods = methodList;
 	}
 	
-	public String interfaceName() {
+	public final String interfaceName() {
 		return this.interfaceName;
 	}
 	
-	public ArrayList<AMethod> methods() {
+	public final ArrayList<AMethod> methods() {
 		return this.methods;
 	}
 	
-	public int size() {
+	public final int size() {
 		return methods.size();
 	}
 	
-	public Visitable get(int index) {
+	public final Visitable get(final int index) {
 		return methods.get(index);
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		StringBuilder sb = new StringBuilder();
 		
 		for (int i=0; i<methods.size(); i++) {

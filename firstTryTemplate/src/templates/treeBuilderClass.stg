@@ -9,7 +9,7 @@ import parseTree.AMethod;
 import <dslName>.<firstInterfaceName>;
 <interfaceNamesUC:{iuc | import <dslName>.<iuc>;<\n>}>
 
-public class <dslNameUC>TreeBuilder {
+public final class <dslNameUC>TreeBuilder {
 	private ParseTree parseTree;
 	<interfaceNamesUC, interfaceNamesLC:{iuc, ilc | private final <iuc>Scope <ilc>Scope;<\n>}>
 	private ArrayList\<Lope> lopeList;

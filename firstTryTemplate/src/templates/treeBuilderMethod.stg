@@ -13,8 +13,8 @@ public <getReturnType(returnTypeUC)> <mNameLC>(<getSignature(argType, argName)>)
 	<if(treeEnds)>
 	// new ParseTree
 	parseTree = new ParseTree(lopeList);
-	<endif>
 	
+	<endif>
 	return <getReturnLine(scopeEnds, treeEnds, iNameLC, dslName)>;	
 }
 
@@ -23,7 +23,7 @@ public <getReturnType(returnTypeUC)> <mNameLC>(<getSignature(argType, argName)>)
 
 getReturnType(returnTypeUC) ::= "<returnTypeUC><if(scopeEnds&&!treeEnds)>Scope<endif>"
 
-getSignature(argType, argName) ::= "<if(argName)><getArgType(argType)> <argName><endif>"
+getSignature(argType, argName) ::= "<if(argName)>final <getArgType(argType)> <argName><endif>"
 
 getArgType(argType) ::= "<argType>"
 

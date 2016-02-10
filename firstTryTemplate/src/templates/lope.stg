@@ -1,15 +1,15 @@
 lope(dslName, iNameUC) ::= <<
 <getHeader(dslName)>
 
-public class Lope<iNameUC> extends Lope {
+public final class Lope<iNameUC> extends Lope {
 	
-	public Lope<iNameUC>(ArrayList\<AMethod> list) {
+	public Lope<iNameUC>(final ArrayList\<AMethod> list) {
 		super("<iNameUC>", list);
 	}
 	
 	@Override
-	public void accept(AVisitor visitor) {
-		((A<dslName>Visitor)visitor).visit(this);
+	public void accept(final AVisitor visitor) {
+		((A<dslName>Visitor) visitor).visit(this);
 	}
 }
 >>

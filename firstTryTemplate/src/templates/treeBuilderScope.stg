@@ -1,5 +1,5 @@
 scope(interfaceName, methodsString) ::= <<
-public class <interfaceName>Scope implements <interfaceName> {
+public final class <interfaceName>Scope implements <interfaceName> {
 
 	private ArrayList\<AMethod> methodList_<interfaceName>;
 	
@@ -9,4 +9,5 @@ public class <interfaceName>Scope implements <interfaceName> {
 	
 	<methodsString>
 }
+
 >>

@@ -2,19 +2,31 @@ package parseTree;
 
 public abstract class ASimpleMethod<T> extends AMethod {
 	
-	private T value;
+	/**
+	 * value of the parameter that was passed to this method.
+	 */
+	private final T value;
 	
-	public ASimpleMethod(String name, T value) {
-		super(name);
-		this.value = value;
+	/**
+	 * constructor that initializes name and value of the method.
+	 * @param methodName name that the method is given
+	 * @param val value of the parameter
+	 */
+	public ASimpleMethod(final String methodName, final T val) {
+		super(methodName);
+		this.value = val;
 	}
 	
-	public T value() {
+	/**
+	 * gets the value of the parameter that was passed to this method.
+	 * @return value of the parameter
+	 */
+	public final T value() {
 		return value;
 	}
 	
 	@Override
-	public String toString() {
+	public final String toString() {
 		return name() + '(' + value + ").";
 	}	
 
