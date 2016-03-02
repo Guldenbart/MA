@@ -37,5 +37,4 @@ public final class ParseTree implements Visitable{
 		visitor.visit(this);
 	}
 	
-	// TODO Kann die Eigenschaft "generics" durch Reflection ausgelesen werden?
 }
