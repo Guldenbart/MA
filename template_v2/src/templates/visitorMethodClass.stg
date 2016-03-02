@@ -1,0 +1,94 @@
+visitorMethodDispatch(dslName, package, visitorDestPackage, method) ::= <<
+<if(method.isSimpleMethod)><visitorSimpleMethod(dslName, method)>
+<elseif(method.isNestedMethod)><visitorNestedMethod(dslName, method)>
+<else><visitorMethod(dslName, method)>
+<endif>
+>>
+
+visitorMethod(dslName, visitorDestPackage, method) ::= <<
+<getVisitorMethodHeader(dslName, package, visitorDestPackage)>
+import parseTree.AMethod;
+
+public final class Method<toUC(method.name)> extends AMethod {
+	public Method<toUC(method.name)>() {
+		super("<toLC(method.name)>");
+	}
+	
+	@Override
+	public final String toString() {
+		return name() + "()";
+	}
+	
+	<getAcceptMethod(dslName)>
+	
+}
+>>
+
+
+visitorSimpleMethod(dslName, visitorDestPackage, method) ::= <<
+<getVisitorMethodHeader(dslName, visitorDestPackage)>
+import parseTree.ASimpleMethod;
+
+public final class SimpleMethod<toUC(method.name)> extends ASimpleMethod\<<getArgType(method.argumentType)>\> {
+
+	public SimpleMethod<toUC(method.name)>(final <getArgType(method.argumentType)> value) {
+		super("<toLC(method.name)>", value);
+	}
+	
+	<getAcceptMethod(dslName)>
+	
+}
+>>
+
+visitorNestedMethod(dslName, visitorDestPackage, method) ::= <<
+<getVisitorMethodHeader(dslName, visitorDestPackage)>
+import parseTree.ParseTree;
+import parseTree.ANestedMethod;
+
+public final class NestedMethod<toUC(method.name)> extends ANestedMethod {
+
+	public NestedMethod<toUC(method.name)>(final ParseTree parseTree) {
+		super("<toLC(method.name)>", parseTree);
+	}
+	
+	<getAcceptMethod(dslName)>
+	
+}
+>>
+
+getArgType(argType) ::= <%<primitiveTypeMap.(argType)>%> 
+
+primitiveTypeMap ::= [
+	"boolean":"Boolean",
+	"byte":"Byte",
+	"char":"Char",
+	"float":"Float",
+	"int":"Integer",
+	"long":"Long",
+	"short":"Short",
+	"double":"Double",
+	default:{argType}
+]
+
+getVisitorMethodHeader(dslName, package, visitorDestPackage) ::= <<
+package <package>;
+
+import visitorDestPackage.A<dslName>Visitor;
+import visitor.AVisitor;
+>>
+
+getAcceptMethod(dslName) ::= <<
+@Override
+public final void accept(final AVisitor visitor) {
+	((A<dslName>Visitor) visitor).visit(this);
+}
+>>
+
+
+toUC(str) ::= <<
+<str; format="cap">
+>>
+
+toLC(str) ::= <<
+<str; format="lower">
+>>

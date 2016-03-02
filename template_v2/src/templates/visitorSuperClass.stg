@@ -1,0 +1,36 @@
+visitorSuperClass(dslNameUC, package, parseTreePackage, scopesList) ::= <<
+package <package>;
+
+import visitor.AVisitor;
+
+<scopesList:{scope | <getImports(<scope.interfaceName>, <scope.methods>, <scope.simpleMethods>, <scope.nestedMethods>)>}>
+public abstract class A<dslNameUC>Visitor extends AVisitor {
+	<scopesList:{scope | <getBody(<scope.interfaceName>, <scope.methods>, <scope.simpleMethods>,<scope.nestedMethods>)>}>
+}
+
+>>
+
+
+getImports(interfaceName, methods, simpleMethods, nestedMethods) ::= <<
+import parseTreeGen.Lope<interfaceName>; <\n>
+<methods:{mName | import parseTreeGen.Method<toUC(mName)>; <\n>}>
+<simpleMethods:{mName | import parseTreeGen.SimpleMethod<toUC(mName)>; <\n>}>
+<nestedMethods:{mName | import parseTreeGen.NestedMethod<toUC(mName)>; <\n>}>
+>>
+
+
+getBody(interfaceName, methods, simpleMethods, nestedMethods) ::= <<
+	public void visit(Lope<interfaceName> lope<interfaceName>) {\} <\n>}>
+	
+
+	<methods:{mName | public void visit(Method<toUC(mName)> method<toUC(mName)>) {\} <\n>}>
+	
+	<simpleMethods:{mName | public void visit(SimpleMethod<toUC(mName)> simpleMethod<toUC(mName)>) {\} <\n>}>
+	
+	<nestedMethods:{mName | public void visit(NestedMethod<toUC(mName)> nestedMethod<toUC(mName)>) {\} <\n>}>
+>>
+
+
+toUC(str) ::= <<
+<str; format="cap">
+>>

@@ -1,0 +1,65 @@
+package parseTree;
+
+import java.util.ArrayList;
+
+import visitor.AVisitor;
+
+/**
+ * This class is used to store all information about the structure of an
+ * expression.
+ * 
+ * TODO more information
+ * 
+ * @author Daniel Fritz
+ */
+public final class ParseTree implements Visitable {
+
+	/**
+	 * list of all {@link Lope} objects of this tree.
+	 */
+	private ArrayList<Lope> list;
+	
+	/**
+	 * constructor that initializes 'list' with a given list of Lope objects.
+	 * @param lopeList value that list is set to.
+	 */
+	public ParseTree(final ArrayList<Lope> lopeList) {
+		this.list = lopeList;
+	}
+	
+	/**
+	 * returns the size of 'list'.
+	 * @return size of list
+	 */
+	public int size() {
+		return list.size();
+	}
+	
+	/**
+	 * gets the item of 'methods' at position [index].
+	 * @param index position in methodList from which you want to get the item 
+	 * @return item (of type Lope) at position [index]
+	 */
+	public Visitable get(final int index) {
+		return list.get(index);
+	}
+	
+	@Override
+	public String toString() {		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("TreeBuilder.begin().");
+		for (int i = 0; i < list.size(); i++) {
+			sb.append(list.get(i).toString());
+		}
+		
+		return sb.toString();
+	}
+	
+	@Override
+	public void accept(final AVisitor visitor) {
+		visitor.visit(this);
+	}
+	
+	// TODO Kann die Eigenschaft "generics" durch Reflection ausgelesen werden?
+}
