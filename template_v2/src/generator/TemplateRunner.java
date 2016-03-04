@@ -82,12 +82,18 @@ public class TemplateRunner {
 		
 		DirectoryStream<Path> stream = Files.newDirectoryStream(sourcePath);
 		for (Path file : stream) {
+			
 			if (Files.isDirectory(file)) {
 				// no directories please!
 				continue;
 			}
 			
-			String fileName = file.getFileName().toString();
+			Path filePath = file.getFileName();
+			if (filePath == null) {
+				// just for findBugs; could it happen?
+				continue;
+			}
+			String fileName = filePath.toString();
 			if (fileName.contentEquals("package-info.java")) {
 				// nothing to do here
 				continue;
