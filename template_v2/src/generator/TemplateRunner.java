@@ -52,8 +52,8 @@ public class TemplateRunner {
 		visitorSuperClassGroup.registerRenderer(String.class, new StringRenderer());
 		visitorSuperClassTemp = visitorSuperClassGroup.getInstanceOf("visitorSuperClass");
 		
-		parseTreeDestPackage = (parseTreeDestPath.subpath(parseTreeDestPath.getNameCount()-2, parseTreeDestPath.getNameCount()-1)).toString();
-		visitorDestPackage = (visitorDestPath.subpath(visitorDestPath.getNameCount()-1, visitorDestPath.getNameCount()-1)).toString();
+		parseTreeDestPackage = (parseTreeDestPath.subpath(parseTreeDestPath.getNameCount()-1, parseTreeDestPath.getNameCount())).toString();
+		visitorDestPackage = (visitorDestPath.subpath(visitorDestPath.getNameCount()-1, visitorDestPath.getNameCount())).toString();
 	}
 	
 	public void runAll() throws IOException {
@@ -61,7 +61,7 @@ public class TemplateRunner {
 		
 		String retVal = runClassTemplate();
 		Path treePath = parseTreeDestPath.resolve(Paths.get(toUC(dslName) + "TreeBuilder.java"));
-		Path visitorPath = visitorDestPath.resolve(Paths.get(toUC(dslName) + "Visitor.java"));
+		Path visitorPath = visitorDestPath.resolve(Paths.get("A" + toUC(dslName) + "Visitor.java"));
 		
 		/*
 		 * TODO FRAGE: Wenn eine Fallunterscheidung auftauchen würde, was ist wichtiger:
@@ -84,12 +84,8 @@ public class TemplateRunner {
 		for (Path file : stream) {
 			if (Files.isDirectory(file)) {
 				// no directories please!
-				// TODO remove
-				System.err.println("Ignoring directory >" + file.toString() + "<");
 				continue;
 			}
-			//TODO remove
-			System.err.println("Processing file >" + file.toString() + "<");
 			
 			String fileName = file.getFileName().toString();
 			if (fileName.contentEquals("package-info.java")) {
@@ -141,9 +137,9 @@ public class TemplateRunner {
 		treeBuilderGroup.registerRenderer(String.class, new StringRenderer());
 		ST treeBuilderTemp = treeBuilderGroup.getInstanceOf("class");
 		
-		STGroup visitorLopeGroup = new STGroupFile("./src/templates/vistorLopeClass");
+		STGroup visitorLopeGroup = new STGroupFile("./src/templates/visitorLopeClass.stg");
 		
-		visitorSuperClassTemp.add("dslNameUC", toUC(dslName));
+		visitorSuperClassTemp.add("dslName", dslName);
 		visitorSuperClassTemp.add("package", visitorDestPackage);
 		
 		ArrayList<GeneratorScope> generatorScopeList = new ArrayList<GeneratorScope>();
@@ -164,11 +160,11 @@ public class TemplateRunner {
 			
 			// lope
 			ST visitorLopeTemp = visitorLopeGroup.getInstanceOf("lope");
-			visitorLopeTemp.add("dslName", dslName);
-			visitorLopeTemp.add("iNameUC", toUC(curInterfaceName));
+			visitorLopeTemp.add("dslNameUC", toUC(dslName));
+			visitorLopeTemp.add("iName", curInterfaceName);
 			visitorLopeTemp.add("packageName", parseTreeDestPackage);
 			visitorLopeTemp.add("visitorGenPackageName", visitorDestPackage);
-			writeToFile(tempScope.getLopeClassPath(visitorDestPath), visitorLopeTemp.render());
+			writeToFile(tempScope.getLopeClassPath(parseTreeDestPath), visitorLopeTemp.render());
 			
 			generatorScopeList.add(tempScope);
 			
@@ -217,12 +213,12 @@ public class TemplateRunner {
 				}
 				
 				// visitorMethod
-				ST visitorMethodTemp = visitorMethodGroup.getInstanceOf("visitorMethdodDispatch");
+				ST visitorMethodTemp = visitorMethodGroup.getInstanceOf("visitorMethodDispatch");
 				visitorMethodTemp.add("dslName", dslName);
-				visitorMethodTemp.add("package", visitorDestPackage);
+				visitorMethodTemp.add("parseTreeDestPackage", parseTreeDestPackage);
 				visitorMethodTemp.add("visitorDestPackage", visitorDestPackage);
 				visitorMethodTemp.add("method", tempMethod);
-				writeToFile(tempMethod.getVisitorClassPath(visitorDestPath), visitorMethodTemp.render());
+				writeToFile(tempMethod.getVisitorClassPath(parseTreeDestPath), visitorMethodTemp.render());
 				
 				generatorMethodList.add(tempMethod);
 			}

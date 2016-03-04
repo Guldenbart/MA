@@ -31,7 +31,7 @@ public abstract class AMethod implements Visitable {
 	 * gets the method name.
 	 * @return name of the method
 	 */
-	public final String name() {
+	public final String getName() {
 		return name;
 	}
 }

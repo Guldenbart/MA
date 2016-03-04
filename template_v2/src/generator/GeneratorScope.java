@@ -25,7 +25,7 @@ public class GeneratorScope {
 	public ArrayList<GeneratorMethod> getMethods() {
 		ArrayList<GeneratorMethod> methodList = new ArrayList<GeneratorMethod>();
 		
-		for(GeneratorMethod gm : methodList) {
+		for(GeneratorMethod gm : methods) {
 			if (!gm.getIsNestedMethod() && !gm.getIsSimpleMethod()) {
 				methodList.add(gm);
 			}
@@ -37,7 +37,7 @@ public class GeneratorScope {
 	public ArrayList<GeneratorMethod> getSimpleMethods() {
 		ArrayList<GeneratorMethod> simpleMethodList = new ArrayList<GeneratorMethod>();
 		
-		for(GeneratorMethod gm : simpleMethodList) {
+		for(GeneratorMethod gm : methods) {
 			if (gm.getIsSimpleMethod()) {
 				simpleMethodList.add(gm);
 			}
@@ -49,7 +49,7 @@ public class GeneratorScope {
 	public ArrayList<GeneratorMethod> getNestedMethods() {
 		ArrayList<GeneratorMethod> nestedMethodList = new ArrayList<GeneratorMethod>();
 		
-		for(GeneratorMethod gm : nestedMethodList) {
+		for(GeneratorMethod gm : methods) {
 			if (gm.getIsNestedMethod()) {
 				nestedMethodList.add(gm);
 			}
@@ -59,6 +59,6 @@ public class GeneratorScope {
 	}
 
 	public Path getLopeClassPath(Path basePath) {
-		return basePath.resolve(Paths.get(interfaceName + ".java"));
+		return basePath.resolve(Paths.get("Lope" + interfaceName + ".java"));
 	}
 }

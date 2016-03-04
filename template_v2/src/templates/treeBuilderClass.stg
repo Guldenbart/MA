@@ -7,29 +7,34 @@ import parseTree.ParseTree;
 import parseTree.Lope;
 import parseTree.AMethod;
 import <dslName>.<firstInterfaceName>;
-<interfaceNames:{iName | import <dslName>.<toUC(iNameUC)>;<\n>}>
+<interfaceNames:{iName | import <dslName>.<toUC(iName)>;<\n>}>
+<! scopesList:{scopeObject | <getImports(scopeObject.methods, scopeObject.simpleMethods, scopeObject.nestedMethods, packageName)>} !>
 
-public final class <toUC(<dslName>)>TreeBuilder {
+public final class <toUC(dslName)>TreeBuilder {
 	private ParseTree parseTree;
 	<interfaceNames:{iName | private final <toUC(iName)>Scope <toLC(iName)>Scope;<\n>}>
 	private ArrayList\<Lope> lopeList;
 	
-	private <toUC(<dslName>)>TreeBuilder() {
+	private <toUC(dslName)>TreeBuilder() {
 		<interfaceNames:{iName | this.<toLC(iName)>Scope = this.new <toUC(iName)>Scope();<\n>}>
 		this.lopeList = new ArrayList\<Lope>();
 	}
 	
 	public static <firstInterfaceName>Scope begin() {
-		return new <toUC(<dslName>)>TreeBuilder().new <firstInterfaceName>Scope();
+		return new <toUC(dslName)>TreeBuilder().new <firstInterfaceName>Scope();
 	}
 	
-	<scopesList:{scopeObject | <scope(dslName, <scopeObject.interfaceName>, <scopeObject.allMethods>)>}>
+	<scopesList:{scopeObject | <scope(dslName, scopeObject.interfaceName, scopeObject.allMethods)>}>
 	
 }
 >>
 
-getImportStatement(interfaceName) ::= "import parseTree.<interfaceName>;<\n>"
 
+getImports(methods, simpleMethods, nestedMethods, packageName) ::= <<
+<methods:{method | import Method<toUC(method.name)>;<\n>}>
+<simpleMethods:{simpleMethod | import SimpleMethod<toUC(simpleMethod.name)>;<\n>}>
+<nestedMethods:{nestedMethod | import NestedMethod<toUC(nestedMethod.name)>;<\n>}>
+>>
 
 
 scope(dslName, interfaceName, methodList) ::= <<
@@ -41,16 +46,16 @@ public final class <interfaceName>Scope implements <interfaceName> {
 		methodList_<interfaceName> = new ArrayList\<AMethod>();
 	}
 	
-	<methodList: {mObj | <method(dslName, interfaceName, mObj.name, mObj.returnType, mObj.argumentType, mObj.argumentName, mObj.scopeEnds, mObj.treeEnds)>}>
+	<methodList: {mObj | <method(dslName, interfaceName, mObj.name, mObj.returnType, mObj.argumentType, mObj.argumentName, mObj.hasArgument, mObj.scopeEnds, mObj.treeEnds)>}>
 }
 
 >>
 
 
-method(dslName, iName, mName, returnType, argType, argName, scopeEnds, treeEnds) ::= <<
+method(dslName, iName, mName, returnType, argType, argName, hasArgument, scopeEnds, treeEnds) ::= <<
 @Override
-public <getReturnType(<toUC(returnType)>) <toLC(mName)>(<getSignature(argType, argName)>) {
-	AMethod m = new <if(argType)><methodTypeMap.(argType)><endif>Method<toUC(mName)>(<argName>);
+public <getReturnType(toUC(returnType))> <toLC(mName)>(<getSignature(argType, argName, hasArgument)>) {
+	AMethod m = new <if(hasArgument)><methodTypeMap.(argType)><endif>Method<toUC(mName)>(<argName>);
 	methodList_<toUC(iName)>.add(m);
 	
 	<if(scopeEnds)>
@@ -64,7 +69,7 @@ public <getReturnType(<toUC(returnType)>) <toLC(mName)>(<getSignature(argType, a
 	parseTree = new ParseTree(lopeList);
 	
 	<endif>
-	return <getReturnLine(scopeEnds, treeEnds, <toLC(iName)>, <toUC(dslName)>)>;	
+	return <getReturnLine(scopeEnds, treeEnds, toLC(iName), toUC(dslName))>;	
 }
 
 
@@ -72,7 +77,7 @@ public <getReturnType(<toUC(returnType)>) <toLC(mName)>(<getSignature(argType, a
 
 getReturnType(returnTypeUC) ::= "<returnTypeUC><if(scopeEnds&&!treeEnds)>Scope<endif>"
 
-getSignature(argType, argName) ::= "<if(argName)>final <getArgType(argType)> <argName><endif>"
+getSignature(argType, argName, hasArgument) ::= "<if(hasArgument)>final <getArgType(argType)> <argName><endif>"
 
 getArgType(argType) ::= "<argType>"
 

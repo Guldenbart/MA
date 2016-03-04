@@ -1,25 +1,25 @@
-lope(dslName, packageName, visitorGenPackageName, iNameUC) ::= <<
-<getHeader(dslName, packageName, visitorGenPackageName)>
+lope(dslNameUC, packageName, visitorGenPackageName, iName) ::= <<
+<getHeader(dslNameUC, packageName, visitorGenPackageName)>
 
-public final class Lope<iNameUC> extends Lope {
+public final class Lope<iName> extends Lope {
 	
-	public Lope<iNameUC>(final ArrayList\<AMethod> list) {
-		super("<iNameUC>", list);
+	public Lope<iName>(final ArrayList\<AMethod> list) {
+		super("<iName>", list);
 	}
 	
 	@Override
 	public void accept(final AVisitor visitor) {
-		((A<dslName>Visitor) visitor).visit(this);
+		((A<dslNameUC>Visitor) visitor).visit(this);
 	}
 }
 >>
 
-getHeader(dslName, packageName, visitorGenPackageName) ::= <<
+getHeader(dslNameUC, packageName, visitorGenPackageName) ::= <<
 package <packageName>;
 
 import java.util.ArrayList;
 
-import <visitorGenPackageName>.A<dslName>Visitor;
+import <visitorGenPackageName>.A<dslNameUC>Visitor;
 import parseTree.AMethod;
 import parseTree.Lope;
 import visitor.AVisitor;

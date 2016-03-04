@@ -1,12 +1,12 @@
-visitorMethodDispatch(dslName, package, visitorDestPackage, method) ::= <<
-<if(method.isSimpleMethod)><visitorSimpleMethod(dslName, method)>
-<elseif(method.isNestedMethod)><visitorNestedMethod(dslName, method)>
-<else><visitorMethod(dslName, method)>
+visitorMethodDispatch(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
+<if(method.isSimpleMethod)><visitorSimpleMethod(dslName, parseTreeDestPackage, visitorDestPackage, method)>
+<elseif(method.isNestedMethod)><visitorNestedMethod(dslName, parseTreeDestPackage, visitorDestPackage, method)>
+<else><visitorMethod(dslName, parseTreeDestPackage, visitorDestPackage, method)>
 <endif>
 >>
 
-visitorMethod(dslName, visitorDestPackage, method) ::= <<
-<getVisitorMethodHeader(dslName, package, visitorDestPackage)>
+visitorMethod(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
+<getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
 import parseTree.AMethod;
 
 public final class Method<toUC(method.name)> extends AMethod {
@@ -16,7 +16,7 @@ public final class Method<toUC(method.name)> extends AMethod {
 	
 	@Override
 	public final String toString() {
-		return name() + "()";
+		return getName() + "()";
 	}
 	
 	<getAcceptMethod(dslName)>
@@ -25,8 +25,8 @@ public final class Method<toUC(method.name)> extends AMethod {
 >>
 
 
-visitorSimpleMethod(dslName, visitorDestPackage, method) ::= <<
-<getVisitorMethodHeader(dslName, visitorDestPackage)>
+visitorSimpleMethod(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
+<getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
 import parseTree.ASimpleMethod;
 
 public final class SimpleMethod<toUC(method.name)> extends ASimpleMethod\<<getArgType(method.argumentType)>\> {
@@ -40,8 +40,8 @@ public final class SimpleMethod<toUC(method.name)> extends ASimpleMethod\<<getAr
 }
 >>
 
-visitorNestedMethod(dslName, visitorDestPackage, method) ::= <<
-<getVisitorMethodHeader(dslName, visitorDestPackage)>
+visitorNestedMethod(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
+<getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
 import parseTree.ParseTree;
 import parseTree.ANestedMethod;
 
@@ -70,17 +70,17 @@ primitiveTypeMap ::= [
 	default:{argType}
 ]
 
-getVisitorMethodHeader(dslName, package, visitorDestPackage) ::= <<
-package <package>;
+getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage) ::= <<
+package <parseTreeDestPackage>;
 
-import visitorDestPackage.A<dslName>Visitor;
+import <visitorDestPackage>.A<toUC(dslName)>Visitor;
 import visitor.AVisitor;
 >>
 
 getAcceptMethod(dslName) ::= <<
 @Override
 public final void accept(final AVisitor visitor) {
-	((A<dslName>Visitor) visitor).visit(this);
+	((A<toUC(dslName)>Visitor) visitor).visit(this);
 }
 >>
 

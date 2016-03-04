@@ -41,61 +41,61 @@ public class ExpressionBuildVisitor extends AExprDSLVisitor {
 
 	@Override
 	public final void visit(final SimpleMethodExpr mes) {
-		e = new Value(mes.value());		
+		e = new Value(mes.getValue());		
 	}
 
 	@Override
 	public final void visit(final NestedMethodExpr men) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
-		men.parseTree().accept(nestedVisitor);
+		men.getParseTree().accept(nestedVisitor);
 		e = nestedVisitor.expression();
 	}
 
 	@Override
 	public final void visit(final SimpleMethodPlus mps) {
-		e = new Operation(e, '+', new Value(mps.value()));
+		e = new Operation(e, '+', new Value(mps.getValue()));
 	}
 
 	@Override
 	public final void visit(final NestedMethodPlus mpn) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
-		mpn.parseTree().accept(nestedVisitor);
+		mpn.getParseTree().accept(nestedVisitor);
 		e = new Operation(e, '+', nestedVisitor.expression());
 	}
 
 	@Override
 	public final void visit(final SimpleMethodMinus mms) {
-		e = new Operation(e, '-', new Value(mms.value()));
+		e = new Operation(e, '-', new Value(mms.getValue()));
 	}
 
 	@Override
 	public final void visit(final NestedMethodMinus mmn) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
-		mmn.parseTree().accept(nestedVisitor);
+		mmn.getParseTree().accept(nestedVisitor);
 		e = new Operation(e, '-', nestedVisitor.expression());
 	}
 
 	@Override
 	public final void visit(final SimpleMethodTimes mts) {
-		e = new Operation(e, '*', new Value(mts.value()));
+		e = new Operation(e, '*', new Value(mts.getValue()));
 	}
 
 	@Override
 	public final void visit(final NestedMethodTimes mtn) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
-		mtn.parseTree().accept(nestedVisitor);
+		mtn.getParseTree().accept(nestedVisitor);
 		e = new Operation(e, '*', nestedVisitor.expression());
 	}
 
 	@Override
 	public final void visit(final SimpleMethodDivided mds) {
-		e = new Operation(e, '/', new Value(mds.value()));
+		e = new Operation(e, '/', new Value(mds.getValue()));
 	}
 
 	@Override
 	public final void visit(final NestedMethodDivided mdn) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
-		mdn.parseTree().accept(nestedVisitor);
+		mdn.getParseTree().accept(nestedVisitor);
 		e = new Operation(e, '*', nestedVisitor.expression());
 	}
 

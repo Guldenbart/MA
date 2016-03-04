@@ -29,13 +29,13 @@ public abstract class ASimpleMethod<T> extends AMethod {
 	 * gets the value of the parameter that was passed to this method.
 	 * @return value of the parameter
 	 */
-	public final T value() {
+	public final T getValue() {
 		return value;
 	}
 	
 	@Override
 	public final String toString() {
-		return name() + '(' + value + ").";
+		return getName() + '(' + value + ").";
 	}	
 
 }

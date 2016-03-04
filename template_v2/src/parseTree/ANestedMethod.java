@@ -30,7 +30,7 @@ public abstract class ANestedMethod extends AMethod {
 	 * gets the method's parse tree.
 	 * @return parse tree of the method
 	 */
-	public final ParseTree parseTree() {
+	public final ParseTree getParseTree() {
 		return parseTree;
 	}
 	
@@ -38,7 +38,7 @@ public abstract class ANestedMethod extends AMethod {
 	public final String toString() {
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append(name() + '(');
+		sb.append(getName() + '(');
 		sb.append(parseTree.toString());
 		sb.append(").");
 		

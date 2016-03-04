@@ -9,7 +9,6 @@ public class GeneratorMethod {
 	private String name;
 	private String returnType;
 	private String argumentType;
-	@SuppressWarnings("unused") // we only need this in StringTemplate
 	private String argumentName;
 	
 	private static final String type_noArg = "methods";
@@ -40,7 +39,11 @@ public class GeneratorMethod {
 		return argumentType;
 	}
 	
-	public boolean hasArgument() {
+	public String getArgumentName() {
+		return argumentName;
+	}
+	
+	public boolean getHasArgument() {
 		return !(argumentType.equals(""));
 	}
 	
@@ -80,7 +83,6 @@ public class GeneratorMethod {
 		}
 	}
 	
-	// TODO alle getter in get* umändern
 	// TODO FRAGE: Gestaltung der Variablen-Namen (auch: *packageNAME, damit man weiß, dass es ein String und keine Variable ist?)
 	// TODO FRAGE: Ist es in Ordnung, dass Methoden-Klassen ohne Argument einfach Method* heißen?
 	// TODO FRAGE: zu try/catch/throw
