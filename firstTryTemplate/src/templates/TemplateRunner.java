@@ -83,7 +83,7 @@ public class TemplateRunner {
 			
 			try {
 				String interfaceName = f.getName().substring(0, f.getName().lastIndexOf("."));
-				Class<?> c = Class.forName(dslName + '.' + interfaceName); // TODO geht das auch ohne package-Name?
+				Class<?> c = Class.forName(dslName + '.' + interfaceName);
 				
 				if (!c.isInterface()) {
 					System.err.println("class " + c.getName() + " is not an interface and will be ignored!");
