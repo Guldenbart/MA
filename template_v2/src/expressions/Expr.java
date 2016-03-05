@@ -10,8 +10,7 @@ package expressions;
 public interface Expr {
 	
 	/**
-	 * Returns the value of the expression.
-	 * 
+	 * Gets the value of the expression.
 	 * @return value of the expression.
 	 */
 	double getValue();

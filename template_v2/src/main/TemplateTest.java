@@ -30,11 +30,11 @@ public class TemplateTest {
         
         ExpressionBuildVisitor ebvX = new ExpressionBuildVisitor();
         x.accept(ebvX);
-        System.out.printf("%s = %f%n", "Ergebnis des Ausdrucks x:", ebvX.expression().getValue());
+        System.out.printf("%s = %f%n", "Ergebnis des Ausdrucks x:", ebvX.getExpression().getValue());
         
         ExpressionBuildVisitor ebvY = new ExpressionBuildVisitor();
         y.accept(ebvY);
-        System.out.printf("%s = %f%n", "Ergebnis des Ausdrucks y:", ebvY.expression().getValue());
+        System.out.printf("%s = %f%n", "Ergebnis des Ausdrucks y:", ebvY.getExpression().getValue());
 		
 	}
 

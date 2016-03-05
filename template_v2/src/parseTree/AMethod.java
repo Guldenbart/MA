@@ -4,11 +4,13 @@ package parseTree;
  * abstract super class for all classes that represent any type of method in a
  * {@link ParseTree}.
  * 
- * If a method has no argument, then this is the direct super class for the
+ * If a method has no argument, then this is the super class for the
  * class that will represent it. Otherwise, refer to {@link ASimpleMethod} or
  * {@link ANestedMethod}.
  * 
  * @author Daniel Fritz
+ * @see ASimpleMethod
+ * @see ANestedMethod
  *
  */
 public abstract class AMethod implements Visitable {

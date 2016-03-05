@@ -4,12 +4,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * class that wraps everything we need to know about a method for generation.
+ * class that wraps everything we need to know for code generation
+ * about a method.
  * 
- * In this class, the word 'method' always refers to the method that an object
- * of this class represents.
+ * In the documentation of this class, the word 'method' always refers to the
+ * method that an object of this class represents.
  * 
  * @author Daniel Fritz
+ * @see AMethod
  */
 public final class GeneratorMethod {
 	
@@ -49,7 +51,8 @@ public final class GeneratorMethod {
 	 * @param argType type of the method argument.
 	 * @param argName name of the method argument.
 	 */
-	public GeneratorMethod(final String iName, final String mName, final String retType, final String argType, final String argName) {
+	public GeneratorMethod(final String iName, final String mName,
+			final String retType, final String argType, final String argName) {
 		interfaceName = iName;
 		name = mName;
 		returnType = retType;
@@ -63,7 +66,8 @@ public final class GeneratorMethod {
 	 * @param mName name of the method.
 	 * @param retType return type of the method.
 	 */
-	public GeneratorMethod(final String iName, final String mName, final String retType) {
+	public GeneratorMethod(final String iName, final String mName,
+			final String retType) {
 		this(iName, mName, retType, "", "");
 	}
 	
@@ -174,4 +178,6 @@ public final class GeneratorMethod {
 	// TODO FRAGE: zu try/catch/throw
 	// TODO FRAGE: dslName wird mehrere Male zusammen mit Method gebraucht (visitorMethodClass.stg, String für visitorSuperClass). Als Klassen-Variable hinzufügen? Oder nicht, weil es immer dasselbe ist?
 	// TODO FRAGE: Variante bei GeneratorScope: Methoden einzeln hinzufügen und in 3 versch. Listen einfügen; GeneratorScope.getMethods() fügt die Listen zusammen.
+	// TODO FRAGE: *Holder?
+	// TODO FRAGE: immer this.*?
 }

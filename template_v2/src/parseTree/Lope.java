@@ -6,8 +6,6 @@ import java.util.ArrayList;
  * every 'Lope' class holds a list of all methods of the same scope that were
  * called consecutively.
  * 
- * 
- * 
  * @author Daniel Fritz
  */
 public abstract class Lope implements Visitable {

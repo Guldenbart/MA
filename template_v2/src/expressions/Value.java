@@ -8,25 +8,22 @@ package expressions;
  * @author Daniel Fritz
  *
  */
-public class Value implements Expr {
+public final class Value implements Expr {
 
 	/**
-	 * the value of the expression
+	 * the value of the expression.
 	 */
 	private double value;
 
 	/**
-	 * Constuctor that initializes <code>value</code>
+	 * Constructor that initializes <code>value</code>.
 	 * @param value what value gets initialized with
 	 */
-    public Value(double value) {
+    public Value(final double value) {
         this.value = value;
     }
 
     
-    /**
-     * {@link Value#value}
-     */
     @Override
     public double getValue() {
         return this.value;

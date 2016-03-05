@@ -40,10 +40,10 @@ getImports(methods, simpleMethods, nestedMethods, packageName) ::= <<
 scope(dslName, interfaceName, methodList) ::= <<
 public final class <interfaceName>Scope implements <interfaceName> {
 
-	private ArrayList\<AMethod> methodList_<interfaceName>;
+	private ArrayList\<AMethod> methodList<interfaceName>;
 	
 	private <interfaceName>Scope() {
-		methodList_<interfaceName> = new ArrayList\<AMethod>();
+		methodList<interfaceName> = new ArrayList\<AMethod>();
 	}
 	
 	<methodList: {mObj | <method(dslName, interfaceName, mObj.name, mObj.returnType, mObj.argumentType, mObj.argumentName, mObj.hasArgument, mObj.scopeEnds, mObj.treeEnds)>}>
@@ -56,11 +56,11 @@ method(dslName, iName, mName, returnType, argType, argName, hasArgument, scopeEn
 @Override
 public <getReturnType(toUC(returnType))> <toLC(mName)>(<getSignature(argType, argName, hasArgument)>) {
 	AMethod m = new <if(hasArgument)><methodTypeMap.(argType)><endif>Method<toUC(mName)>(<argName>);
-	methodList_<toUC(iName)>.add(m);
+	methodList<toUC(iName)>.add(m);
 	
 	<if(scopeEnds)>
 	// new Lope
-	Lope lope<toUC(iName)> = new Lope<toUC(iName)>(methodList_<toUC(iName)>);
+	Lope lope<toUC(iName)> = new Lope<toUC(iName)>(methodList<toUC(iName)>);
 	<toUC(dslName)>TreeBuilder.this.lopeList.add(lope<toUC(iName)>);
 	
 	<endif>

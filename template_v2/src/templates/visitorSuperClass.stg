@@ -20,14 +20,10 @@ import parseTreeGen.Lope<interfaceName>; <\n>
 
 
 getBody(interfaceName, methods, simpleMethods, nestedMethods) ::= <<
-	public void visit(Lope<interfaceName> lope<interfaceName>) {\}<\n>
-	
-
-	<methods:{method | public void visit(Method<toUC(method.name)> method<toUC(method.name)>) {\}<\n>}>
-	
-	<simpleMethods:{method | public void visit(SimpleMethod<toUC(method.name)> simpleMethod<toUC(method.name)>) {\}<\n>}>
-	
-	<nestedMethods:{method | public void visit(NestedMethod<toUC(method.name)> nestedMethod<toUC(method.name)>) {\}<\n>}>
+	public void visit(final Lope<interfaceName> lope<interfaceName>) { \}<\n>
+	<methods:{method | public void visit(final Method<toUC(method.name)> method<toUC(method.name)>) { \}<\n>}>
+	<simpleMethods:{method | public void visit(final SimpleMethod<toUC(method.name)> simpleMethod<toUC(method.name)>) { \}<\n>}>
+	<nestedMethods:{method | public void visit(final NestedMethod<toUC(method.name)> nestedMethod<toUC(method.name)>) { \}<\n>}>
 >>
 
 

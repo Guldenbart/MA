@@ -4,10 +4,9 @@ package parseTree;
  * subclass of {@link AMethod} and abstract super class for all method classes
  * that have a ParseTree as argument.
  * 
- * 
- * 
  * @author Daniel Fritz
- *
+ * @see AMethod
+ * @see ASimpleMethod
  */
 public abstract class ANestedMethod extends AMethod {
 
@@ -17,7 +16,7 @@ public abstract class ANestedMethod extends AMethod {
 	private final ParseTree parseTree;
 	
 	/**
-	 * constructor that initializes name and parse tree of the method.
+	 * constructor that initializes name and parse tree of the object.
 	 * @param name name that the method is given
 	 * @param tree parse tree of the expression that is nested into this method
 	 */

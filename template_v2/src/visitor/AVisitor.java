@@ -8,7 +8,7 @@ import parseTree.ParseTree;
  * You can use a visitor to give your language semantics.
  * Every visitor you create for your language has to extend the abstract
  * visitor that was generated according to your grammar 
- * (pattern: A[languageName]Visitor).
+ * (name pattern: A[languageName]Visitor).
  * 
  * Every ParseTree consists of one or multiple @link{Lope} objects and each
  * Lope consists of one or multiple {@link AMethod} objects.

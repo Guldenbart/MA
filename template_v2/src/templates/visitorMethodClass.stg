@@ -15,7 +15,7 @@ public final class Method<toUC(method.name)> extends AMethod {
 	}
 	
 	@Override
-	public final String toString() {
+	public String toString() {
 		return getName() + "()";
 	}
 	
@@ -79,7 +79,7 @@ import visitor.AVisitor;
 
 getAcceptMethod(dslName) ::= <<
 @Override
-public final void accept(final AVisitor visitor) {
+public void accept(final AVisitor visitor) {
 	((A<toUC(dslName)>Visitor) visitor).visit(this);
 }
 >>
