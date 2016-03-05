@@ -3,19 +3,53 @@ package generator;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class GeneratorMethod {
+/**
+ * class that wraps everything we need to know about a method for generation.
+ * 
+ * In this class, the word 'method' always refers to the method that an object
+ * of this class represents.
+ * 
+ * @author Daniel Fritz
+ */
+public final class GeneratorMethod {
 	
+	/**
+	 * Name of the interface that the >method< belongs to.
+	 */
 	private String interfaceName;
+	
+	/**
+	 * Name of the method.
+	 */
 	private String name;
+	
+	/**
+	 * Return type of the method.
+	 */
 	private String returnType;
+	
+	/**
+	 * Argument type of the method.
+	 * This is an emtpy string if the method has no argument.
+	 */
 	private String argumentType;
+	
+	/**
+	 * argument name of the method.
+	 * This is an empty string if the method has no argument.
+	 */
 	private String argumentName;
 	
-	private static final String type_noArg = "methods";
-	private static final String type_simple = "simpleMethods";
-	private static final String type_nested = "nestedMethods";
-	
-	public GeneratorMethod(String iName, String mName, String retType, String argType, String argName) {
+	/**
+	 * Constructor that initializes all the instance variables of this class.
+	 * This constructor is used for methods that have an argument.
+	 * @param iName name of the interface that the method belongs to.
+	 * @param mName name of the method.
+	 * @param retType return type of the method.
+	 * @param argType type of the method argument.
+	 * @param argName name of the method argument.
+	 */
+	public GeneratorMethod(final String iName, final String mName, final String retType, final String argType, final String argName) {
 		interfaceName = iName;
 		name = mName;
 		returnType = retType;
@@ -23,63 +57,115 @@ public class GeneratorMethod {
 		argumentName = argName;
 	}
 	
-	public GeneratorMethod(String iName, String mName, String retType) {
+	/**
+	 * Constructor for methods without argument.
+	 * @param iName name of the interface that the method belongs to.
+	 * @param mName name of the method.
+	 * @param retType return type of the method.
+	 */
+	public GeneratorMethod(final String iName, final String mName, final String retType) {
 		this(iName, mName, retType, "", "");
 	}
 	
+	/**
+	 * gets the method's name.
+	 * @return name of the method
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * gets the method's return type.
+	 * @return return type of the method
+	 */
 	public String getReturnType() {
 		return returnType;
 	}
 	
+	/**
+	 * gets the method's argument type.
+	 * @return argument type of the method
+	 */
 	public String getArgumentType() {
 		return argumentType;
 	}
 	
+	/**
+	 * Gets the method's argument name.
+	 * @return argument name of the method
+	 */
 	public String getArgumentName() {
 		return argumentName;
 	}
 	
+	/**
+	 * Tells whether or not this method has an argument.
+	 * @return true if the method has an argument, no otherwise.
+	 */
 	public boolean getHasArgument() {
 		return !(argumentType.equals(""));
 	}
 	
+	/**
+	 * Tells the caller if, after calling this method, the current scope ends.
+	 * This is currently only used inside the stringTemplates.
+	 * @return true if the current scope ends after calling this method,
+	 * 		false otherwise.
+	 */
 	public boolean getScopeEnds() {
 		return !(interfaceName.equals(returnType));
 	}
 	
+	/**
+	 * Tells the caller if calling this method concludes a statement of
+	 * the corresponding DSL.
+	 * @return true if this method concludes a statement of
+	 * 		the corresponding DSL, false otherwise.
+	 */
 	public boolean getTreeEnds() {
 		return returnType.equals("ParseTree");
 	}
 	
+	/**
+	 * method to find out whether or not this method is a Method.
+	 * see {@link AMethod} for more information.
+	 * @return true, if it is a Method, false otherwise.
+	 */
+	public boolean getIsMethod() {
+		return (argumentType.equals(""));
+	}
+	
+	/**
+	 * method to find out if this method is a SimpleMethod.
+
+	 * @return true, if it is a SimpleMethod, false otherwise.
+	 */
 	public boolean getIsSimpleMethod() {
 		return (!argumentType.equals("ParseTree") && !argumentType.equals(""));
 	}
 	
+	/**
+	 * method to find out if this method is a NestedMethod.
+	 * @return true, if it is a NestedMethod, false otherwise.
+	 */
 	public boolean getIsNestedMethod() {
 		return argumentType.equals("ParseTree");
 	}
 
-	public Path getVisitorClassPath(Path basePath) {
-		if (argumentType.equals("")) {
+	/**
+	 * Composes the file path for a Method file (see {@link AMethod}) that is
+	 * derived from the corresponding GeneratorMethod object.
+	 * @param basePath path that the file path is based on.
+	 * @return composed path object
+	 */
+	public Path getVisitorClassPath(final Path basePath) {
+		if (getIsMethod()) {
 			return basePath.resolve(Paths.get("Method" + name + ".java"));
-		} else if (argumentType.equals("ParseTree")) {
+		} else if (getIsNestedMethod()) {
 			return basePath.resolve(Paths.get("NestedMethod" + name + ".java"));
 		} else {
 			return basePath.resolve(Paths.get("SimpleMethod" + name + ".java"));
-		}
-	}
-	
-	public String getTypeString() {
-		if (argumentType.equals("")) {
-			return type_noArg;
-		} else if (argumentType.equals("ParseTree")) {
-			return type_nested;
-		} else {
-			return type_simple;
 		}
 	}
 	
