@@ -20,7 +20,7 @@ public class TemplateMain {
 		// where should the classes related to visitor be generated to?
 		final Path visitorGenPath = Paths.get("./src-gen/visitorGen");
 			
-		TemplateRunner tr = new TemplateRunner(dslName, dslPath, parseTreeGenPath, visitorGenPath);
+		Generator tr = new Generator(dslName, dslPath, parseTreeGenPath, visitorGenPath);
 		try {
 			tr.runAll();
 		} catch (IOException e) {

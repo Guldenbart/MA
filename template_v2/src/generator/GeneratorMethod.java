@@ -174,10 +174,5 @@ public final class GeneratorMethod {
 	}
 	
 	// TODO FRAGE: Gestaltung der Variablen-Namen (auch: *packageNAME, damit man weiß, dass es ein String und keine Variable ist?)
-	// TODO FRAGE: Ist es in Ordnung, dass Methoden-Klassen ohne Argument einfach Method* heißen?
-	// TODO FRAGE: zu try/catch/throw
-	// TODO FRAGE: dslName wird mehrere Male zusammen mit Method gebraucht (visitorMethodClass.stg, String für visitorSuperClass). Als Klassen-Variable hinzufügen? Oder nicht, weil es immer dasselbe ist?
-	// TODO FRAGE: Variante bei GeneratorScope: Methoden einzeln hinzufügen und in 3 versch. Listen einfügen; GeneratorScope.getMethods() fügt die Listen zusammen.
-	// TODO FRAGE: *Holder?
-	// TODO FRAGE: immer this.*?
+	// TODO <code> tags in javadoc
 }

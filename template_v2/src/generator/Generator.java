@@ -19,7 +19,7 @@ import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 import org.stringtemplate.v4.StringRenderer;
 
-public class TemplateRunner {
+public class Generator {
 	
 	private final String dslName;
 	private final Path sourcePath;
@@ -41,7 +41,7 @@ public class TemplateRunner {
 	
 	private ST visitorSuperClassTemp;
 	
-	public TemplateRunner(String dslName, Path srcPath, Path parseTreeGenPath, Path visitorGenPath) {
+	public Generator(String dslName, Path srcPath, Path parseTreeGenPath, Path visitorGenPath) {
 		this.dslName = dslName;
 		sourcePath = srcPath;
 		parseTreeDestPath = parseTreeGenPath;
@@ -90,7 +90,7 @@ public class TemplateRunner {
 			
 			Path filePath = file.getFileName();
 			if (filePath == null) {
-				// just for findBugs; could it happen?
+				// TODO: just for findBugs; could it happen?
 				continue;
 			}
 			String fileName = filePath.toString();
@@ -127,15 +127,11 @@ public class TemplateRunner {
 			}
         }
         
-		reviseInterfaceMap(skipList);
-	}
-	
-	private void reviseInterfaceMap(ArrayList<Class<?>> skipList) {
 		for (Class<?> clazz : skipList) {
 			this.interfaceMap.remove(clazz);
 		}
-		// TODO falls das so funktioniert, braucht man die extra-Methode nicht
 	}
+	
 
 	// TODO rename
 	private String runClassTemplate() {
