@@ -50,13 +50,7 @@ public class TemplateRunner {
 		String retVal = runClassTemplate();
 		String treePath = "./src-gen/parseTreeGen/" + toUC(dslName) + "TreeBuilder.java";
 		String visitorPath = "./src-gen/visitorGen/A" + toUC(dslName) + "Visitor.java";
-		
-		/*
-		 * TODO FRAGE: Wenn eine Fallunterscheidung auftauchen würde, was ist wichtiger:
-		 * PrintWriter lassen, um sich Zeilen zu sparen
-		 * oder in die Klammer, damit so spät anlegen, wie möglich (kleinste Schleife)
-		 * ?
-		 */
+
 		writeTemplateFile(treePath, retVal);
 		writeTemplateFile(visitorPath, visitorSuperClassTemp.render());
 	}
