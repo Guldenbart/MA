@@ -15,7 +15,7 @@ import parseTree.ParseTree;
  * Every lope and method object accepts your "visit" and you can access their
  * properties inside the respective visit method.
  * 
- * Not every visit-method of one visitor has to implemented. 
+ * Not every visit method of one visitor has to implemented. 
  * @author Daniel Fritz
  *
  */

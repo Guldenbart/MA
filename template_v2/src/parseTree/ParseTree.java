@@ -49,8 +49,8 @@ public final class ParseTree implements Visitable {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("TreeBuilder.begin().");
-		for (int i = 0; i < list.size(); i++) {
-			sb.append(list.get(i).toString());
+		for (Lope l : list) {
+			sb.append(l.toString());
 		}
 		
 		return sb.toString();

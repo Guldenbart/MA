@@ -22,8 +22,8 @@ public abstract class Lope implements Visitable {
 	private final ArrayList<AMethod> methods;
 	
 	/**
-	 * constructor that initializes interfaceName and methodList with given
-	 * arguments.
+	 * constructor that initializes <code>interfaceName</code> and
+	 * <code>methodList</code> with given arguments.
 	 * 
 	 * @param iName name of the interface
 	 * @param methodList list of all AMethod objects that belong to this lope.
@@ -42,7 +42,7 @@ public abstract class Lope implements Visitable {
 	}
 	
 	/**
-	 * gets the list of all the AMethod objects that belong to this lope.
+	 * gets the list of all the AMethod objects that belong to this Lope.
 	 * @return list of methods
 	 */
 	public final ArrayList<AMethod> methods() {
@@ -70,8 +70,8 @@ public abstract class Lope implements Visitable {
 	public final String toString() {
 		StringBuilder sb = new StringBuilder();
 		
-		for (int i = 0; i < methods.size(); i++) {
-			sb.append(methods.get(i).toString());
+		for (AMethod m : methods) {
+			sb.append(m.toString());
 		}
 		
 		return sb.toString();

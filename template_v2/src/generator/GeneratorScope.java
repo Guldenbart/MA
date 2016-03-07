@@ -29,7 +29,7 @@ public final class GeneratorScope {
 	
 	
 	/**
-	 * constructor that initializes interfaceName and methods of the object.
+	 * constructor that initializes <code>interfaceName</code> and <code>methods</code> of the object.
 	 * @param iName interface name.
 	 * @param list ArrayList of GeneratorMethod objects.
 	 */
@@ -111,5 +111,17 @@ public final class GeneratorScope {
 	 */
 	public Path getLopeClassPath(final Path basePath) {
 		return basePath.resolve(Paths.get("Lope" + interfaceName + ".java"));
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("Scope " + this.interfaceName + ":\n");
+		for (GeneratorMethod gm : methods) {
+			sb.append("\t" + gm.toString() + "\n");
+		}
+		
+		return sb.toString();
 	}
 }

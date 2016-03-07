@@ -17,7 +17,8 @@ public abstract class ASimpleMethod<T> extends AMethod {
 	private final T value;
 	
 	/**
-	 * constructor that initializes name and value of the object.
+	 * constructor that initializes <code>name</code> and <code>value</code>
+	 * of the object.
 	 * @param methodName name that the method is given
 	 * @param val value of the parameter
 	 */

@@ -173,6 +173,27 @@ public final class GeneratorMethod {
 		}
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(returnType);
+		sb.append(" ");
+		sb.append(name);
+		sb.append("(");
+		if (getHasArgument()) {
+			sb.append(argumentType);
+			sb.append(" ");
+			sb.append(argumentName);
+		}
+		sb.append(")");
+		
+		return sb.toString();
+	}
+	
 	// TODO FRAGE: Gestaltung der Variablen-Namen (auch: *packageNAME, damit man weiß, dass es ein String und keine Variable ist?)
 	// TODO <code> tags in javadoc
+	// TODO FRAGE: GeneratorScope und GeneratorMethod als interne Klassen?
+	// TODO test toString()
+	// TODO alle restrictions reincoden (assert) 
 }

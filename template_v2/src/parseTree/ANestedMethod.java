@@ -16,7 +16,8 @@ public abstract class ANestedMethod extends AMethod {
 	private final ParseTree parseTree;
 	
 	/**
-	 * constructor that initializes name and parse tree of the object.
+	 * constructor that initializes <code>name</code> and
+	 * <code>parseTree</code> of the object.
 	 * @param name name that the method is given
 	 * @param tree parse tree of the expression that is nested into this method
 	 */
@@ -26,7 +27,7 @@ public abstract class ANestedMethod extends AMethod {
 	}	
 	
 	/**
-	 * gets the method's parse tree.
+	 * gets the method's parseTree.
 	 * @return parse tree of the method
 	 */
 	public final ParseTree getParseTree() {

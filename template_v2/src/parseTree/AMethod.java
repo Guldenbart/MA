@@ -22,7 +22,7 @@ public abstract class AMethod implements Visitable {
 	
 	
 	/**
-	 * constructor that initializes the name of the method with a given string.
+	 * constructor that initializes <code>name</code> with a given string.
 	 * @param methodName name that the method is given
 	 */
 	public AMethod(final String methodName) {
