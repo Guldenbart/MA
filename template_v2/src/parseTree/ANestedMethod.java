@@ -2,7 +2,7 @@ package parseTree;
 
 /**
  * subclass of {@link AMethod} and abstract super class for all method classes
- * that have a ParseTree as argument.
+ * that have <code>ParseTree</code> as their argument.
  * 
  * @author Daniel Fritz
  * @see AMethod

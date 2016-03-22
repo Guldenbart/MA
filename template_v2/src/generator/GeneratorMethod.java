@@ -4,11 +4,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * class that wraps everything we need to know for code generation
- * about a method.
+ * class that wraps everything we need to know about a method
+ * for code generation.
  * 
- * In the documentation of this class, the word 'method' always refers to the
- * method that an object of this class represents.
+ * Each <code>GeneratorMethod</code> object is used for the generation of one
+ * MethodNode object, one method in the <code>TreeBuilder</code> class and one
+ * method in the abstract <code>Visitor</code> super class.
+ * 
+ * PLEASE NOTE: In the documentation of this class, the word 'method' always
+ * refers to the method that an object of this class represents.
  * 
  * @author Daniel Fritz
  * @see AMethod
@@ -16,7 +20,7 @@ import java.nio.file.Paths;
 public final class GeneratorMethod {
 	
 	/**
-	 * Name of the interface that the >method< belongs to.
+	 * Name of the interface that the method belongs to.
 	 */
 	private String interfaceName;
 	
@@ -62,6 +66,9 @@ public final class GeneratorMethod {
 	
 	/**
 	 * Constructor for methods without argument.
+	 * 
+	 * <code>argType</code> and <code>argName</code> are set to an empty
+	 * string.
 	 * @param iName name of the interface that the method belongs to.
 	 * @param mName name of the method.
 	 * @param retType return type of the method.
@@ -105,7 +112,7 @@ public final class GeneratorMethod {
 	
 	/**
 	 * Tells whether or not this method has an argument.
-	 * @return true if the method has an argument, no otherwise.
+	 * @return true if the method has an argument, false otherwise.
 	 */
 	public boolean getHasArgument() {
 		return !(argumentType.equals(""));
@@ -132,9 +139,10 @@ public final class GeneratorMethod {
 	}
 	
 	/**
-	 * method to find out whether or not this method is a Method.
+	 * finds out whether or not this method class is a direct subclass of
+	 * AMethod.
 	 * see {@link AMethod} for more information.
-	 * @return true, if it is a Method, false otherwise.
+	 * @return true, if it is a a direct subclass of AMethod, false otherwise.
 	 */
 	public boolean getIsMethod() {
 		return (argumentType.equals(""));
@@ -142,7 +150,7 @@ public final class GeneratorMethod {
 	
 	/**
 	 * method to find out if this method is a SimpleMethod.
-
+	 *
 	 * @return true, if it is a SimpleMethod, false otherwise.
 	 */
 	public boolean getIsSimpleMethod() {
@@ -192,8 +200,10 @@ public final class GeneratorMethod {
 	}
 	
 	// TODO FRAGE: Gestaltung der Variablen-Namen (auch: *packageNAME, damit man weiß, dass es ein String und keine Variable ist?)
-	// TODO <code> tags in javadoc
+	// TODO <code> tags in javadoc: alles mit 'Node'
 	// TODO FRAGE: GeneratorScope und GeneratorMethod als interne Klassen?
-	// TODO test toString()
-	// TODO alle restrictions reincoden (assert) 
+	// TODO test toString() von GeneratorScope und GeneratorMethod
+	// TODO toString() von Method-Klassen überarbeiten
+	// TODO alle restrictions reincoden (Methode, die alle Einschränkungen überprüft?)
+	// TODO werden finalizers benötigt? bzw. try-with
 }

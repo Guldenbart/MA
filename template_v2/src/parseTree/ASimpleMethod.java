@@ -2,7 +2,8 @@ package parseTree;
 
 /**
  * generic subclass of {@link AMethod} and abstract super class for all method
- * classes that have any other type than ParseTree as argument type.
+ * classes that have any other type than <code>ParseTree</code> as argument
+ * type.
  * 
  * @author Daniel Fritz
  * @param <T> place holder for the argument type.

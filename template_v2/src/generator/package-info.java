@@ -7,9 +7,7 @@
  * that define the DSL and wrapped into {@link GeneratorScope} and
  * {@link GeneratorMethod} objects. Afterwards, the template files are fed
  * with that information.
- */
-/**
+ * 
  * @author Daniel Fritz
- *
  */
 package generator;

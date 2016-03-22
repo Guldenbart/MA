@@ -80,7 +80,7 @@ public class Generator {
 		 */
 		ArrayList<Class<?>> skipList = new ArrayList<Class<?>>();
 		
-		DirectoryStream<Path> stream = Files.newDirectoryStream(sourcePath);
+		DirectoryStream<Path> stream = Files.newDirectoryStream(sourcePath); // throws IOException
 		for (Path file : stream) {
 			
 			if (Files.isDirectory(file)) {

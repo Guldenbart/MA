@@ -5,8 +5,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
- * class that wraps everything we need to know for code generation
- * about a method scope.
+ * class that wraps everything we need to know about a method scope
+ * for code generation.
  * Each GeneratorScope object holds all {@link GeneratorMethod} objects that
  * represent a method that belongs to the scope this object represents.
  * 
@@ -23,7 +23,7 @@ public final class GeneratorScope {
 	private String interfaceName;
 	
 	/**
-	 * ArrayList of all GeneratorMethod objects which belong to this scope.
+	 * collection of all GeneratorMethod objects which belong to this scope.
 	 */
 	private ArrayList<GeneratorMethod> methods;
 	
@@ -56,8 +56,10 @@ public final class GeneratorScope {
 	}
 	
 	/**
-	 * gets a list of all GeneratorMethods object of type 'method'.
-	 * @return ArrayList of all 'method' type GeneratorMethod objects.
+	 * gets a list of all <code>GeneratorMethod</code> objects with no argument.
+	 * @return list of all <code>GeneratorMethod</code> objects without
+	 * argument.
+	 * @see AMethod
 	 */
 	public ArrayList<GeneratorMethod> getMethods() {
 		ArrayList<GeneratorMethod> mList = new ArrayList<GeneratorMethod>();
@@ -72,8 +74,11 @@ public final class GeneratorScope {
 	}
 	
 	/**
-	 * gets a list of all GeneratorMethods object of type 'simpleMethod'.
-	 * @return ArrayList of all 'simpleMethod' type GeneratorMethod objects.
+	 * gets a list of all <code>GeneratorMethod</code> objects with a simple
+	 * argument.
+	 * @return list of all <code>GeneratorMethod</code> objects with a simple
+	 * argument.
+	 * @see ASimpleMethod
 	 */
 	public ArrayList<GeneratorMethod> getSimpleMethods() {
 		ArrayList<GeneratorMethod> smList = new ArrayList<GeneratorMethod>();
@@ -88,8 +93,11 @@ public final class GeneratorScope {
 	}
 	
 	/**
-	 * gets a list of all GeneratorMethods object of type 'nestedMethod'.
-	 * @return ArrayList of all 'nestedMethod' type GeneratorMethod objects.
+	 * gets a list of all <code>GeneratorMethod</code> objects with a nested
+	 * argument.
+	 * @return list of all <code>GeneratorMethod</code> objects with a nested
+	 * argument.
+	 * @see ANestedMethod
 	 */
 	public ArrayList<GeneratorMethod> getNestedMethods() {
 		ArrayList<GeneratorMethod> nmList = new ArrayList<GeneratorMethod>();
