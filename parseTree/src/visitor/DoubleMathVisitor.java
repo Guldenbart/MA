@@ -81,7 +81,5 @@ public class DoubleMathVisitor implements Visitor {
 			break;
 		}
 	}
-	
-	// TODO overload oder gleicher Name in mehreren Interfaces
 
 }
