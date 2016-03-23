@@ -37,7 +37,7 @@ public abstract class Lope implements Visitable {
 	 * gets the interface name.
 	 * @return name of the interface
 	 */
-	public final String interfaceName() {
+	public final String getInterfaceName() {
 		return this.interfaceName;
 	}
 	
@@ -65,7 +65,6 @@ public abstract class Lope implements Visitable {
 	public final Visitable get(final int index) {
 		return methods.get(index);
 	}
-	// ^ wird evtl nicht benötigt
 
 	@Override
 	public final String toString() {

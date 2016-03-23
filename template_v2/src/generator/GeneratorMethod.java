@@ -204,6 +204,7 @@ public final class GeneratorMethod {
 	// TODO FRAGE: GeneratorScope und GeneratorMethod als interne Klassen?
 	// TODO test toString() von GeneratorScope und GeneratorMethod
 	// TODO toString() von Method-Klassen überarbeiten
-	// TODO alle restrictions reincoden (Methode, die alle Einschränkungen überprüft?)
+	// TODO alle restrictions reincoden (eine Methode, die alle Einschränkungen überprüft?)
 	// TODO werden finalizers benötigt? bzw. try-with
+	// TODO in GeneratorMethod: Muss visitorSuperClassTemp noch Instanzvariable sein? Im Moment wird alles in einer Methode gemacht
 }

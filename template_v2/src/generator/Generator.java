@@ -29,18 +29,27 @@ public class Generator {
 	private String parseTreeDestPackage;
 	private String visitorDestPackage;
 	
-	/*
+	/**
+	 * Map to match interfaces with the interfaces they extend:
+	 * 
 	 * If interface A extends interface B, the methods of B have to go
-	 * into the Scope of interface A. We have to store these relations
+	 * into the scope of interface A. We have to store these relations
 	 * so that later, we put every method in the correct scope.
 	 * 
-	 * the key of each map entry is an interface and the value is
+	 * The key of each map entry is an interface and the value is
 	 * a list of all interfaces that the <key> interface extends, plus itself.
 	 */
 	private Map<Class<?>, ArrayList<Class<?>>> interfaceMap;
 	
 	private ST visitorSuperClassTemp;
 	
+	/**
+	 * constructor that initializes all instance variables.
+	 * @param dslName
+	 * @param srcPath
+	 * @param parseTreeGenPath
+	 * @param visitorGenPath
+	 */
 	public Generator(String dslName, Path srcPath, Path parseTreeGenPath, Path visitorGenPath) {
 		this.dslName = dslName;
 		sourcePath = srcPath;
@@ -59,17 +68,12 @@ public class Generator {
 	public void runAll() throws IOException {
 		fillInterfaceMap();
 		
-		String retVal = runClassTemplate();
+		String treeBuilderString = runClassTemplate();
+		
 		Path treePath = parseTreeDestPath.resolve(Paths.get(toUC(dslName) + "TreeBuilder.java"));
 		Path visitorPath = visitorDestPath.resolve(Paths.get("A" + toUC(dslName) + "Visitor.java"));
-		
-		/*
-		 * TODO FRAGE: Wenn eine Fallunterscheidung auftauchen würde, was ist wichtiger:
-		 * PrintWriter lassen, um sich Zeilen zu sparen
-		 * oder in die Klammer, damit so spät anlegen, wie möglich (kleinste Schleife)
-		 * ?
-		 */
-		writeToFile(treePath, retVal);
+
+		writeToFile(treePath, treeBuilderString);
 		writeToFile(visitorPath, visitorSuperClassTemp.render());
 	}
 	
@@ -104,6 +108,7 @@ public class Generator {
 				Class<?> c = Class.forName(dslName + '.' + interfaceName); // TODO geht das auch ohne package-Name?
 				
 				if (!c.isInterface()) {
+					// TODO FRAGE: Sollte das eher eine Exception sein?
 					System.err.println("class " + c.getName() + " is not an interface and will be ignored!");
 					continue;
 				}
@@ -128,6 +133,10 @@ public class Generator {
         }
         
 		for (Class<?> clazz : skipList) {
+			/*
+			 *  we have to do this because we might add some classes to
+			 *  'interfaceMap' and later find out that we have to skip them.
+			 */
 			this.interfaceMap.remove(clazz);
 		}
 	}
@@ -135,14 +144,14 @@ public class Generator {
 
 	// TODO rename
 	private String runClassTemplate() {
+		visitorSuperClassTemp.add("dslName", dslName);
+		visitorSuperClassTemp.add("package", visitorDestPackage);
+		
 		STGroup treeBuilderGroup = new STGroupFile("./src/templates/treeBuilderClass.stg");
 		treeBuilderGroup.registerRenderer(String.class, new StringRenderer());
 		ST treeBuilderTemp = treeBuilderGroup.getInstanceOf("class");
 		
 		STGroup visitorLopeGroup = new STGroupFile("./src/templates/visitorLopeClass.stg");
-		
-		visitorSuperClassTemp.add("dslName", dslName);
-		visitorSuperClassTemp.add("package", visitorDestPackage);
 		
 		ArrayList<GeneratorScope> generatorScopeList = new ArrayList<GeneratorScope>();
 		
@@ -183,6 +192,7 @@ public class Generator {
 	}
 	
 	private GeneratorScope createGeneratorScope(String interfaceName, ArrayList<Class<?>> arrayList) {
+		// we give this to the GeneratorScope in the end
 		ArrayList<GeneratorMethod> generatorMethodList = new ArrayList<GeneratorMethod>();
 		
 		STGroup visitorMethodGroup = new STGroupFile("./src/templates/visitorMethodClass.stg");
@@ -191,6 +201,7 @@ public class Generator {
 		for (Class<?> clazz : arrayList) {
 			for (Method method : clazz.getDeclaredMethods()) {
 				if (method.getParameters().length > 1) {
+					// TODO exception?
 					System.err.println("only one argument per Method allowed!");
 					continue;
 				}
