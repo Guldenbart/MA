@@ -1,16 +1,16 @@
-visitorMethodDispatch(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
-<if(method.isSimpleMethod)><visitorSimpleMethod(dslName, parseTreeDestPackage, visitorDestPackage, method)>
-<elseif(method.isNestedMethod)><visitorNestedMethod(dslName, parseTreeDestPackage, visitorDestPackage, method)>
-<else><visitorMethod(dslName, parseTreeDestPackage, visitorDestPackage, method)>
+methodNodeDispatch(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
+<if(method.isSimpleMethod)><simpleMethodNode(dslName, parseTreeDestPackage, visitorDestPackage, method)>
+<elseif(method.isNestedMethod)><nestedMethodNode(dslName, parseTreeDestPackage, visitorDestPackage, method)>
+<else><methodNode(dslName, parseTreeDestPackage, visitorDestPackage, method)>
 <endif>
 >>
 
-visitorMethod(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
+methodNode(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
 <getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
-import parseTree.AMethod;
+import parseTree.AMethodNode;
 
-public final class Method<toUC(method.name)> extends AMethod {
-	public Method<toUC(method.name)>() {
+public final class MethodNode<toUC(method.name)> extends AMethodNode {
+	public MethodNode<toUC(method.name)>() {
 		super("<toLC(method.name)>");
 	}
 	
@@ -25,13 +25,13 @@ public final class Method<toUC(method.name)> extends AMethod {
 >>
 
 
-visitorSimpleMethod(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
+simpleMethodNode(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
 <getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
-import parseTree.ASimpleMethod;
+import parseTree.ASimpleMethodNode;
 
-public final class SimpleMethod<toUC(method.name)> extends ASimpleMethod\<<getArgType(method.argumentType)>\> {
+public final class SimpleMethodNode<toUC(method.name)> extends ASimpleMethodNode\<<getArgType(method.argumentType)>\> {
 
-	public SimpleMethod<toUC(method.name)>(final <getArgType(method.argumentType)> value) {
+	public SimpleMethodNode<toUC(method.name)>(final <getArgType(method.argumentType)> value) {
 		super("<toLC(method.name)>", value);
 	}
 	
@@ -40,14 +40,14 @@ public final class SimpleMethod<toUC(method.name)> extends ASimpleMethod\<<getAr
 }
 >>
 
-visitorNestedMethod(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
+nestedMethodNode(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
 <getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
 import parseTree.ParseTree;
-import parseTree.ANestedMethod;
+import parseTree.ANestedMethodNode;
 
-public final class NestedMethod<toUC(method.name)> extends ANestedMethod {
+public final class NestedMethodNode<toUC(method.name)> extends ANestedMethodNode {
 
-	public NestedMethod<toUC(method.name)>(final ParseTree parseTree) {
+	public NestedMethodNode<toUC(method.name)>(final ParseTree parseTree) {
 		super("<toLC(method.name)>", parseTree);
 	}
 	

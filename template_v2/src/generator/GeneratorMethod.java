@@ -15,7 +15,7 @@ import java.nio.file.Paths;
  * refers to the method that an object of this class represents.
  * 
  * @author Daniel Fritz
- * @see AMethod
+ * @see AMethodNode
  */
 public final class GeneratorMethod {
 	
@@ -141,7 +141,7 @@ public final class GeneratorMethod {
 	/**
 	 * finds out whether or not this method class is a direct subclass of
 	 * AMethod.
-	 * see {@link AMethod} for more information.
+	 * see {@link AMethodNode} for more information.
 	 * @return true, if it is a a direct subclass of AMethod, false otherwise.
 	 */
 	public boolean getIsMethod() {
@@ -166,18 +166,18 @@ public final class GeneratorMethod {
 	}
 
 	/**
-	 * Composes the file path for a Method file (see {@link AMethod}) that is
+	 * Composes the file path for a Method file (see {@link AMethodNode}) that is
 	 * derived from the corresponding GeneratorMethod object.
 	 * @param basePath path that the file path is based on.
 	 * @return composed path object
 	 */
 	public Path getVisitorClassPath(final Path basePath) {
 		if (getIsMethod()) {
-			return basePath.resolve(Paths.get("Method" + name + ".java"));
+			return basePath.resolve(Paths.get("MethodNode" + name + ".java"));
 		} else if (getIsNestedMethod()) {
-			return basePath.resolve(Paths.get("NestedMethod" + name + ".java"));
+			return basePath.resolve(Paths.get("NestedMethodNode" + name + ".java"));
 		} else {
-			return basePath.resolve(Paths.get("SimpleMethod" + name + ".java"));
+			return basePath.resolve(Paths.get("SimpleMethodNode" + name + ".java"));
 		}
 	}
 	

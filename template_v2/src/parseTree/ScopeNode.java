@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * 
  * @author Daniel Fritz
  */
-public abstract class Lope implements Visitable {
+public abstract class ScopeNode implements Visitable {
 	
 	/**
 	 * name of the interface of the grammar definition all methods belong to.
@@ -16,10 +16,10 @@ public abstract class Lope implements Visitable {
 	private final String interfaceName;
 	
 	/**
-	 * list of all methods (that is, the method classes (see {@link AMethod}))
+	 * list of all methods (that is, the method classes (see {@link AMethodNode}))
 	 * that were called consecutively.
 	 */
-	private final ArrayList<AMethod> methods;
+	private final ArrayList<AMethodNode> methods;
 	
 	/**
 	 * constructor that initializes <code>interfaceName</code> and
@@ -28,7 +28,7 @@ public abstract class Lope implements Visitable {
 	 * @param iName name of the interface
 	 * @param methodList list of all AMethod objects that belong to this lope.
 	 */
-	public Lope(final String iName, final ArrayList<AMethod> methodList) {
+	public ScopeNode(final String iName, final ArrayList<AMethodNode> methodList) {
 		this.interfaceName = iName;
 		this.methods = methodList;
 	}
@@ -45,7 +45,7 @@ public abstract class Lope implements Visitable {
 	 * gets the list of all the AMethod objects that belong to this Lope.
 	 * @return list of methods
 	 */
-	public final ArrayList<AMethod> methods() {
+	public final ArrayList<AMethodNode> methods() {
 		return this.methods;
 	}
 	
@@ -70,7 +70,7 @@ public abstract class Lope implements Visitable {
 	public final String toString() {
 		StringBuilder sb = new StringBuilder();
 		
-		for (AMethod m : methods) {
+		for (AMethodNode m : methods) {
 			sb.append(m.toString());
 		}
 		

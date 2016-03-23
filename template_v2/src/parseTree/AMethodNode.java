@@ -5,15 +5,15 @@ package parseTree;
  * {@link ParseTree}.
  * 
  * If a method has no argument, then this is the super class for the
- * class that will represent it. Otherwise, refer to {@link ASimpleMethod} or
- * {@link ANestedMethod}.
+ * class that will represent it. Otherwise, refer to {@link ASimpleMethodNode} or
+ * {@link ANestedMethodNode}.
  * 
  * @author Daniel Fritz
- * @see ASimpleMethod
- * @see ANestedMethod
+ * @see ASimpleMethodNode
+ * @see ANestedMethodNode
  *
  */
-public abstract class AMethod implements Visitable {
+public abstract class AMethodNode implements Visitable {
 	
 	/**
 	 * name of the method.
@@ -25,7 +25,7 @@ public abstract class AMethod implements Visitable {
 	 * constructor that initializes <code>name</code> with a given string.
 	 * @param methodName name that the method is given
 	 */
-	public AMethod(final String methodName) {
+	public AMethodNode(final String methodName) {
 		name = methodName;
 	}
 	

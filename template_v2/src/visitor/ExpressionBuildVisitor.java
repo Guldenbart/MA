@@ -3,18 +3,18 @@ package visitor;
 import expressions.Expr;
 import expressions.Operation;
 import expressions.Value;
-import parseTreeGen.LopeIntermediate;
-import parseTreeGen.LopeStart;
-import parseTreeGen.NestedMethodDivided;
-import parseTreeGen.NestedMethodExpr;
-import parseTreeGen.NestedMethodMinus;
-import parseTreeGen.NestedMethodPlus;
-import parseTreeGen.NestedMethodTimes;
-import parseTreeGen.SimpleMethodDivided;
-import parseTreeGen.SimpleMethodExpr;
-import parseTreeGen.SimpleMethodMinus;
-import parseTreeGen.SimpleMethodPlus;
-import parseTreeGen.SimpleMethodTimes;
+import parseTreeGen.ScopeNodeIntermediate;
+import parseTreeGen.ScopeNodeStart;
+import parseTreeGen.NestedMethodNodeDivided;
+import parseTreeGen.NestedMethodNodeExpr;
+import parseTreeGen.NestedMethodNodeMinus;
+import parseTreeGen.NestedMethodNodePlus;
+import parseTreeGen.NestedMethodNodeTimes;
+import parseTreeGen.SimpleMethodNodeDivided;
+import parseTreeGen.SimpleMethodNodeExpr;
+import parseTreeGen.SimpleMethodNodeMinus;
+import parseTreeGen.SimpleMethodNodePlus;
+import parseTreeGen.SimpleMethodNodeTimes;
 import visitorGen.AExprDSLVisitor;
 
 /**
@@ -46,74 +46,74 @@ public final class ExpressionBuildVisitor extends AExprDSLVisitor {
 	}
 
 	@Override
-	public void visit(final LopeStart scopeStart) {
+	public void visit(final ScopeNodeStart scopeStart) {
 		for (int i = 0; i < scopeStart.size(); i++) {
 			scopeStart.get(i).accept(this);
 		}
 	}
 	
 	@Override
-	public void visit(final LopeIntermediate scopeIntermediate) {
+	public void visit(final ScopeNodeIntermediate scopeIntermediate) {
 		for (int i = 0; i < scopeIntermediate.size(); i++) {
 			scopeIntermediate.get(i).accept(this);
 		}
 	}
 
 	@Override
-	public void visit(final SimpleMethodExpr mes) {
+	public void visit(final SimpleMethodNodeExpr mes) {
 		e = new Value(mes.getValue());		
 	}
 
 	@Override
-	public void visit(final NestedMethodExpr men) {
+	public void visit(final NestedMethodNodeExpr men) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
 		men.getParseTree().accept(nestedVisitor);
 		e = nestedVisitor.getExpression();
 	}
 
 	@Override
-	public void visit(final SimpleMethodPlus mps) {
+	public void visit(final SimpleMethodNodePlus mps) {
 		e = new Operation(e, '+', new Value(mps.getValue()));
 	}
 
 	@Override
-	public void visit(final NestedMethodPlus mpn) {
+	public void visit(final NestedMethodNodePlus mpn) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
 		mpn.getParseTree().accept(nestedVisitor);
 		e = new Operation(e, '+', nestedVisitor.getExpression());
 	}
 
 	@Override
-	public void visit(final SimpleMethodMinus mms) {
+	public void visit(final SimpleMethodNodeMinus mms) {
 		e = new Operation(e, '-', new Value(mms.getValue()));
 	}
 
 	@Override
-	public void visit(final NestedMethodMinus mmn) {
+	public void visit(final NestedMethodNodeMinus mmn) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
 		mmn.getParseTree().accept(nestedVisitor);
 		e = new Operation(e, '-', nestedVisitor.getExpression());
 	}
 
 	@Override
-	public void visit(final SimpleMethodTimes mts) {
+	public void visit(final SimpleMethodNodeTimes mts) {
 		e = new Operation(e, '*', new Value(mts.getValue()));
 	}
 
 	@Override
-	public void visit(final NestedMethodTimes mtn) {
+	public void visit(final NestedMethodNodeTimes mtn) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
 		mtn.getParseTree().accept(nestedVisitor);
 		e = new Operation(e, '*', nestedVisitor.getExpression());
 	}
 
 	@Override
-	public void visit(final SimpleMethodDivided mds) {
+	public void visit(final SimpleMethodNodeDivided mds) {
 		e = new Operation(e, '/', new Value(mds.getValue()));
 	}
 
 	@Override
-	public void visit(final NestedMethodDivided mdn) {
+	public void visit(final NestedMethodNodeDivided mdn) {
 		ExpressionBuildVisitor nestedVisitor = new ExpressionBuildVisitor();
 		mdn.getParseTree().accept(nestedVisitor);
 		e = new Operation(e, '*', nestedVisitor.getExpression());

@@ -1,9 +1,9 @@
-lope(dslNameUC, packageName, visitorGenPackageName, iName) ::= <<
+scopeNode(dslNameUC, packageName, visitorGenPackageName, iName) ::= <<
 <getHeader(dslNameUC, packageName, visitorGenPackageName)>
 
-public final class Lope<iName> extends Lope {
+public final class ScopeNode<iName> extends ScopeNode {
 	
-	public Lope<iName>(final ArrayList\<AMethod> list) {
+	public ScopeNode<iName>(final ArrayList\<AMethodNode> list) {
 		super("<iName>", list);
 	}
 	
@@ -20,7 +20,7 @@ package <packageName>;
 import java.util.ArrayList;
 
 import <visitorGenPackageName>.A<dslNameUC>Visitor;
-import parseTree.AMethod;
-import parseTree.Lope;
+import parseTree.AMethodNode;
+import parseTree.ScopeNode;
 import visitor.AVisitor;
 >>

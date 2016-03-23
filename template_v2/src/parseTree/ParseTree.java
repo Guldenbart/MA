@@ -15,15 +15,15 @@ import visitor.AVisitor;
 public final class ParseTree implements Visitable {
 
 	/**
-	 * list of all {@link Lope} objects of this tree.
+	 * list of all {@link ScopeNode} objects of this tree.
 	 */
-	private ArrayList<Lope> list;
+	private ArrayList<ScopeNode> list;
 	
 	/**
 	 * constructor that initializes 'list' with a given list of Lope objects.
 	 * @param lopeList value that list is set to.
 	 */
-	public ParseTree(final ArrayList<Lope> lopeList) {
+	public ParseTree(final ArrayList<ScopeNode> lopeList) {
 		this.list = lopeList;
 	}
 	
@@ -49,7 +49,7 @@ public final class ParseTree implements Visitable {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("TreeBuilder.begin().");
-		for (Lope l : list) {
+		for (ScopeNode l : list) {
 			sb.append(l.toString());
 		}
 		

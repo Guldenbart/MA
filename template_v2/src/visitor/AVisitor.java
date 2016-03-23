@@ -11,7 +11,7 @@ import parseTree.ParseTree;
  * (name pattern: A[languageName]Visitor).
  * 
  * Every ParseTree consists of one or multiple @link{Lope} objects and each
- * Lope consists of one or multiple {@link AMethod} objects.
+ * Lope consists of one or multiple {@link AMethodNode} objects.
  * Every lope and method object accepts your "visit" and you can access their
  * properties inside the respective visit method.
  * 

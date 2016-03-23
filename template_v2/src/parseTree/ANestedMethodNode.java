@@ -1,14 +1,14 @@
 package parseTree;
 
 /**
- * subclass of {@link AMethod} and abstract super class for all method classes
+ * subclass of {@link AMethodNode} and abstract super class for all method classes
  * that have <code>ParseTree</code> as their argument.
  * 
  * @author Daniel Fritz
- * @see AMethod
- * @see ASimpleMethod
+ * @see AMethodNode
+ * @see ASimpleMethodNode
  */
-public abstract class ANestedMethod extends AMethod {
+public abstract class ANestedMethodNode extends AMethodNode {
 
 	/**
 	 * 
@@ -21,7 +21,7 @@ public abstract class ANestedMethod extends AMethod {
 	 * @param name name that the method is given
 	 * @param tree parse tree of the expression that is nested into this method
 	 */
-	public ANestedMethod(final String name, final ParseTree tree) {
+	public ANestedMethodNode(final String name, final ParseTree tree) {
 		super(name);
 		this.parseTree = tree;
 	}	

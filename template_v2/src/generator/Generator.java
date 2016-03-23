@@ -146,12 +146,13 @@ public class Generator {
 	private String runClassTemplate() {
 		visitorSuperClassTemp.add("dslName", dslName);
 		visitorSuperClassTemp.add("package", visitorDestPackage);
+		visitorSuperClassTemp.add("parseTreePackage", parseTreeDestPackage);
 		
 		STGroup treeBuilderGroup = new STGroupFile("./src/templates/treeBuilderClass.stg");
 		treeBuilderGroup.registerRenderer(String.class, new StringRenderer());
 		ST treeBuilderTemp = treeBuilderGroup.getInstanceOf("class");
 		
-		STGroup visitorLopeGroup = new STGroupFile("./src/templates/visitorLopeClass.stg");
+		STGroup scopeNodeGroup = new STGroupFile("./src/templates/scopeNodeClass.stg");
 		
 		ArrayList<GeneratorScope> generatorScopeList = new ArrayList<GeneratorScope>();
 		
@@ -167,17 +168,17 @@ public class Generator {
 			}
 			
 			// scopesList zusammenstellen
-			GeneratorScope tempScope = createGeneratorScope(curInterfaceName, entry.getValue());
+			GeneratorScope genScope = createGeneratorScope(curInterfaceName, entry.getValue());
 			
 			// lope
-			ST visitorLopeTemp = visitorLopeGroup.getInstanceOf("lope");
-			visitorLopeTemp.add("dslNameUC", toUC(dslName));
-			visitorLopeTemp.add("iName", curInterfaceName);
-			visitorLopeTemp.add("packageName", parseTreeDestPackage);
-			visitorLopeTemp.add("visitorGenPackageName", visitorDestPackage);
-			writeToFile(tempScope.getLopeClassPath(parseTreeDestPath), visitorLopeTemp.render());
+			ST scopeNodeTemp = scopeNodeGroup.getInstanceOf("scopeNode");
+			scopeNodeTemp.add("dslNameUC", toUC(dslName));
+			scopeNodeTemp.add("iName", curInterfaceName);
+			scopeNodeTemp.add("packageName", parseTreeDestPackage);
+			scopeNodeTemp.add("visitorGenPackageName", visitorDestPackage);
+			writeToFile(genScope.getScopeNodePath(parseTreeDestPath), scopeNodeTemp.render());
 			
-			generatorScopeList.add(tempScope);
+			generatorScopeList.add(genScope);
 			
 		}
 		
@@ -195,7 +196,7 @@ public class Generator {
 		// we give this to the GeneratorScope in the end
 		ArrayList<GeneratorMethod> generatorMethodList = new ArrayList<GeneratorMethod>();
 		
-		STGroup visitorMethodGroup = new STGroupFile("./src/templates/visitorMethodClass.stg");
+		STGroup visitorMethodGroup = new STGroupFile("./src/templates/methodNodeClass.stg");
 		visitorMethodGroup.registerRenderer(String.class, new StringRenderer());
 		
 		for (Class<?> clazz : arrayList) {
@@ -226,7 +227,7 @@ public class Generator {
 				}
 				
 				// visitorMethod
-				ST visitorMethodTemp = visitorMethodGroup.getInstanceOf("visitorMethodDispatch");
+				ST visitorMethodTemp = visitorMethodGroup.getInstanceOf("methodNodeDispatch");
 				visitorMethodTemp.add("dslName", dslName);
 				visitorMethodTemp.add("parseTreeDestPackage", parseTreeDestPackage);
 				visitorMethodTemp.add("visitorDestPackage", visitorDestPackage);

@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * 
  * @author Daniel Fritz
  * @see GeneratorMethod
- * @see Lope
+ * @see ScopeNode
  */
  // TODO Frage: ^ zu kompliziert oder wäre es kürzer zu ungenau/falsch?
 public final class GeneratorScope {
@@ -29,7 +29,8 @@ public final class GeneratorScope {
 	
 	
 	/**
-	 * constructor that initializes <code>interfaceName</code> and <code>methods</code> of the object.
+	 * constructor that initializes <code>interfaceName</code> and
+	 * <code>methods</code> of the object.
 	 * @param iName interface name.
 	 * @param list ArrayList of GeneratorMethod objects.
 	 */
@@ -59,7 +60,7 @@ public final class GeneratorScope {
 	 * gets a list of all <code>GeneratorMethod</code> objects with no argument.
 	 * @return list of all <code>GeneratorMethod</code> objects without
 	 * argument.
-	 * @see AMethod
+	 * @see AMethodNode
 	 */
 	public ArrayList<GeneratorMethod> getMethods() {
 		ArrayList<GeneratorMethod> mList = new ArrayList<GeneratorMethod>();
@@ -97,7 +98,7 @@ public final class GeneratorScope {
 	 * argument.
 	 * @return list of all <code>GeneratorMethod</code> objects with a nested
 	 * argument.
-	 * @see ANestedMethod
+	 * @see ANestedMethodNode
 	 */
 	public ArrayList<GeneratorMethod> getNestedMethods() {
 		ArrayList<GeneratorMethod> nmList = new ArrayList<GeneratorMethod>();
@@ -112,13 +113,13 @@ public final class GeneratorScope {
 	}
 
 	/**
-	 * Composes the file path for a Lope file (see {@link Lope}) that is
+	 * Composes the file path for a ScopeNode file (see {@link ScopeNode}) that is
 	 * derived from the corresponding GeneratorScope object.
 	 * @param basePath path that the file path is based on.
 	 * @return composed path object
 	 */
-	public Path getLopeClassPath(final Path basePath) {
-		return basePath.resolve(Paths.get("Lope" + interfaceName + ".java"));
+	public Path getScopeNodePath(final Path basePath) {
+		return basePath.resolve(Paths.get("ScopeNode" + interfaceName + ".java"));
 	}
 	
 	@Override
