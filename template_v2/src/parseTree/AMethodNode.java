@@ -36,4 +36,9 @@ public abstract class AMethodNode implements Visitable {
 	public final String getName() {
 		return name;
 	}
+	
+	@Override
+	public String toString() {
+		return getName() + "().";
+	}
 }

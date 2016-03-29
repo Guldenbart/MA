@@ -14,11 +14,6 @@ public final class MethodNode<toUC(method.name)> extends AMethodNode {
 		super("<toLC(method.name)>");
 	}
 	
-	@Override
-	public String toString() {
-		return getName() + "()";
-	}
-	
 	<getAcceptMethod(dslName)>
 	
 }

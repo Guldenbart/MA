@@ -20,7 +20,6 @@ public class TemplateTest {
         		).times(3).minus(
         			ExprDSLTreeBuilder.begin().expr(4).plus(1).divided(5).end()
         		).end();
-        y.toString();
         
         System.out.printf("%s = %s%n", "y", y.toString());
         

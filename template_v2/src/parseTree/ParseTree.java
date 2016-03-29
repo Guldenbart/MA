@@ -20,7 +20,8 @@ public final class ParseTree implements Visitable {
 	private List<ScopeNode> list;
 	
 	/**
-	 * constructor that initializes 'list' with a given list of Lope objects.
+	 * constructor that initializes 'list' with a given list of ScopeNode
+	 * objects.
 	 * @param scopeNodeList value that list is set to.
 	 */
 	public ParseTree(final List<ScopeNode> scopeNodeList) {
@@ -49,10 +50,12 @@ public final class ParseTree implements Visitable {
 	public String toString() {		
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("TreeBuilder.begin().");
-		for (ScopeNode l : list) {
-			sb.append(l.toString());
+		sb.append("begin().");
+		for (ScopeNode sn : list) {
+			sb.append(sn.toString());
 		}
+		// delete the last dot (easier than checking when last scope happens)
+		sb.deleteCharAt(sb.length()-1);
 		
 		return sb.toString();
 	}

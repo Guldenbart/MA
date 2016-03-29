@@ -172,7 +172,7 @@ public final class GeneratorMethod {
 	 * @return composed path object
 	 * @see AMethodNode
 	 */
-	public Path getVisitorClassPath(final Path basePath) {
+	public Path getMethodNodePath(final Path basePath) {
 		if (getIsMethod()) {
 			return basePath.resolve(Paths.get("MethodNode" + name + ".java"));
 		} else if (getIsNestedMethod()) {

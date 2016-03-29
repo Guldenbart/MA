@@ -42,8 +42,6 @@ public final class Generator {
 	 */
 	private Map<Class<?>, List<Class<?>>> interfaceMap;
 	
-	private ST visitorSuperClassTemp;
-	
 	/**
 	 * constructor that initializes all instance variables.
 	 * @param dslName name of the domain specific language
@@ -60,10 +58,6 @@ public final class Generator {
 		parseTreeDestPath = parseTreeGenPath;
 		visitorDestPath = visitorGenPath;
 		interfaceMap = new HashMap<Class<?>, List<Class<?>> >();
-
-		STGroup visitorSuperClassGroup = new STGroupFile("./src/templates/visitorSuperClass.stg");
-		visitorSuperClassGroup.registerRenderer(String.class, new StringRenderer());
-		visitorSuperClassTemp = visitorSuperClassGroup.getInstanceOf("visitorSuperClass");
 		
 		parseTreeDestPackage = (parseTreeDestPath.subpath(parseTreeDestPath.getNameCount()-1, parseTreeDestPath.getNameCount())).toString();
 		visitorDestPackage = (visitorDestPath.subpath(visitorDestPath.getNameCount()-1, visitorDestPath.getNameCount())).toString();
@@ -75,15 +69,12 @@ public final class Generator {
 		String treeBuilderString = runTemplates();
 		
 		Path treePath = parseTreeDestPath.resolve(Paths.get(toUC(dslName) + "TreeBuilder.java"));
-		Path visitorPath = visitorDestPath.resolve(Paths.get("A" + toUC(dslName) + "Visitor.java"));
-
+		
 		writeToFile(treePath, treeBuilderString);
-		writeToFile(visitorPath, visitorSuperClassTemp.render());
 	}
 	
 	/**
 	 * Method to populate the variable @link{Generator#interfaceMap}.
-	 * 
 	 * 
 	 * @throws IOException
 	 * @see {@link Generator#interfaceMap}
@@ -155,9 +146,6 @@ public final class Generator {
 	
 
 	private String runTemplates() {
-		visitorSuperClassTemp.add("dslName", dslName);
-		visitorSuperClassTemp.add("package", visitorDestPackage);
-		visitorSuperClassTemp.add("parseTreePackage", parseTreeDestPackage);
 		
 		STGroup treeBuilderGroup = new STGroupFile("./src/templates/treeBuilderClass.stg");
 		treeBuilderGroup.registerRenderer(String.class, new StringRenderer());
@@ -165,7 +153,7 @@ public final class Generator {
 		
 		STGroup scopeNodeGroup = new STGroupFile("./src/templates/scopeNodeClass.stg");
 		
-		ArrayList<GeneratorScope> generatorScopeList = new ArrayList<GeneratorScope>();
+		List<GeneratorScope> generatorScopeList = new ArrayList<GeneratorScope>();
 		
 		for (Entry<Class<?>, List<Class<?>>> entry : interfaceMap.entrySet()) {
 			String curInterfaceName = entry.getKey().getSimpleName();
@@ -193,24 +181,36 @@ public final class Generator {
 			
 		}
 		
+		// treeBuilder
 		treeBuilderTemp.add("dslName", dslName);
 		treeBuilderTemp.add("packageName", parseTreeDestPackage);
 		treeBuilderTemp.add("firstInterfaceName", firstInterfaceName);
 		treeBuilderTemp.add("scopesList", generatorScopeList);
 		
+		// visitorSuperClass
+		STGroup visitorSuperClassGroup = new STGroupFile("./src/templates/visitorSuperClass.stg");
+		visitorSuperClassGroup.registerRenderer(String.class, new StringRenderer());
+		ST visitorSuperClassTemp = visitorSuperClassGroup.getInstanceOf("visitorSuperClass");
+
+		visitorSuperClassTemp.add("dslName", dslName);
+		visitorSuperClassTemp.add("package", visitorDestPackage);
+		visitorSuperClassTemp.add("parseTreePackage", parseTreeDestPackage);
 		visitorSuperClassTemp.add("scopesList", generatorScopeList);
+		
+		Path visitorPath = visitorDestPath.resolve(Paths.get("A" + toUC(dslName) + "Visitor.java"));
+		writeToFile(visitorPath, visitorSuperClassTemp.render());
 		
 		return treeBuilderTemp.render();
 	}
 	
-	private GeneratorScope createGeneratorScope(final String interfaceName, final List<Class<?>> arrayList) {
+	private GeneratorScope createGeneratorScope(final String interfaceName, final List<Class<?>> list) {
 		// we give this to the GeneratorScope in the end
 		List<GeneratorMethod> generatorMethodList = new ArrayList<GeneratorMethod>();
 		
 		STGroup methodNodeGroup = new STGroupFile("./src/templates/methodNodeClass.stg");
 		methodNodeGroup.registerRenderer(String.class, new StringRenderer());
 		
-		for (Class<?> clazz : arrayList) {
+		for (Class<?> clazz : list) {
 			for (Method method : clazz.getDeclaredMethods()) {
 				if (method.getParameters().length > 1) {
 					// TODO exception?
@@ -243,7 +243,7 @@ public final class Generator {
 				methodNodeTemp.add("parseTreeDestPackage", parseTreeDestPackage);
 				methodNodeTemp.add("visitorDestPackage", visitorDestPackage);
 				methodNodeTemp.add("method", tempMethod);
-				writeToFile(tempMethod.getVisitorClassPath(parseTreeDestPath), methodNodeTemp.render());
+				writeToFile(tempMethod.getMethodNodePath(parseTreeDestPath), methodNodeTemp.render());
 				
 				generatorMethodList.add(tempMethod);
 			}
