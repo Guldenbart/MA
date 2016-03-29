@@ -22,7 +22,7 @@ public class TemplateMain {
 			
 		Generator tr = new Generator(dslName, dslPath, parseTreeGenPath, visitorGenPath);
 		try {
-			tr.runAll();
+			tr.generateAll();
 		} catch (IOException e) {
 			System.err.println(e.getCause().toString());
 			e.printStackTrace();

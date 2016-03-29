@@ -3,15 +3,15 @@ package parseTree;
 import java.util.ArrayList;
 
 /**
- * every 'Lope' class holds a list of all methods of the same scope that were
- * called consecutively.
+ * every 'ScopeNode' class holds a list of all methods of the same scope that
+ * were called consecutively.
  * 
  * @author Daniel Fritz
  */
 public abstract class ScopeNode implements Visitable {
 	
 	/**
-	 * name of the interface of the grammar definition all methods belong to.
+	 * name of the interface in the grammar definition all methods belong to.
 	 */
 	private final String interfaceName;
 	

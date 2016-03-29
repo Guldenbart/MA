@@ -79,7 +79,7 @@ public final class GeneratorScope {
 	 * argument.
 	 * @return list of all <code>GeneratorMethod</code> objects with a simple
 	 * argument.
-	 * @see ASimpleMethod
+	 * @see ASimpleMethodNode
 	 */
 	public ArrayList<GeneratorMethod> getSimpleMethods() {
 		ArrayList<GeneratorMethod> smList = new ArrayList<GeneratorMethod>();
@@ -113,10 +113,11 @@ public final class GeneratorScope {
 	}
 
 	/**
-	 * Composes the file path for a ScopeNode file (see {@link ScopeNode}) that is
-	 * derived from the corresponding GeneratorScope object.
+	 * Composes the file path for the {@link ScopeNode} file that is generated
+	 * from the information of the correspondingGeneratorScope object.
 	 * @param basePath path that the file path is based on.
 	 * @return composed path object
+	 * @see ScopeNode
 	 */
 	public Path getScopeNodePath(final Path basePath) {
 		return basePath.resolve(Paths.get("ScopeNode" + interfaceName + ".java"));

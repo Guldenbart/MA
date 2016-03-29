@@ -27,7 +27,7 @@ public abstract class ANestedMethodNode extends AMethodNode {
 	}	
 	
 	/**
-	 * gets the method's parseTree.
+	 * gets the method's parseTree that is nested into this method.
 	 * @return parse tree of the method
 	 */
 	public final ParseTree getParseTree() {

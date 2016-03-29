@@ -19,7 +19,7 @@ import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 import org.stringtemplate.v4.StringRenderer;
 
-public class Generator {
+public final class Generator {
 	
 	private final String dslName;
 	private final Path sourcePath;
@@ -45,12 +45,15 @@ public class Generator {
 	
 	/**
 	 * constructor that initializes all instance variables.
-	 * @param dslName
-	 * @param srcPath
-	 * @param parseTreeGenPath
-	 * @param visitorGenPath
+	 * @param dslName name of the domain specific language
+	 * @param srcPath path where the interfaces that define the dsl are.
+	 * @param parseTreeGenPath path where all files related to the parse tree
+	 * 	are generated to.
+	 * @param visitorGenPath path where all files related to the visitor
+	 * 	are generated to.
 	 */
-	public Generator(String dslName, Path srcPath, Path parseTreeGenPath, Path visitorGenPath) {
+	public Generator(final String dslName, final Path srcPath,
+			final Path parseTreeGenPath, final Path visitorGenPath) {
 		this.dslName = dslName;
 		sourcePath = srcPath;
 		parseTreeDestPath = parseTreeGenPath;
@@ -65,10 +68,10 @@ public class Generator {
 		visitorDestPackage = (visitorDestPath.subpath(visitorDestPath.getNameCount()-1, visitorDestPath.getNameCount())).toString();
 	}
 	
-	public void runAll() throws IOException {
+	public void generateAll() throws IOException {
 		fillInterfaceMap();
 		
-		String treeBuilderString = runClassTemplate();
+		String treeBuilderString = runTemplates();
 		
 		Path treePath = parseTreeDestPath.resolve(Paths.get(toUC(dslName) + "TreeBuilder.java"));
 		Path visitorPath = visitorDestPath.resolve(Paths.get("A" + toUC(dslName) + "Visitor.java"));
@@ -77,7 +80,14 @@ public class Generator {
 		writeToFile(visitorPath, visitorSuperClassTemp.render());
 	}
 	
-	void fillInterfaceMap() throws IOException {
+	/**
+	 * Method to populate the variable @link{Generator#interfaceMap}.
+	 * 
+	 * 
+	 * @throws IOException
+	 * @see {@link Generator#interfaceMap}
+	 */
+	private void fillInterfaceMap() throws IOException {
 		/*
 		 * We remember which interfaces are extended by others,
 		 * because we have to skip these.
@@ -135,15 +145,15 @@ public class Generator {
 		for (Class<?> clazz : skipList) {
 			/*
 			 *  we have to do this because we might add some classes to
-			 *  'interfaceMap' and later find out that we have to skip them.
+			 *  'interfaceMap' only to later find out that we have to skip
+			 *  them.
 			 */
 			this.interfaceMap.remove(clazz);
 		}
 	}
 	
 
-	// TODO rename
-	private String runClassTemplate() {
+	private String runTemplates() {
 		visitorSuperClassTemp.add("dslName", dslName);
 		visitorSuperClassTemp.add("package", visitorDestPackage);
 		visitorSuperClassTemp.add("parseTreePackage", parseTreeDestPackage);
@@ -156,10 +166,10 @@ public class Generator {
 		
 		ArrayList<GeneratorScope> generatorScopeList = new ArrayList<GeneratorScope>();
 		
-		for(Entry<Class<?>, ArrayList<Class<?>>> entry : interfaceMap.entrySet()) {
+		for (Entry<Class<?>, ArrayList<Class<?>>> entry : interfaceMap.entrySet()) {
 			String curInterfaceName = entry.getKey().getSimpleName();
 			
-			if(!curInterfaceName.equals(firstInterfaceName)) {
+			if (!curInterfaceName.equals(firstInterfaceName)) {
 				/*
 				 *  we must not add the interface with 'firstInterfaceName'
 				 *  because it has to be handled separately
@@ -170,7 +180,7 @@ public class Generator {
 			// scopesList zusammenstellen
 			GeneratorScope genScope = createGeneratorScope(curInterfaceName, entry.getValue());
 			
-			// lope
+			// scopeNode
 			ST scopeNodeTemp = scopeNodeGroup.getInstanceOf("scopeNode");
 			scopeNodeTemp.add("dslNameUC", toUC(dslName));
 			scopeNodeTemp.add("iName", curInterfaceName);
@@ -192,12 +202,12 @@ public class Generator {
 		return treeBuilderTemp.render();
 	}
 	
-	private GeneratorScope createGeneratorScope(String interfaceName, ArrayList<Class<?>> arrayList) {
+	private GeneratorScope createGeneratorScope(final String interfaceName, final ArrayList<Class<?>> arrayList) {
 		// we give this to the GeneratorScope in the end
 		ArrayList<GeneratorMethod> generatorMethodList = new ArrayList<GeneratorMethod>();
 		
-		STGroup visitorMethodGroup = new STGroupFile("./src/templates/methodNodeClass.stg");
-		visitorMethodGroup.registerRenderer(String.class, new StringRenderer());
+		STGroup methodNodeGroup = new STGroupFile("./src/templates/methodNodeClass.stg");
+		methodNodeGroup.registerRenderer(String.class, new StringRenderer());
 		
 		for (Class<?> clazz : arrayList) {
 			for (Method method : clazz.getDeclaredMethods()) {
@@ -226,13 +236,13 @@ public class Generator {
 					tempMethod = new GeneratorMethod(interfaceName, mName, retType);
 				}
 				
-				// visitorMethod
-				ST visitorMethodTemp = visitorMethodGroup.getInstanceOf("methodNodeDispatch");
-				visitorMethodTemp.add("dslName", dslName);
-				visitorMethodTemp.add("parseTreeDestPackage", parseTreeDestPackage);
-				visitorMethodTemp.add("visitorDestPackage", visitorDestPackage);
-				visitorMethodTemp.add("method", tempMethod);
-				writeToFile(tempMethod.getVisitorClassPath(parseTreeDestPath), visitorMethodTemp.render());
+				// methodNode
+				ST methodNodeTemp = methodNodeGroup.getInstanceOf("methodNodeDispatch");
+				methodNodeTemp.add("dslName", dslName);
+				methodNodeTemp.add("parseTreeDestPackage", parseTreeDestPackage);
+				methodNodeTemp.add("visitorDestPackage", visitorDestPackage);
+				methodNodeTemp.add("method", tempMethod);
+				writeToFile(tempMethod.getVisitorClassPath(parseTreeDestPath), methodNodeTemp.render());
 				
 				generatorMethodList.add(tempMethod);
 			}
@@ -241,6 +251,11 @@ public class Generator {
 		return new GeneratorScope(interfaceName, generatorMethodList);
 	}
 	
+	/**
+	 * Writes a given string to a file defined by its path.
+	 * @param path path of the file the content will be written to.
+	 * @param content string that is written to the given file.
+	 */
 	private void writeToFile(Path path, String content) {
 		try {
 			PrintWriter pw = new PrintWriter(new FileOutputStream(path.toString(), false));
@@ -253,8 +268,17 @@ public class Generator {
 		}
 	}
 	
+	/**
+	 * Converts the first letter of a string to its upper case equivalent.
+	 * 
+	 * If the given String is null or an empty string, an empty string is
+	 * returned.
+	 * @param s string whose first letter is converted
+	 * @return empty String if <code>null</code> or an empty String was given.
+	 * String with a capital first letter otherwise.
+	 */
 	private String toUC(String s) {
-		if (s.length() == 0) {
+		if (s == null || s.length() == 0) {
 			return "";
 		} else if(s.length() == 1) {
 			return s.toUpperCase();

@@ -10,20 +10,23 @@ import parseTree.ParseTree;
  * visitor that was generated according to your grammar 
  * (name pattern: A[languageName]Visitor).
  * 
- * Every ParseTree consists of one or multiple @link{Lope} objects and each
- * Lope consists of one or multiple {@link AMethodNode} objects.
- * Every lope and method object accepts your "visit" and you can access their
- * properties inside the respective visit method.
+ * Every ParseTree consists of one or multiple @link{ScopeNode} objects and
+ * each ScopeNode consists of one or multiple {@link AMethodNode} objects.
+ * Every ScopeNode and MethodNode object accepts your "visit" and you can
+ * access their properties inside the respective visit method.
  * 
- * Not every visit method of one visitor has to implemented. 
+ * Not every visit method of one visitor has to implemented, as you might not
+ * be interested in every method everytime.
+ * 
  * @author Daniel Fritz
  *
  */
 public abstract class AVisitor {
 	
 	/**
-	 * visits every element (of type Lope) in this parse tree.
+	 * visits every element (of type ScopeNode) in this parse tree.
 	 * @param parseTree ParseTree that you want to visit
+	 * @see ScopeNode
 	 */
 	public final void visit(final ParseTree parseTree) {
 		for (int i = 0; i < parseTree.size(); i++) {

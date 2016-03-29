@@ -166,10 +166,11 @@ public final class GeneratorMethod {
 	}
 
 	/**
-	 * Composes the file path for a Method file (see {@link AMethodNode}) that is
-	 * derived from the corresponding GeneratorMethod object.
+	 * Composes the file path for a {@link AMethodNode} file that is generated
+	 * from the information of the corresponding GeneratorMethod object.
 	 * @param basePath path that the file path is based on.
 	 * @return composed path object
+	 * @see AMethodNode
 	 */
 	public Path getVisitorClassPath(final Path basePath) {
 		if (getIsMethod()) {

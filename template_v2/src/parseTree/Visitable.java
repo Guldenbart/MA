@@ -19,6 +19,4 @@ public interface Visitable {
 	 * @param visitor the visitor that is accepted.
 	 */
 	void accept(AVisitor visitor);
-	
-	//String toString();
 }

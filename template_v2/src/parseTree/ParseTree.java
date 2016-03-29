@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import visitor.AVisitor;
 
 /**
- * This class is used to store all information about the structure of an
- * expression.
+ * This class is used to store all information about the structure of a
+ * dsl expression.
  * 
  * TODO more information
  * 
@@ -34,13 +34,14 @@ public final class ParseTree implements Visitable {
 	public int size() {
 		return list.size();
 	}
+	//TODO Frage: Bei Methoden wie dieser Fehlerbehandlung nötig (z.B. list==null)?
 	
 	/**
 	 * gets the item of 'methods' at position [index].
 	 * @param index position in methodList from which you want to get the item 
 	 * @return item (of type Lope) at position [index]
 	 */
-	public Visitable get(final int index) {
+	public ScopeNode get(final int index) {
 		return list.get(index);
 	}
 	
