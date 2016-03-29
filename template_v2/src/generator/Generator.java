@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -39,7 +40,7 @@ public final class Generator {
 	 * The key of each map entry is an interface and the value is
 	 * a list of all interfaces that the <key> interface extends, plus itself.
 	 */
-	private Map<Class<?>, ArrayList<Class<?>>> interfaceMap;
+	private Map<Class<?>, List<Class<?>>> interfaceMap;
 	
 	private ST visitorSuperClassTemp;
 	
@@ -58,7 +59,7 @@ public final class Generator {
 		sourcePath = srcPath;
 		parseTreeDestPath = parseTreeGenPath;
 		visitorDestPath = visitorGenPath;
-		interfaceMap = new HashMap<Class<?>, ArrayList<Class<?>> >();
+		interfaceMap = new HashMap<Class<?>, List<Class<?>> >();
 
 		STGroup visitorSuperClassGroup = new STGroupFile("./src/templates/visitorSuperClass.stg");
 		visitorSuperClassGroup.registerRenderer(String.class, new StringRenderer());
@@ -92,7 +93,7 @@ public final class Generator {
 		 * We remember which interfaces are extended by others,
 		 * because we have to skip these.
 		 */
-		ArrayList<Class<?>> skipList = new ArrayList<Class<?>>();
+		List<Class<?>> skipList = new ArrayList<Class<?>>();
 		
 		DirectoryStream<Path> stream = Files.newDirectoryStream(sourcePath); // throws IOException
 		for (Path file : stream) {
@@ -125,7 +126,7 @@ public final class Generator {
 				
 				Class<?>[] classArray = c.getInterfaces();
 				
-				ArrayList<Class<?>> interfaceMapValue = new ArrayList<Class<?>>();
+				List<Class<?>> interfaceMapValue = new ArrayList<Class<?>>();
 				// add yourself first; this makes it easier when evaluating the list later
 				interfaceMapValue.add(c);
 				
@@ -166,7 +167,7 @@ public final class Generator {
 		
 		ArrayList<GeneratorScope> generatorScopeList = new ArrayList<GeneratorScope>();
 		
-		for (Entry<Class<?>, ArrayList<Class<?>>> entry : interfaceMap.entrySet()) {
+		for (Entry<Class<?>, List<Class<?>>> entry : interfaceMap.entrySet()) {
 			String curInterfaceName = entry.getKey().getSimpleName();
 			
 			if (!curInterfaceName.equals(firstInterfaceName)) {
@@ -202,9 +203,9 @@ public final class Generator {
 		return treeBuilderTemp.render();
 	}
 	
-	private GeneratorScope createGeneratorScope(final String interfaceName, final ArrayList<Class<?>> arrayList) {
+	private GeneratorScope createGeneratorScope(final String interfaceName, final List<Class<?>> arrayList) {
 		// we give this to the GeneratorScope in the end
-		ArrayList<GeneratorMethod> generatorMethodList = new ArrayList<GeneratorMethod>();
+		List<GeneratorMethod> generatorMethodList = new ArrayList<GeneratorMethod>();
 		
 		STGroup methodNodeGroup = new STGroupFile("./src/templates/methodNodeClass.stg");
 		methodNodeGroup.registerRenderer(String.class, new StringRenderer());

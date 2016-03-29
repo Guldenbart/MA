@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class TemplateMain {
+public class GeneratorMain {
 
 	public static void main(String[] args) {
 		

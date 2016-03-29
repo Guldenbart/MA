@@ -3,6 +3,7 @@ package generator;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * class that wraps everything we need to know about a method scope
@@ -25,7 +26,7 @@ public final class GeneratorScope {
 	/**
 	 * collection of all GeneratorMethod objects which belong to this scope.
 	 */
-	private ArrayList<GeneratorMethod> methods;
+	private List<GeneratorMethod> methods;
 	
 	
 	/**
@@ -35,7 +36,7 @@ public final class GeneratorScope {
 	 * @param list ArrayList of GeneratorMethod objects.
 	 */
 	public GeneratorScope(final String iName,
-			final ArrayList<GeneratorMethod> list) {
+			final List<GeneratorMethod> list) {
 		interfaceName = iName;
 		methods = list;
 	}
@@ -52,7 +53,7 @@ public final class GeneratorScope {
 	 * gets the list of all GeneratorMethod objects. 
 	 * @return ArrayList of GeneratorMethod objects
 	 */
-	public ArrayList<GeneratorMethod> getAllMethods() {
+	public List<GeneratorMethod> getAllMethods() {
 		return methods;
 	}
 	
@@ -62,8 +63,8 @@ public final class GeneratorScope {
 	 * argument.
 	 * @see AMethodNode
 	 */
-	public ArrayList<GeneratorMethod> getMethods() {
-		ArrayList<GeneratorMethod> mList = new ArrayList<GeneratorMethod>();
+	public List<GeneratorMethod> getMethods() {
+		List<GeneratorMethod> mList = new ArrayList<GeneratorMethod>();
 		
 		for (GeneratorMethod gm : methods) {
 			if (gm.getIsMethod()) {
@@ -81,8 +82,8 @@ public final class GeneratorScope {
 	 * argument.
 	 * @see ASimpleMethodNode
 	 */
-	public ArrayList<GeneratorMethod> getSimpleMethods() {
-		ArrayList<GeneratorMethod> smList = new ArrayList<GeneratorMethod>();
+	public List<GeneratorMethod> getSimpleMethods() {
+		List<GeneratorMethod> smList = new ArrayList<GeneratorMethod>();
 		
 		for (GeneratorMethod gm : methods) {
 			if (gm.getIsSimpleMethod()) {
@@ -100,8 +101,8 @@ public final class GeneratorScope {
 	 * argument.
 	 * @see ANestedMethodNode
 	 */
-	public ArrayList<GeneratorMethod> getNestedMethods() {
-		ArrayList<GeneratorMethod> nmList = new ArrayList<GeneratorMethod>();
+	public List<GeneratorMethod> getNestedMethods() {
+		List<GeneratorMethod> nmList = new ArrayList<GeneratorMethod>();
 		
 		for (GeneratorMethod gm : methods) {
 			if (gm.getIsNestedMethod()) {

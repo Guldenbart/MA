@@ -1,6 +1,7 @@
 class(dslName, packageName, firstInterfaceName, interfaceNames, scopesList) ::= <<
 package <packageName>;
 
+import java.util.List;
 import java.util.ArrayList;
 
 import parseTree.ParseTree;
@@ -13,7 +14,7 @@ import <dslName>.<firstInterfaceName>;
 public final class <toUC(dslName)>TreeBuilder {
 	private ParseTree parseTree;
 	<interfaceNames:{iName | private final <toUC(iName)>Scope <toLC(iName)>Scope;<\n>}>
-	private ArrayList\<ScopeNode> scopeNodeList;
+	private List\<ScopeNode> scopeNodeList;
 	
 	private <toUC(dslName)>TreeBuilder() {
 		<interfaceNames:{iName | this.<toLC(iName)>Scope = this.new <toUC(iName)>Scope();<\n>}>
@@ -40,7 +41,7 @@ getImports(methods, simpleMethods, nestedMethods, packageName) ::= <<
 scope(dslName, interfaceName, methodList) ::= <<
 public final class <interfaceName>Scope implements <interfaceName> {
 
-	private ArrayList\<AMethodNode> methodList<interfaceName>;
+	private List\<AMethodNode> methodList<interfaceName>;
 	
 	private <interfaceName>Scope() {
 		methodList<interfaceName> = new ArrayList\<AMethodNode>();

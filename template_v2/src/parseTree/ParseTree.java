@@ -1,6 +1,6 @@
 package parseTree;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import visitor.AVisitor;
 
@@ -17,14 +17,14 @@ public final class ParseTree implements Visitable {
 	/**
 	 * list of all {@link ScopeNode} objects of this tree.
 	 */
-	private ArrayList<ScopeNode> list;
+	private List<ScopeNode> list;
 	
 	/**
 	 * constructor that initializes 'list' with a given list of Lope objects.
-	 * @param lopeList value that list is set to.
+	 * @param scopeNodeList value that list is set to.
 	 */
-	public ParseTree(final ArrayList<ScopeNode> lopeList) {
-		this.list = lopeList;
+	public ParseTree(final List<ScopeNode> scopeNodeList) {
+		this.list = scopeNodeList;
 	}
 	
 	/**
@@ -39,7 +39,7 @@ public final class ParseTree implements Visitable {
 	/**
 	 * gets the item of 'methods' at position [index].
 	 * @param index position in methodList from which you want to get the item 
-	 * @return item (of type Lope) at position [index]
+	 * @return item (of type ScopeNode) at position [index]
 	 */
 	public ScopeNode get(final int index) {
 		return list.get(index);
