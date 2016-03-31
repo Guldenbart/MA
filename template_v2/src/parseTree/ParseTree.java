@@ -38,7 +38,7 @@ public final class ParseTree implements Visitable, Iterable<ScopeNode> {
 			sb.append(sn.toString());
 		}
 		// delete the last dot (easier than checking when last scope happens)
-		sb.deleteCharAt(sb.length()-1);
+		sb.deleteCharAt(sb.length() - 1);
 		
 		return sb.toString();
 	}

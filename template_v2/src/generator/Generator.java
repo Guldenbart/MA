@@ -256,7 +256,7 @@ public final class Generator {
 	 * @param path path of the file the content will be written to.
 	 * @param content string that is written to the given file.
 	 */
-	private void writeToFile(Path path, String content) {
+	private void writeToFile(final Path path, final String content) {
 		try {
 			PrintWriter pw = new PrintWriter(new FileOutputStream(path.toString(), false));
 			pw.write(content);

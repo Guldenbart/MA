@@ -17,7 +17,8 @@ public abstract class ScopeNode implements Visitable, Iterable<AMethodNode> {
 	private final String interfaceName;
 	
 	/**
-	 * list of all methods (that is, the method classes (see {@link AMethodNode}))
+	 * list of all methods (that is, the method classes
+	 * (see {@link AMethodNode}))
 	 * that were called consecutively.
 	 */
 	private final List<AMethodNode> methods;

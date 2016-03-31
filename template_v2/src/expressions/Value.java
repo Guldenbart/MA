@@ -17,10 +17,10 @@ public final class Value implements Expr {
 
 	/**
 	 * Constructor that initializes <code>value</code>.
-	 * @param value what value gets initialized with
+	 * @param val what value gets initialized with
 	 */
-    public Value(final double value) {
-        this.value = value;
+    public Value(final double val) {
+        this.value = val;
     }
 
     

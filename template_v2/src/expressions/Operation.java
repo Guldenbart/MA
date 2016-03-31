@@ -15,19 +15,19 @@ public final class Operation implements Expr {
 	/**
 	 * expression on the left side of the operator.
 	 */
-	public final Expr left;
+	private final Expr left;
 	
 	/**
 	 * char that defines the operator.
 	 * 
 	 * Only '+', '-', '*' and '/' work.
 	 */
-    public final char op;
+    private final char op;
     
     /**
      * expression on the right side of the operator.
      */
-    public final Expr right;
+    private final Expr right;
 
     /**
      * constructor that initializes all fields.

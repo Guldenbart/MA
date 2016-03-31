@@ -5,8 +5,8 @@ package parseTree;
  * {@link ParseTree}.
  * 
  * If a method has no argument, then this is the super class for the
- * class that will represent it. Otherwise, refer to {@link ASimpleMethodNode} or
- * {@link ANestedMethodNode}.
+ * class that will represent it. Otherwise, refer to {@link ASimpleMethodNode}
+ * or {@link ANestedMethodNode}.
  * 
  * @author Daniel Fritz
  * @see ASimpleMethodNode
