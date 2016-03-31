@@ -178,7 +178,6 @@ public final class Generator {
 			writeToFile(genScope.getScopeNodePath(parseTreeDestPath), scopeNodeTemp.render());
 			
 			generatorScopeList.add(genScope);
-			
 		}
 		
 		// treeBuilder

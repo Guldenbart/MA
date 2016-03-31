@@ -62,7 +62,7 @@ public abstract class ScopeNode implements Visitable {
 	 * @param index position in methodList from which you want to get the item 
 	 * @return item (of type AMethod) at position [index]
 	 */
-	public final Visitable get(final int index) {
+	public final AMethodNode get(final int index) {
 		return methods.get(index);
 	}
 
