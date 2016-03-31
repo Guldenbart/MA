@@ -1,5 +1,6 @@
 package parseTree;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * 
  * @author Daniel Fritz
  */
-public abstract class ScopeNode implements Visitable {
+public abstract class ScopeNode implements Visitable, Iterable<AMethodNode> {
 	
 	/**
 	 * name of the interface in the grammar definition all methods belong to.
@@ -40,41 +41,22 @@ public abstract class ScopeNode implements Visitable {
 	public final String getInterfaceName() {
 		return this.interfaceName;
 	}
-	
-	/**
-	 * gets the list of all the AMethod objects that belong to this Lope.
-	 * @return list of methods
-	 */
-	public final List<AMethodNode> methods() {
-		return this.methods;
-	}
-	
-	/**
-	 * gets the size of the method list.
-	 * @return method list size
-	 */
-	public final int size() {
-		return methods.size();
-	}
-	
-	/**
-	 * gets the item of 'methods' at position [index].
-	 * @param index position in methodList from which you want to get the item 
-	 * @return item (of type AMethod) at position [index]
-	 */
-	public final AMethodNode get(final int index) {
-		return methods.get(index);
-	}
 
 	@Override
 	public final String toString() {
 		StringBuilder sb = new StringBuilder();
 		
+		sb.append("<" + this.interfaceName + ">");
 		for (AMethodNode m : methods) {
 			sb.append(m.toString());
 		}
 		
 		return sb.toString();
+	}
+	
+	@Override
+	public Iterator<AMethodNode> iterator() {
+		return this.methods.iterator();
 	}
 
 }

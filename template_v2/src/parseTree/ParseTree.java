@@ -1,5 +1,6 @@
 package parseTree;
 
+import java.util.Iterator;
 import java.util.List;
 
 import visitor.AVisitor;
@@ -12,12 +13,12 @@ import visitor.AVisitor;
  * 
  * @author Daniel Fritz
  */
-public final class ParseTree implements Visitable {
+public final class ParseTree implements Visitable, Iterable<ScopeNode> {
 
 	/**
 	 * list of all {@link ScopeNode} objects of this tree.
 	 */
-	private List<ScopeNode> list;
+	private List<ScopeNode> scopes;
 	
 	/**
 	 * constructor that initializes 'list' with a given list of ScopeNode
@@ -25,25 +26,7 @@ public final class ParseTree implements Visitable {
 	 * @param scopeNodeList value that list is set to.
 	 */
 	public ParseTree(final List<ScopeNode> scopeNodeList) {
-		this.list = scopeNodeList;
-	}
-	
-	/**
-	 * returns the size of 'list'.
-	 * @return size of list
-	 */
-	public int size() {
-		return list.size();
-	}
-	//TODO Frage: Bei Methoden wie dieser Fehlerbehandlung nötig (z.B. list==null)?
-	
-	/**
-	 * gets the item of 'methods' at position [index].
-	 * @param index position in methodList from which you want to get the item 
-	 * @return item (of type ScopeNode) at position [index]
-	 */
-	public ScopeNode get(final int index) {
-		return list.get(index);
+		this.scopes = scopeNodeList;
 	}
 	
 	@Override
@@ -51,7 +34,7 @@ public final class ParseTree implements Visitable {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("begin().");
-		for (ScopeNode sn : list) {
+		for (ScopeNode sn : scopes) {
 			sb.append(sn.toString());
 		}
 		// delete the last dot (easier than checking when last scope happens)
@@ -64,6 +47,10 @@ public final class ParseTree implements Visitable {
 	public void accept(final AVisitor visitor) {
 		visitor.visit(this);
 	}
+
+	@Override
+	public Iterator<ScopeNode> iterator() {
+		return this.scopes.iterator();
+	}
 	
-	// TODO Kann die Eigenschaft "generics" durch Reflection ausgelesen werden?
 }

@@ -1,6 +1,7 @@
 package visitor;
 
 import parseTree.ParseTree;
+import parseTree.ScopeNode;
 
 /**
  * abstract super class for all visitors.
@@ -29,8 +30,8 @@ public abstract class AVisitor {
 	 * @see ScopeNode
 	 */
 	public final void visit(final ParseTree parseTree) {
-		for (int i = 0; i < parseTree.size(); i++) {
-			parseTree.get(i).accept(this);
+		for (ScopeNode s : parseTree) {
+			s.accept(this);
 		}
 	}
 

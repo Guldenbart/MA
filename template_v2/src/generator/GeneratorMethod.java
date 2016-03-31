@@ -208,4 +208,5 @@ public final class GeneratorMethod {
 	// TODO alle restrictions reincoden (eine Methode, die alle Einschränkungen überprüft?)
 	// TODO werden finalizers benötigt? bzw. try-with
 	// TODO in GeneratorMethod: Muss visitorSuperClassTemp noch Instanzvariable sein? Im Moment wird alles in einer Methode gemacht
+	// TODO immer this oder nie?
 }

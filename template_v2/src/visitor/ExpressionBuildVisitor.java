@@ -3,6 +3,7 @@ package visitor;
 import expressions.Expr;
 import expressions.Operation;
 import expressions.Value;
+import parseTree.AMethodNode;
 import parseTreeGen.ScopeNodeIntermediate;
 import parseTreeGen.ScopeNodeStart;
 import parseTreeGen.NestedMethodNodeDivided;
@@ -47,15 +48,15 @@ public final class ExpressionBuildVisitor extends AExprDSLVisitor {
 
 	@Override
 	public void visit(final ScopeNodeStart scopeStart) {
-		for (int i = 0; i < scopeStart.size(); i++) {
-			scopeStart.get(i).accept(this);
+		for (AMethodNode m : scopeStart) {
+			m.accept(this);
 		}
 	}
 	
 	@Override
 	public void visit(final ScopeNodeIntermediate scopeIntermediate) {
-		for (int i = 0; i < scopeIntermediate.size(); i++) {
-			scopeIntermediate.get(i).accept(this);
+		for (AMethodNode m : scopeIntermediate) {
+			m.accept(this);
 		}
 	}
 
