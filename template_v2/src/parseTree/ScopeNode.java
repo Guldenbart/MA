@@ -18,8 +18,7 @@ public abstract class ScopeNode implements Visitable, Iterable<AMethodNode> {
 	
 	/**
 	 * list of all methods (that is, the method classes
-	 * (see {@link AMethodNode}))
-	 * that were called consecutively.
+	 * (see {@link AMethodNode})) that were called consecutively.
 	 */
 	private final List<AMethodNode> methods;
 	
@@ -56,7 +55,7 @@ public abstract class ScopeNode implements Visitable, Iterable<AMethodNode> {
 	}
 	
 	@Override
-	public Iterator<AMethodNode> iterator() {
+	public final Iterator<AMethodNode> iterator() {
 		return this.methods.iterator();
 	}
 
