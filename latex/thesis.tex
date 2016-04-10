@@ -1,0 +1,94 @@
+
+\documentclass[11pt,a4paper]{report}		                                   
+
+\usepackage{a4}
+%\usepackage{german}
+
+%Deutsche Trennungen, Anführungsstriche, Rechtschreibung und mehr:
+%-------------------------------------------------------------------
+\usepackage{german, ngerman}	% Trennungen, Anführungsstriche, ...
+\usepackage[ngerman]{babel}		% Rechtschreibung
+\usepackage[T1]{fontenc}        % Silbentrennung und Eingabe von Wörtern mit Umlauten
+
+% Optionen zur Texteingabe und zum Darstellungsstil
+%-------------------------------------------------------------------
+\usepackage[utf8]{inputenc}			% Kodierung festlegen, für UTF-8 Unterstützung
+\usepackage{lmodern}				% Benutze skalierbare Schriftfamilie
+\usepackage[activate]{microtype}	% Verbesserte Darstellung der Schriftzeichen und
+									% Zwischenräumen
+
+% Zitierung und Literaturverzeichnis
+%-------------------------------------------------------------------
+\usepackage{cite}
+
+% Grafiken
+%-------------------------------------------------------------------
+\usepackage{graphicx}		% Zum Einbinden von Grafiken
+\usepackage{wrapfig}		% Grafiken mit umfliessenden Text
+\usepackage{subcaption}
+\usepackage{float}			% Erlaubt Textumschlossene Bilder und Tabellen
+\usepackage{tikz}			% Einbinden von Latexgrafiken
+
+% Tabellen
+%-------------------------------------------------------------------
+\usepackage{multirow}		% Zusammenfassen von Zellen in Tabellen ermöglichen
+
+% Links
+%-------------------------------------------------------------------
+\usepackage[pdfstartview=FitV, 	% start in 'fit size height'-view
+			colorlinks=true, 	% Links farbig markieren
+			linkcolor=black, 	% Interne Links schwarz
+			citecolor=black, 	% Links zur Literatur schwarz
+			filecolor=black, 	% Links auf lokale Dateien schwarz
+			urlcolor=blue,   	% Externe Links blau
+			breaklinks=true, 	% Links umbrechen
+			linktocpage=false 	% Im Inhaltsverzeichnis sind Seitenzahlen UND Text Links
+			]{hyperref}
+
+% Einbettung von Code (C/C++, Java, ...)
+%-------------------------------------------------------------------
+\usepackage{verbatim}		% Sorgt dafür, dass Text so dargestellt wird wie er eingegeben ist,
+                            % es werden keine Leerzeichen oder Tabs entfernnt
+\usepackage{moreverb}		% Erweiterte Möglichkeiten für verbatim                            
+\usepackage{listings}		% Source-Code printer for LaTeX
+\lstset{language=Java}  	% Java
+\lstset{numbers=left, numberstyle=\tiny, numbersep=-6pt,tabsize=3, stepnumber=1}
+\lstset{framexleftmargin=-5mm, frame=shadowbox, rulesepcolor=\color{darkGray}}
+\lstset{captionpos=b} 							% Beschriftung unter Listing
+\lstset{backgroundcolor=\color{gray}}
+\lstset{basicstyle=\scriptsize} 				% alle listings winzig drucken 
+\lstset{commentstyle=\color{green}} 			% Kommentare gruen drucken 
+\lstset{keywordstyle=\color{blue}\bfseries}		% Schlüsselwörter fett und blau
+
+\newcommand{\thema}{Automatisierte Implementierung interner Java-DSLs}
+\newcommand{\schlagworte}{$[$Platz, f\"ur, spezifische, Schlagworte, zur, Ausarbeitung $]$}
+\newcommand{\zusammenfassung}{$[$Text der Zusammenfassung etwa 150 Worte. Es soll der 
+	L\"osungsweg beschrieben sein.$]$}
+\newcommand{\ausgabedatum}{19.10.2015}
+\newcommand{\abgabedatum}{04.05.2016}
+\newcommand{\autor}{Daniel Fritz}
+\newcommand{\autorStrasse}{Dacherstra\ss e 1}
+\newcommand{\autorPLZ}{78462}
+\newcommand{\autorOrt}{Konstanz}
+\newcommand{\autorGeburtsort}{Konstanz}
+\newcommand{\autorGeburtsdatum}{03.11.1987}
+\newcommand{\prueferA}{Prof. Dr. Heiko von Drachenfels}
+\newcommand{\prueferB}{Prof. Dr. Oliver Eck}
+\newcommand{\firma}{HTWG Konstanz}
+\newcommand{\studiengang}{Master of Science Informatik}
+
+
+\begin{document}
+
+	\include{cover}
+	\include{title}
+	\include{abstract}
+	\include{affidavit}
+	
+	\include{chapters/kapitel4}
+	
+	\bibliographystyle{plain} % autor, jahr
+	\bibliography{references}
+
+\end{document}
+
