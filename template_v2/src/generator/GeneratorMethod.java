@@ -203,10 +203,7 @@ public final class GeneratorMethod {
 	// TODO FRAGE: Gestaltung der Variablen-Namen (auch: *packageNAME, damit man weiß, dass es ein String und keine Variable ist?)
 	// TODO <code> tags in javadoc: alles mit 'Node'
 	// TODO FRAGE: GeneratorScope und GeneratorMethod als interne Klassen?
-	// TODO test toString() von GeneratorScope und GeneratorMethod
-	// TODO toString() von Method-Klassen überarbeiten
-	// TODO alle restrictions reincoden (eine Methode, die alle Einschränkungen überprüft?)
+	// TODO alle restrictions reincoden
 	// TODO werden finalizers benötigt? bzw. try-with
-	// TODO in GeneratorMethod: Muss visitorSuperClassTemp noch Instanzvariable sein? Im Moment wird alles in einer Methode gemacht
 	// TODO immer this oder nie?
 }
