@@ -17,7 +17,7 @@ import java.nio.file.Paths;
  * @author Daniel Fritz
  * @see AMethodNode
  */
-public final class GeneratorMethod {
+final class GeneratorMethod {
 	
 	/**
 	 * Name of the interface that the method belongs to.
@@ -198,6 +198,20 @@ public final class GeneratorMethod {
 		sb.append(")");
 		
 		return sb.toString();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o == null && !(o instanceof GeneratorMethod)) {
+			return false;
+		}		
+		GeneratorMethod gm = (GeneratorMethod)o;
+		
+		if (this.name.equals(gm.name) && this.argumentType.equals(gm.argumentType)) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	// TODO FRAGE: Gestaltung der Variablen-Namen (auch: *packageNAME, damit man weiß, dass es ein String und keine Variable ist?)

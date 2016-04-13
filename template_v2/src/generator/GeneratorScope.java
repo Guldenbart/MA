@@ -3,6 +3,7 @@ package generator;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -16,12 +17,12 @@ import java.util.List;
  * @see ScopeNode
  */
  // TODO Frage: ^ zu kompliziert oder wäre es kürzer zu ungenau/falsch?
-public final class GeneratorScope {
+final class GeneratorScope implements Iterable<GeneratorMethod> {
 
 	/**
 	 * name of the interface that gives this scope its name.
 	 */
-	private String interfaceName;
+	private String scopeName;
 	
 	/**
 	 * collection of all GeneratorMethod objects which belong to this scope.
@@ -37,7 +38,7 @@ public final class GeneratorScope {
 	 */
 	public GeneratorScope(final String iName,
 			final List<GeneratorMethod> list) {
-		interfaceName = iName;
+		scopeName = iName;
 		methods = list;
 	}
 	
@@ -45,8 +46,8 @@ public final class GeneratorScope {
 	 * gets the name of the interface.
 	 * @return interface name
 	 */
-	public String getInterfaceName() {
-		return interfaceName;
+	public String getScopeName() {
+		return scopeName;
 	}
 	
 	/**
@@ -121,18 +122,35 @@ public final class GeneratorScope {
 	 * @see ScopeNode
 	 */
 	public Path getScopeNodePath(final Path basePath) {
-		return basePath.resolve(Paths.get("ScopeNode" + interfaceName + ".java"));
+		return basePath.resolve(Paths.get("ScopeNode" + scopeName + ".java"));
+	}
+	
+	public int size() {
+		return this.methods.size();
+	}
+	
+	public GeneratorMethod get(int index) {
+		return this.methods.get(index);
 	}
 	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("Scope " + this.interfaceName + ":\n");
+		sb.append("Scope " + this.scopeName + ":\n");
 		for (GeneratorMethod gm : methods) {
 			sb.append("\t" + gm.toString() + "\n");
 		}
 		
 		return sb.toString();
+	}
+
+	@Override
+	public Iterator<GeneratorMethod> iterator() {
+		return methods.iterator();
+	}
+	
+	public boolean contains(GeneratorMethod gm) {
+		return this.methods.contains(gm);
 	}
 }
