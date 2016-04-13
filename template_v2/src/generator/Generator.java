@@ -388,6 +388,19 @@ public final class Generator {
 		DirectoryStream<Path> stream = Files.newDirectoryStream(sourcePath, "*.java");
 		
 		for (Path file : stream) {
+			
+			Path filePath = file.getFileName();
+			if (filePath == null) {
+				// TODO: just for findBugs; could it happen?
+				continue;
+			}
+			
+			String fileName = filePath.toString();
+			if (fileName.contentEquals("package-info.java")) {
+				// nothing to do here
+				continue;
+			}
+			
 			if (!Character.isUpperCase(file.getFileName().toString().charAt(0))) {
 				StringBuilder message = new StringBuilder();
 				message.append("Interface ");
@@ -422,14 +435,16 @@ public final class Generator {
 			for (GeneratorMethod gm : genScopeList.get(s)) {
 				
 				// look up if this methods name+argument type exists again
-				for (int t = s; s < genScopeList.size(); t++) {
-					if (genScopeList.get(t).contains(gm)) {
+				for (int t = s; t < genScopeList.size(); t++) {
+					int i = genScopeList.get(t).lastIndexOf(gm);
+					if (i != -1 && genScopeList.get(t).get(i) != gm) {
 						StringBuilder message = new StringBuilder();
 						message.append("There are multiple methods with name ");
 						message.append(gm.getName());
 						message.append(" and argument type ");
 						message.append(gm.getArgumentType());
 						message.append("!");
+						System.err.println(message.toString());
 						return false;
 					}
 				}
@@ -459,6 +474,7 @@ public final class Generator {
 		
 		System.err.println("There has to be at least one method that returns ParseTree"
 				+ "and thus concludes a phrase of your language!");
+		
 		return false;
 	}
 	

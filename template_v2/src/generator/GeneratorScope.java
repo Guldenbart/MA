@@ -36,8 +36,7 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 	 * @param iName interface name.
 	 * @param list ArrayList of GeneratorMethod objects.
 	 */
-	public GeneratorScope(final String iName,
-			final List<GeneratorMethod> list) {
+	public GeneratorScope(final String iName, final List<GeneratorMethod> list) {
 		scopeName = iName;
 		methods = list;
 	}
@@ -152,5 +151,9 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 	
 	public boolean contains(GeneratorMethod gm) {
 		return this.methods.contains(gm);
+	}
+	
+	public int lastIndexOf(Object o) {
+		return this.methods.lastIndexOf(o);
 	}
 }

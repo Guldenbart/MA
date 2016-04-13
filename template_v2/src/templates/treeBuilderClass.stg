@@ -25,7 +25,7 @@ public final class <toUC(dslName)>TreeBuilder {
 		return new <toUC(dslName)>TreeBuilder().new <firstInterfaceName>Scope();
 	}
 	
-	<scopesList:{scopeObject | <scope(dslName, scopeObject.interfaceName, scopeObject.allMethods)>}>
+	<scopesList:{scopeObject | <scope(dslName, scopeObject.scopeName, scopeObject.allMethods)>}>
 	
 }
 >>
