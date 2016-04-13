@@ -214,6 +214,15 @@ final class GeneratorMethod {
 		return false;
 	}
 	
+	@Override
+	public int hashCode() {
+		int result = 17;
+		result = 31 * result + this.name.hashCode();
+		result = 31 * result + this.argumentType.hashCode();
+		
+		return result;
+	}
+	
 	// TODO FRAGE: Gestaltung der Variablen-Namen (auch: *packageNAME, damit man weiß, dass es ein String und keine Variable ist?)
 	// TODO <code> tags in javadoc: alles mit 'Node'
 	// TODO FRAGE: GeneratorScope und GeneratorMethod als interne Klassen?
