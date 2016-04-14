@@ -17,7 +17,7 @@ import java.nio.file.Paths;
  * @author Daniel Fritz
  * @see AMethodNode
  */
-public final class GeneratorMethod {
+final class GeneratorMethod {
 	
 	/**
 	 * Name of the interface that the method belongs to.
@@ -200,13 +200,33 @@ public final class GeneratorMethod {
 		return sb.toString();
 	}
 	
+	@Override
+	public boolean equals(Object o) {
+		if (o == null && !(o instanceof GeneratorMethod)) {
+			return false;
+		}		
+		GeneratorMethod gm = (GeneratorMethod)o;
+		
+		if (this.name.equals(gm.name) && this.argumentType.equals(gm.argumentType)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		int result = 17;
+		result = 31 * result + this.name.hashCode();
+		result = 31 * result + this.argumentType.hashCode();
+		
+		return result;
+	}
+	
 	// TODO FRAGE: Gestaltung der Variablen-Namen (auch: *packageNAME, damit man weiß, dass es ein String und keine Variable ist?)
 	// TODO <code> tags in javadoc: alles mit 'Node'
 	// TODO FRAGE: GeneratorScope und GeneratorMethod als interne Klassen?
-	// TODO test toString() von GeneratorScope und GeneratorMethod
-	// TODO toString() von Method-Klassen überarbeiten
-	// TODO alle restrictions reincoden (eine Methode, die alle Einschränkungen überprüft?)
+	// TODO alle restrictions reincoden
 	// TODO werden finalizers benötigt? bzw. try-with
-	// TODO in GeneratorMethod: Muss visitorSuperClassTemp noch Instanzvariable sein? Im Moment wird alles in einer Methode gemacht
 	// TODO immer this oder nie?
 }

@@ -8,16 +8,16 @@ import parseTree.ParseTree;
 import parseTree.ScopeNode;
 import parseTree.AMethodNode;
 import <dslName>.<firstInterfaceName>;
-<interfaceNames:{iName | import <dslName>.<toUC(iName)>;<\n>}>
+<interfaceNames:{iName | import <dslName>.<iName>;<\n>}>
 <! scopesList:{scopeObject | <getImports(scopeObject.methods, scopeObject.simpleMethods, scopeObject.nestedMethods, packageName)>} !>
 
 public final class <toUC(dslName)>TreeBuilder {
 	private ParseTree parseTree;
-	<interfaceNames:{iName | private final <toUC(iName)>Scope <toLC(iName)>Scope;<\n>}>
+	<interfaceNames:{iName | private final <iName>Scope <toLC(iName)>Scope;<\n>}>
 	private List\<ScopeNode> scopeNodeList;
 	
 	private <toUC(dslName)>TreeBuilder() {
-		<interfaceNames:{iName | this.<toLC(iName)>Scope = this.new <toUC(iName)>Scope();<\n>}>
+		<interfaceNames:{iName | this.<toLC(iName)>Scope = this.new <iName>Scope();<\n>}>
 		this.scopeNodeList = new ArrayList\<ScopeNode>();
 	}
 	
@@ -25,7 +25,7 @@ public final class <toUC(dslName)>TreeBuilder {
 		return new <toUC(dslName)>TreeBuilder().new <firstInterfaceName>Scope();
 	}
 	
-	<scopesList:{scopeObject | <scope(dslName, scopeObject.interfaceName, scopeObject.allMethods)>}>
+	<scopesList:{scopeObject | <scope(dslName, scopeObject.scopeName, scopeObject.allMethods)>}>
 	
 }
 >>
@@ -57,12 +57,12 @@ method(dslName, iName, mName, returnType, argType, argName, hasArgument, scopeEn
 @Override
 public <getReturnType(toUC(returnType))> <toLC(mName)>(<getSignature(argType, argName, hasArgument)>) {
 	AMethodNode m = new <if(hasArgument)><methodTypeMap.(argType)><endif>MethodNode<toUC(mName)>(<argName>);
-	methodList<toUC(iName)>.add(m);
+	methodList<iName>.add(m);
 	
 	<if(scopeEnds)>
 	// new ScopeNode
-	ScopeNode scopeNode<toUC(iName)> = new ScopeNode<toUC(iName)>(methodList<toUC(iName)>);
-	<toUC(dslName)>TreeBuilder.this.scopeNodeList.add(scopeNode<toUC(iName)>);
+	ScopeNode scopeNode<iName> = new ScopeNode<iName>(methodList<iName>);
+	<toUC(dslName)>TreeBuilder.this.scopeNodeList.add(scopeNode<iName>);
 	
 	<endif>
 	<if(treeEnds)>
