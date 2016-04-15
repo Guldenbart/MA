@@ -6,7 +6,7 @@
 
 %Deutsche Trennungen, Anführungsstriche, Rechtschreibung und mehr:
 %-------------------------------------------------------------------
-\usepackage{german, ngerman}	% Trennungen, Anführungsstriche, ...
+%\usepackage{german, ngerman}	% Trennungen, Anführungsstriche, ...
 \usepackage[ngerman]{babel}		% Rechtschreibung
 \usepackage[T1]{fontenc}        % Silbentrennung und Eingabe von Wörtern mit Umlauten
 
@@ -19,7 +19,8 @@
 
 % Zitierung und Literaturverzeichnis
 %-------------------------------------------------------------------
-\usepackage{cite}
+%\usepackage{cite}
+\usepackage[backend=bibtex,style=authortitle-icomp]{biblatex}
 
 % Grafiken
 %-------------------------------------------------------------------
@@ -77,6 +78,8 @@
 \newcommand{\firma}{HTWG Konstanz}
 \newcommand{\studiengang}{Master of Science Informatik}
 
+\usepackage{csquotes}
+\addbibresource{references.bib}
 
 \begin{document}
 
@@ -85,10 +88,11 @@
 	\include{abstract}
 	\include{affidavit}
 	
+	\include{chapters/kapitel2}
 	\include{chapters/kapitel4}
 	
-	\bibliographystyle{plain} % autor, jahr
-	\bibliography{references}
+	%\bibliographystyle{plain} % autor, jahr
+	\printbibliography
 
 \end{document}
 
