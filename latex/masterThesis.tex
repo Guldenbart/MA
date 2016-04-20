@@ -20,7 +20,9 @@
 % Zitierung und Literaturverzeichnis
 %-------------------------------------------------------------------
 %\usepackage{cite}
-\usepackage[backend=bibtex,style=authortitle-icomp]{biblatex}
+\usepackage[backend=bibtex,style=numeric]{biblatex}
+\usepackage{csquotes}
+\addbibresource{references.bib}
 
 % Grafiken
 %-------------------------------------------------------------------
@@ -33,6 +35,7 @@
 % Tabellen
 %-------------------------------------------------------------------
 \usepackage{multirow}		% Zusammenfassen von Zellen in Tabellen ermöglichen
+\usepackage{tabularx}
 
 % Links
 %-------------------------------------------------------------------
@@ -61,6 +64,10 @@
 \lstset{commentstyle=\color{green}} 			% Kommentare gruen drucken 
 \lstset{keywordstyle=\color{blue}\bfseries}		% Schlüsselwörter fett und blau
 
+%sonstiges
+%-------------------------------------------------------------------
+\usepackage{todonotes}
+
 \newcommand{\thema}{Automatisierte Implementierung interner Java-DSLs}
 \newcommand{\schlagworte}{$[$Platz, f\"ur, spezifische, Schlagworte, zur, Ausarbeitung $]$}
 \newcommand{\zusammenfassung}{$[$Text der Zusammenfassung etwa 150 Worte. Es soll der 
@@ -78,8 +85,8 @@
 \newcommand{\firma}{HTWG Konstanz}
 \newcommand{\studiengang}{Master of Science Informatik}
 
-\usepackage{csquotes}
-\addbibresource{references.bib}
+
+
 
 \begin{document}
 
