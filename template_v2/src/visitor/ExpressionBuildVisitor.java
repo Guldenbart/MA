@@ -110,6 +110,9 @@ public final class ExpressionBuildVisitor extends AExprDSLVisitor {
 
 	@Override
 	public void visit(final SimpleMethodNodeDivided mds) {
+		if (mds.getValue() == 0) {
+			throw new IllegalArgumentException("Attempted to divide by 0!");
+		}
 		e = new Operation(e, '/', new Value(mds.getValue()));
 	}
 
