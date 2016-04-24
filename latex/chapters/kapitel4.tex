@@ -6,7 +6,7 @@
 % -------------------------------------------------------------------
 
 \chapter{Implementierungstechniken}\label{chp:4:implementierungstechniken}
-Dieses Kapitel stellt dar, aus welchen Teilen die Implementierung der Sprache aufgebaut ist. Ihre Funktion, ihre Implementierung und mögliche Alternativen werden gezeigt. Aufgrund des Inhalts dieser Arbeit beschränken sich Beispiele und Beschreibungen auch auf Java. Die Konzepte können jedoch auch auf andere Programmiersprachen übertragen werden.
+Dieses Kapitel stellt dar, aus welchen Teilen die Implementierung der Sprache aufgebaut ist. Ihre Funktion, ihre Implementierung und mögliche Alternativen werden gezeigt. Aufgrund des Inhalts dieser Arbeit beschränken sich Beispiele und Beschreibungen auch auf Java. Die Konzepte können jedoch auch auf andere Programmiersprachen übertragen werden. In den Abschnitten \ref{sct:4.1:eigenschaften} und \ref{sct:4.2:teile} werden allgemeine Techniken vorgestellt, die oft bei der Implementierung einer Programmiersprache, insbesondere einer internen DSL verwendet werden. Die restlichen Abschnitte dieses Kapitels widmen sich der Implementierungen im Rahmen dieser Abschlussarbeit.
 
 \section{Eigenschaften der Sprache}\label{sct:4.1:eigenschaften}
 Der Bezug auf ein bestimmtes Arbeitsgebiet ist für eine Domänenspezifische Sprache obligatorisch. Es gibt noch weitere Eigenschaften\todo{anderes Wort?}, die häufig mit internen DSLs in Verbindung gebracht werden, auch wenn sie nicht zwingend erforderlich sind. Jedoch steigern sie die Lesbarkeit der Sprache und die Produktivität bei der Arbeit mit ihr. An dieser Stelle sollen diese Eigenschaften kurz beschrieben werden und beispielhaft \todo{richtiges Wort?} erklärt werden, wie man sie erreicht.
@@ -69,15 +69,16 @@ Object Scoping erlaubt es, verkettete Methoden und die Zwischenergebnisse, welch
 \\ \\
 Zusammen mit Method Chaining kann Object Scoping dazu verwendet werden, bestimmte Aufrufreihenfolge innerhalb der Sprache festzulegen und so semantisch fehlerhafte oder unsinnige Eingaben bereits bei der Prüfung der statischen Syntax zu unterbinden. Diese Technik wird auch in dieser Abschlussarbeit verwendet (siehe auch\todo{Verweis}).
 
-\section{Verwendete Datenstrukturen und Implementierung}\label{sct:4.2:teile}\todo{anderer Name?}
+\section{Datenstrukturen und Implementierung}\label{sct:4.2:teile}\todo{anderer Name?}
 Jede Anweisung einer Sprache muss vom Computer \textquotedblleft verstanden\textquotedblright werden, bevor sie weiter verarbeitet werden kann. Nur in den einfachsten Fällen wird aus einer Eingabe direkt eine Ausgabe erzeugt. Ein Beispiel hierfür ist das Umwandeln eines Wiki-Markup-Formats in html\cite{book:parrLang}.
 Damit ein Computer eine nicht-trivialen Anweisung verstehen kann, muss er in Operatoren und Operanden zerlegt werden. Diese müssen in eine Datenstruktur abgelegt werden, die eine für die nachfolgenden Schritte geeignete Struktur aufweist. Zum einen ist wichtig, dass die Reihenfolge der einzelnen Elemente der Anweisung erhalten bleibt, zum anderen müssen die Beziehungen zwischen den Elementen abgebildet werden. Es hat sich herausgestellt, dass Bäume sich dafür am besten eignen\cite{book:parrLang}.
 
 Generell kann hierbei zwischen zwei Arten von Bäumen unterschieden werden. Sie folgen logisch gesehen in der Verarbeitung hintereinander, müssen allerdings nicht immer beide verwendet werden.
 
-Die erste Baum-Struktur ist der sogenannte Parse-Tree oder Syntax-Baum. Er besitzt eine Datenstruktur, in der sich speichern lässt, welche Regeln der Parser auf eine Anweisung angewendet hat und welche Terminalsymbole von ihm erkannt wurden. Innere Knoten des Baums repräsentieren die Regeln, Blätter stehen für Terminalsymbole.
+Die eine Baum-Struktur ist der sogenannte Parse-Tree oder Syntax-Baum. Er besitzt eine Datenstruktur, in der sich speichern lässt, welche Regeln der Parser auf eine Anweisung angewendet hat und welche Terminalsymbole von ihm erkannt wurden. Innere Knoten des Baums repräsentieren die Regeln, Blätter stehen für Terminalsymbole. Das Prinzip zur Erstellung von Parse-Trees ist einfach und regulär, daher können Syntaxbäume automatisch erstellt werden.\\
+Die andere Baum-Struktur ist der abstrakte Syntax-Baum oder Abstract Syntax Tree (kurz: AST). Er repräsentiert, wie der Name vermuten lässt, die abstrakte Syntax-Struktur des Codes. Den AST erhält man, indem man aus dem Parse-Tree alle Knoten entfernt, die nur eine syntaktische und keine semantische Bedeutung haben. Ein einfaches Beispiel für einen solchen Knoten ist das Semikolon am Ende einer Anweisung. Die folgende Abbildung verdeutlicht beispielhaft den Unterschied der beiden Baum-Typen anhand der Anweisung \texttt{x = 0;}:\todo{Bilder von Syntax-Baum und AST}
 
+Der große Vorteil des AST gegenüber dem Parse-Tree ist die Unabhängigkeit von der Syntax der Sprache. Das bedeutet, dass der AST und auch  nachfolgende Verarbeitungsschritte, die auf dem AST operieren, sich nicht ändern, wenn eine Umbenennung einer Regel in der Sprache vorgenommen wird. Außerdem kann der AST schneller als der Parse-Tree durchlaufen werden, weil die Anzahl der Knoten niedriger ist. Allerdings kann der abstrakte Syntax-Baum nicht vollautomatisch aus dem Parse-Tree generiert werden, sondern nur mithilfe von Regeln, die der Kenntnis der Sprach-Semantik bedürfen und diese widerspiegeln.
 
-ParseTree automatisch aufgebaut, AST nicht
 
 \subsection{Definition der Sprache}\label{ssct:4.2.1:sprachDef}
