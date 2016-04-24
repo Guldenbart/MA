@@ -63,13 +63,11 @@ In diesem Beispiel nehmen wir eine Sprache an, die Flächen beschreibt. Die Form
 \end{lstlisting}
 
 \subsection{Object Scoping}\label{ssct:4.1.3:scoping}
-Mit Object Scoping bezeichnet man den Vorgang, Zwischen
-
 Object Scoping erlaubt es, verkettete Methoden und die Zwischenergebnisse, welche bei der Verwendung auftreten, in einem Hostobjekt zu speichern. Die Alternative dazu ist das Speichern in globalen Variablen, was stets vermieden werden sollte.
 \\ \\
 Zusammen mit Method Chaining kann Object Scoping dazu verwendet werden, bestimmte Aufrufreihenfolge innerhalb der Sprache festzulegen und so semantisch fehlerhafte oder unsinnige Eingaben bereits bei der Prüfung der statischen Syntax zu unterbinden. Diese Technik wird auch in dieser Abschlussarbeit verwendet (siehe auch\todo{Verweis}).
 
-\section{Datenstrukturen und Implementierung}\label{sct:4.2:teile}\todo{anderer Name?}
+\section{Datenstrukturen bei der Verarbeitung von Sprachen}\label{sct:4.2:datenstrukturen}\todo{anderer Name?}
 Jede Anweisung einer Sprache muss vom Computer \textquotedblleft verstanden\textquotedblright werden, bevor sie weiter verarbeitet werden kann. Nur in den einfachsten Fällen wird aus einer Eingabe direkt eine Ausgabe erzeugt. Ein Beispiel hierfür ist das Umwandeln eines Wiki-Markup-Formats in html\cite{book:parrLang}.
 Damit ein Computer eine nicht-trivialen Anweisung verstehen kann, muss er in Operatoren und Operanden zerlegt werden. Diese müssen in eine Datenstruktur abgelegt werden, die eine für die nachfolgenden Schritte geeignete Struktur aufweist. Zum einen ist wichtig, dass die Reihenfolge der einzelnen Elemente der Anweisung erhalten bleibt, zum anderen müssen die Beziehungen zwischen den Elementen abgebildet werden. Es hat sich herausgestellt, dass Bäume sich dafür am besten eignen\cite{book:parrLang}.
 
@@ -81,4 +79,9 @@ Die andere Baum-Struktur ist der abstrakte Syntax-Baum oder Abstract Syntax Tree
 Der große Vorteil des AST gegenüber dem Parse-Tree ist die Unabhängigkeit von der Syntax der Sprache. Das bedeutet, dass der AST und auch  nachfolgende Verarbeitungsschritte, die auf dem AST operieren, sich nicht ändern, wenn eine Umbenennung einer Regel in der Sprache vorgenommen wird. Außerdem kann der AST schneller als der Parse-Tree durchlaufen werden, weil die Anzahl der Knoten niedriger ist. Allerdings kann der abstrakte Syntax-Baum nicht vollautomatisch aus dem Parse-Tree generiert werden, sondern nur mithilfe von Regeln, die der Kenntnis der Sprach-Semantik bedürfen und diese widerspiegeln.
 
 
-\subsection{Definition der Sprache}\label{ssct:4.2.1:sprachDef}
+\section{Implementierung und verwendete Datenstrukturen}\label{ssct:4.3:implementierung}
+\todo{text}
+Alle nachfolgend beschriebenen Codebeispiele der Implementierung beziehen sich auf eine DSL für arithmetische Ausdrücke. Mit ihr lassen sich Rechnungen in den vier Grundrechenarten in Infix-Notation beschreiben (\texttt{plus()}, \texttt{minus()}, \texttt{times()}, \texttt{divided}). Ein Ausdruck wird mit \texttt{begin()} eröffnet und mit \texttt{end()} abgeschlossen. Das erste Element eines Ausdrucks wird mit der Methode \texttt{expr()} gefasst.
+
+\subsection{Definition einer Grammatik durch Interfaces}\label{ssct:4.3.1:grammatik}
+Der erste Schritt bei der Implementierung einer Sprache ist das Festlegen der Grammatik. Dabei soll es, wie in Abschnitt \ref{ssct:4.1.3:scoping} beschrieben, möglich sein, bestimmte Aufrufreihenfolgen festzulegen. Außerdem soll
