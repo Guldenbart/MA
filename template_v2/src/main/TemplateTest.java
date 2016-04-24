@@ -17,7 +17,8 @@ public class TemplateTest {
         ParseTree y = 
         		begin().expr(
         			begin().expr(1).plus(2).end()
-        		).times(3).minus(
+        		).
+        		times(3).minus(
         			begin().expr(4).plus(1).divided(5).end()
         		).end();
         
