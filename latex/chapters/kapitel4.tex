@@ -5,5 +5,79 @@
 % Datum: 09.04.2016
 % -------------------------------------------------------------------
 
-\chapter{Implementierungstechniken}\label{chp:implementierungstechniken}
-Dieses Kapitel handelt von den verschiedenen Teilen des Codes, der für die 
+\chapter{Implementierungstechniken}\label{chp:4:implementierungstechniken}
+Dieses Kapitel stellt dar, aus welchen Teilen die Implementierung der Sprache aufgebaut ist. Ihre Funktion, ihre Implementierung und mögliche Alternativen werden gezeigt. Aufgrund des Inhalts dieser Arbeit beschränken sich Beispiele und Beschreibungen auch auf Java. Die Konzepte können jedoch auch auf andere Programmiersprachen übertragen werden.
+
+\section{Eigenschaften der Sprache}\label{sct:4.1:eigenschaften}
+Der Bezug auf ein bestimmtes Arbeitsgebiet ist für eine Domänenspezifische Sprache obligatorisch. Es gibt noch weitere Eigenschaften\todo{anderes Wort?}, die häufig mit internen DSLs in Verbindung gebracht werden, auch wenn sie nicht zwingend erforderlich sind. Jedoch steigern sie die Lesbarkeit der Sprache und die Produktivität bei der Arbeit mit ihr. An dieser Stelle sollen diese Eigenschaften kurz beschrieben werden und beispielhaft \todo{richtiges Wort?} erklärt werden, wie man sie erreicht.
+
+\subsection{Method Chaining}\label{ssct:4.1.1:chaining}
+Method Chaining, das Aneinanderreihen von Methoden, wird von vielen direkt mit dem Aussehen einer internen DSL verbunden. Es ist zwar nicht zwingend notwendig, Method Chaining in einer internen DSL zu verwenden, jedoch ist es eine sehr nützliche Technik mit der man den Sprachfluss und die Lesbarkeit einer Sprache deutlich verbessern kann\cite{book:fowlerDSL}. Ein kurzes Beispiel soll dies verdeutlichen.
+
+Dafür nehmen wir an, dass eine Klasse \emph{Rezept} alle Zutaten für ein bestimmtes Rezept hält. Da eine Vielzahl an Zutaten möglich ist, aber immer nur ein paar wenige für ein einzelnes Rezept nötig sind, werden sie der Klasse nicht per Konstruktor sondern per set-Methode übergeben. Normalerweise würde das folgendermaßen aussehen (alle Code-Beispiele sind in Java):\\
+
+\begin{lstlisting}[caption=Erstellung eines Rezepts auf normale Weise]
+	Recipe cake = new Recipe();
+	cake.setButter(200);
+	cake.setSugar(300);
+	cake.setEggs(4);
+	cake.setMilk(200);
+	cake.setFlour(500);
+\end{lstlisting}
+
+\noindent
+Dasselbe Rezept würde man mithilfe von Method Chaining auf die folgende Weise zusammenstellen:\\
+
+
+\begin{lstlisting}[caption=Erstellung desselben Rezepts mit Method Chaining]
+	Recipe cake = new Recipe();
+	cake.butter(200).sugar(300).eggs(4).milk(200).flour(500);
+\end{lstlisting}
+
+Um dieses Verhalten zu erreichen, müssen die einzelnen setter-Methoden anders als gewohnt implementiert werden. Üblicherweise würde eine Methode der Klasse so aussehen:\\
+
+\begin{lstlisting}[caption={set-Methode, implementiert zur Aneinaderreihung}]
+	public Recipe butter(int butterInGrams) {
+		this.butter = butterInGrams;
+	}
+\end{lstlisting}
+
+Um sie verketten zu können, müsste man dieselbe Methode folgendermaßen implementieren:\\
+
+\begin{lstlisting}[caption=set-Methode in der üblichen Implementierung]
+	public void setButter(int butterInGrams) {
+		this.butter = butterInGrams;
+	}
+\end{lstlisting}
+
+\subsection{Method Nesting}\label{ssct:4.1.2:nesting}
+Method Nesting beschreibt das Verschachteln von Funktionen um hierarchische Strukturen abzubilden, insbesondere rekursive Aufrufe\cite{book:fowlerDSL}, \cite{vl:drachen:teil3}. Dies wird erreicht, indem Rückgabewerte von Methoden als Argumente von Methoden einsetzbar sind.
+
+In diesem Beispiel nehmen wir eine Sprache an, die Flächen beschreibt. Die Form der Fläche wird durch die Koordinaten einzelner Punkte angegeben. Der Code zeigt eine Fläche, die durch das Zusammensetzen zweier Flächen entsteht:
+
+\begin{lstlisting}[caption=beispielhafte Verwendung von Method Nesting]
+	Shape square = shape(point(0,0).point(0,1).point(1,1).point(1,0));
+	Shape triangle = shape(point(0,1).point(0.5,2).point(1,1));
+	
+	Shape combine = shape(square.triangle);
+\end{lstlisting}
+
+\subsection{Object Scoping}\label{ssct:4.1.3:scoping}
+Mit Object Scoping bezeichnet man den Vorgang, Zwischen
+
+Object Scoping erlaubt es, verkettete Methoden und die Zwischenergebnisse, welche bei der Verwendung auftreten, in einem Hostobjekt zu speichern. Die Alternative dazu ist das Speichern in globalen Variablen, was stets vermieden werden sollte.
+\\ \\
+Zusammen mit Method Chaining kann Object Scoping dazu verwendet werden, bestimmte Aufrufreihenfolge innerhalb der Sprache festzulegen und so semantisch fehlerhafte oder unsinnige Eingaben bereits bei der Prüfung der statischen Syntax zu unterbinden. Diese Technik wird auch in dieser Abschlussarbeit verwendet (siehe auch\todo{Verweis}).
+
+\section{Verwendete Datenstrukturen und Implementierung}\label{sct:4.2:teile}\todo{anderer Name?}
+Jede Anweisung einer Sprache muss vom Computer \textquotedblleft verstanden\textquotedblright werden, bevor sie weiter verarbeitet werden kann. Nur in den einfachsten Fällen wird aus einer Eingabe direkt eine Ausgabe erzeugt. Ein Beispiel hierfür ist das Umwandeln eines Wiki-Markup-Formats in html\cite{book:parrLang}.
+Damit ein Computer eine nicht-trivialen Anweisung verstehen kann, muss er in Operatoren und Operanden zerlegt werden. Diese müssen in eine Datenstruktur abgelegt werden, die eine für die nachfolgenden Schritte geeignete Struktur aufweist. Zum einen ist wichtig, dass die Reihenfolge der einzelnen Elemente der Anweisung erhalten bleibt, zum anderen müssen die Beziehungen zwischen den Elementen abgebildet werden. Es hat sich herausgestellt, dass Bäume sich dafür am besten eignen\cite{book:parrLang}.
+
+Generell kann hierbei zwischen zwei Arten von Bäumen unterschieden werden. Sie folgen logisch gesehen in der Verarbeitung hintereinander, müssen allerdings nicht immer beide verwendet werden.
+
+Die erste Baum-Struktur ist der sogenannte Parse-Tree oder Syntax-Baum. Er besitzt eine Datenstruktur, in der sich speichern lässt, welche Regeln der Parser auf eine Anweisung angewendet hat und welche Terminalsymbole von ihm erkannt wurden. Innere Knoten des Baums repräsentieren die Regeln, Blätter stehen für Terminalsymbole.
+
+
+ParseTree automatisch aufgebaut, AST nicht
+
+\subsection{Definition der Sprache}\label{ssct:4.2.1:sprachDef}

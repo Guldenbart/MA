@@ -5,27 +5,31 @@
 % Datum: 14.04.2016
 % -------------------------------------------------------------------
 
-\chapter{Grundlagen/Problemstellung}\label{chp:grundlagen}
+\chapter{Grundlagen/Problemstellung}\label{chp:2:grundlagen}
+Dieses Kapitel vermittelt die Grundlagen zu domänen-spezifischen Sprachen und beschreibt das Ziel dieser Abschlussarbeit.
 
-\section{Was ist eine Domänenspezifische Sprache?}\label{sct:dsldef}
+\section{Was ist eine Domänenspezifische Sprache?}\label{sct:2.1:dsldef}
 Eine Domänenspezifische Sprache (DSL) ist eine Programmiersprache, die nur für einen bestimmten Anwendungsbereich entworfen ist. Im Gegensatz dazu steht die allgemeine Programmiersprache, mit der jede Art von Software-Problem gelöst werden kann\cite{www:fowlerDSL}. Das Wort "Domäne" bezieht sich dabei auf ein bestimmtes Wissensgebiet oder einen Tätigkeitsbereich.
 
 %===============================================================
 Eine wichtige Eigenschaft jeder DSL ist ihr begrenzter Umfang: Eine allgemeine Programmiersprache bietet umfangreiche Funktionalitäten welche sie sehr mächtig machen. Gleichzeitig ist sie dadurch schwerer zu erlernen und zu beherrschen. Eine DSL dagegen unterstützt nur das Minimum an Features, das für die entsprechende Domäne benötigt wird. Mit einer DSL lässt sich kein vollständiges Software-System schreiben, sondern nur ein ganz bestimmter Teil davon.
 Eine weitere Eigenschaft, die eine DSL charakterisiert, ist ihr Bezug auf eine Domäne: Das Einschränken einer Sprache zahlt sich nur aus, wenn ein starker Fokus auf eine bestimmte Domäne gelegt wird. Eine DSL ist immer nur für einen ganz bestimmten Zweck geeignet\cite{book:fowlerDSL}. Die Syntax der DSL soll möglichst stark an den Jargon des Arbeitsgebiet angepasst sein, in dem sie eingesetzt wird.
 \\ %===============================================================
-Ist eine domänenspezifische Sprache gut entworfen, kann das die Produktivität bei der Entwicklung steigern. So lässt sich zum Beispiel die Sprache auf eine Weise entwerfen, welche die Anzahl möglicher semantischer Fehler minimiert. Außerdem macht leicht zu lesender Code es einfacher, ihn abzuändern und, falls nötig, zu korrigieren. Die Verwendung von Fachbegriffen in der Syntax der Sprache macht es Domänenexperten mit wenig oder keiner Programmiererfahrung leichter, Code zu verstehen und inhaltliche Fehler zu entdecken.
+Ist eine domänenspezifische Sprache gut entworfen, kann das die Produktivität bei der Entwicklung steigern. So lässt sich zum Beispiel die Sprache auf eine Weise entwerfen, welche die Anzahl möglicher semantischer Fehler minimiert. Außerdem macht leicht zu lesender Code es einfacher, ihn abzuändern und, falls nötig, zu korrigieren. Die Verwendung von Fachbegriffen in der Syntax der Sprache macht es Domänenexperten mit wenig oder keiner Programmiererfahrung leichter, Code zu verstehen und inhaltliche Fehler zu entdecken. Der eingeschränkte Umfang der Sprache macht es grundsätzlich einfacher, sie zu erlernen.
 
 Das Verwenden von DSLs kann auch Probleme mit sich bringen. Das Entwerfen, Implementieren und das Pflegen einer Sprache kostet Zeit und Geld. Diese Kosten müssen stets dem Nutzen gegenübergestellt werden, wenn entschieden wird ob eine DSL entwickelt wird. Ist eine DSL fertig entwickelt, besteht die Gefahr, dass sie durch stetige Erweiterung zu groß und unübersichtlich wird, sodass die Eigenschaft des begrenzten Umfangs verloren geht. Deshalb muss bei jeder Erweiterung hinterfragt werden, ob ihre Funktionalität dem Problem gewidmet ist, für das die Sprache ursprünglich entwickelt wurde. Auch muss man stets vor dem Verwenden einer DSL abwägen, ob das Erlernen der Sprache durch den Vorteil, den die Sprache bringt, wett gemacht wird\cite{www:fowlerWorkbench}.\todo{mehr Probleme?}
 
-\section{Interne vs. Externe DSL}\label{sct:intvsext}
+\section{Interne vs. Externe DSL}\label{sct:2.2:intvsext}
 Domänenspezifische Sprachen lassen sich grundsätzlich in zwei Kategorien aufteilen: interne und externe DSLs. Obwohl in dieser Abschlussarbeit nur interne DSLs behandelt werden, sollen an dieser Stelle kurz Eigenschaften, sowie Vor- und Nachteile beider Ansätze aufgezeigt werden.
-
+\\ \\ %==========================================================
 Für eine \textbf{interne} DSL wird eine bereits vorhandene, allgemeine Programmiersprache - genannt \emph{Wirtssprache} - derart abgewandelt, sodass es sich anfühlt, als würde man eine eigenständige Sprache verwenden und nicht mehr die Wirtssprache. Trotzdem ist Code der DSL weiterhin gültiger Code der Wirtssprache.\\
-Eine \textbf{externe} DSL ist prinzipiell unabhängig von der Hauptsprache der Anwendung, in der sie verwendet wird. Dies ermöglicht das Verwenden einer vollständig benutzerdefinierten Syntax.\todo{Einbettung/Übersetzung erwähnen}
+Eine \textbf{externe} DSL ist prinzipiell unabhängig von der Hauptsprache der Anwendung, in der sie verwendet wird. Dies ermöglicht das Verwenden einer vollständig benutzerdefinierten Syntax.
 
+Eine DSL ist in vielen Fällen auf eine bestimmte Weise an eine bereits vorhandene Programmiersprache gebunden, welche als Wirts- oder Hauptsprache bezeichnet wird. Bei einer internen DSL ist dies die Sprache, welche modifiziert wird, um die DSL zu erzeugen. Bei einer externen DSL, welche neben einer allgemeinen Programmiersprache in einem Projekt eingesetzt wird, ist es die Sprache, in die der Code übersetzt wird, um ausgeführt zu werden.
+Jedoch muss nicht jede externe DSL von einer anderen Sprache abhängen und auch nicht jede muss direkt ausführbar sein\cite{paper:Mernik}.
+\\ \\ %==========================================================
 
-Nachfolgend sollen Vor- und Nachteile beider Ansätze gegenübergestellt werden:
+Nachfolgend sollen Vor- und Nachteile von internen und externen DSLs gegenübergestellt werden:
 \\ \\
 \textbf{Syntax:}
 Bei \underline{externen} DSLs der Wahl von Struktur und Syntax der Sprache hat man völlige Freiheit.\\
@@ -35,36 +39,37 @@ Syntax und Struktur werden bei \underline{internen} DSLs durch die jeweilige Wir
 Für eine \underline{externe} DSL müssen entsprechende Werkzeuge wie Parser, Übersetzer oder ein Editor mit unterstützenden Funktionen implementiert 
 werden. Es gibt heutzutage einige Programme, welche diese Werkzeuge zu einer gegebenen Grammatik erzeugen. Allerdings ist man davon abhängig, dass 
 diese Programme dauerhaft gepflegt werden. Zu den genannten Programmen zählen unter anderem \emph{XText}\cite{www:xtext}, \emph{Intentional 
-Workbench}\cite{www:intentsoft} und \emph{Meta-prgramming System (MPS)}\cite{www:mps}.\\
+Workbench} \cite{www:intentsoft} und \emph{Meta-prgramming System (MPS)} \cite{www:mps}.\\
 Bei einer \underline{internen} DSL können alle Werkzeuge verwendet werden, die für die Wirtssprache zur Verfügung stehen, was die Entwicklung vereinfacht.
 \\ \\
 \textbf{Verbindung zur Wirtssprache:}
-Weil die \underline{externe} DSL nicht in die Hauptsprache der Anwendung eingebunden ist\todo{linked into}, fehlt die symbolische Integration\cite{www:fowlerWorkbench}.\\
+Weil die \underline{externe} DSL nicht in die Hauptsprache der Anwendung eingebunden ist\todo{linked into}, fehlt die symbolische Integration \cite{www:fowlerWorkbench}.\\
 Bei einer \underline{internen} DSL besteht dieses Problem nicht.
 \\ \\
 \textbf{Kompilierung:}
 Code einer \underline{externen} DSL kann zur Laufzeit ausgewertet werden. Diese Eigenschaft erlaubt es, z.B. häufig verwendete Parameter zu ändern, ohne 
-Rekompilieren zu müssen. Es ist mit ein Grund dafür, dass XML-Konfigurationsdateien in Java-Umgebungen verbreitet sind\cite{www:fowlerWorkbench}.\\
+Rekompilieren zu müssen. Es ist mit ein Grund dafür, dass XML-Konfigurationsdateien in Java-Umgebungen verbreitet sind \cite{www:fowlerWorkbench}.\\
 Eine interne DSL bietet diesen Vorteil nicht.
+\\ \\
+\textbf{Lernaufwand:}
+Da die Sprachkonzepte der bereits vorhandenen Wirtssprache verwendet werden, ist der Lernaufwand bei einer internen DSL niedriger als bei einer externen.
 \\ \\ %==========================================================
 Bekannte Beispiele für interne DSLs sind JMock und \todo{noch eins}. SQL, make und CSS sind Beispiele für bekannte externe DSLs.
-\\ \\ %==========================================================
-Eine DSL ist in vielen Fällen auf eine bestimmte Weise an eine bereits vorhandene Programmiersprache gebunden, welche als Wirts- oder Hauptsprache bezeichnet wird. Bei einer internen DSL ist dies die Sprache, welche modifiziert wird, um die DSL zu erzeugen. Bei einer externen DSL, welche neben einer allgemeinen Programmiersprache in einem Projekt eingesetzt wird, ist es die Sprache, in die der Code übersetzt wird, um ausgeführt zu werden.
-Jedoch muss nicht jede externe DSL von einer anderen Sprache abhängen und auch nicht jede muss direkt ausführbar sein\cite{paper:Mernik}.
 
-\section{Ziel der Arbeit}\label{sct:ziel}
+
+\section{Ziel der Arbeit}\label{sct:2.3:ziel}
 Das Erstellen einer DSL kann grundsätzlich in folgende Schritte eingeteilt werden:
 \begin{itemize}
-	\item Definieren der \textbf{abstrakten Syntax} der Sprache. Sie ist die Struktur der Sprache und hält die semantisch relevanten Inhalte in einer Datenstruktur fest\cite{www:heise}\todo{cite Drachenfels}.
-	\item Definieren der \textbf{konkreten Syntax} der Sprache. Sie legt die Notation der Sprache fest und damit, welche Wörter und Symbole gültig sind.\todo{cite Drachenfels}
-	\item Definieren der \textbf{Grammatik} der Sprache. Sie ist die formale Beschreibung, wie die konkrete auf die abstrakte Syntax abgebildet wird\cite{www:heise}.
-	\item Implementieren eines \textbf{Parsers}. Er prüft, ob die konkrete Syntax einer Eingabe korrekt ist und baut die entsprechende Datenstruktur der abstrakten Syntax auf\todo{cite Drachenfels}. 
+	\item Definieren der \textbf{abstrakten Syntax} der Sprache. Sie ist die Struktur der Sprache und hält die semantisch relevanten Inhalte in einer Datenstruktur fest \cite{www:heise},\cite{vl:drachen:teil3}.
+	\item Definieren der \textbf{konkreten Syntax} der Sprache. Sie legt die Notation der Sprache fest und damit, welche Wörter und Symbole gültig sind\cite{vl:drachen:teil3}.
+	\item Definieren der \textbf{Grammatik} der Sprache. Sie ist die formale Beschreibung, wie die konkrete auf die abstrakte Syntax abgebildet wird \cite{www:heise}.
+	\item Implementieren eines \textbf{Parsers}. Er prüft, ob die konkrete Syntax einer Eingabe korrekt ist und baut die entsprechende Datenstruktur der abstrakten Syntax auf \cite{vl:drachen:teil3} 
 	\item Implementieren eines \textbf{Editors}, der es erlaubt, effizient mit der Sprache zu arbeiten. Das bedeutet im Idealfall, dass der Editor Features wie Auto-Vervollständigung, Anzeige von Syntaxfehlern oder Syntax-Hervorhebung bietet.
 	\item Implementieren eines \textbf{Interpreters oder Codegenerators}, der anhand des Codes der DSL semantisch äquivalenten Code der Hauptsprache erzeugt. Durch diesen Schritt wird in den meisten Fällen die \textbf{Semantik} der Sprache definiert.
 \end{itemize}
 Bei modernen Entwicklungsumgebungen für allgemeine Programmiersprachen sind üblicherweise die drei zuletzt genannten Werkzeuge in einer Entwicklungsumgebung integriert.
 \\ \\ %============================================================
-In dieser Abschlussarbeit soll ein Ansatz betrachtet werden, bei dem eine interne DSL ausschließlich in Java realisiert wird. Auf andere Werkzeuge wird bewusst verzichtet, um Abhängigkeiten zu vermeiden. Die Grammatik der Sprache wird dabei durch Interfaces beschrieben (siehe auch ref\todo{Verweis auf Regeln}). Diese Interfaces sollen nur die Definition der Sprache enthalten und keine Aussage über ihre Implementierung machen. Die strikte Trennung von Sprache und Implementierung soll es ermöglichen, beide beliebig wiederzuverwenden.
+In dieser Abschlussarbeit soll ein Ansatz betrachtet werden, bei dem eine interne DSL ausschließlich in Java realisiert wird. Auf externe Werkzeuge wird bewusst verzichtet, um Abhängigkeiten zu vermeiden. Die Grammatik der Sprache wird dabei durch Interfaces beschrieben (siehe auch ref\todo{Verweis auf Regeln}). Diese Interfaces sollen nur die Definition der Sprache enthalten und keine Aussage über ihre Implementierung machen. Die strikte Trennung von Sprache und Implementierung soll es ermöglichen, beide beliebig wiederzuverwenden und unabhängig voneinander zu ändern.
 Das Implementieren eines Parsers und eines Editors entfällt damit, da wie bei jeder internen DSL die bereits vorhandenen Werkzeuge der Wirtssprache verwendet werden können.
 
 Ziel der Anschlussarbeit ist die teilweise Automatisierung der Implementierung einer Sprache in der oben beschriebenen Form anhand einer gegebenen Grammatik. Folgende Schritte sind dafür notwendig:
@@ -74,4 +79,4 @@ Ziel der Anschlussarbeit ist die teilweise Automatisierung der Implementierung e
 	\item Implementieren einer Software, die diese Automatisierung durchführt.
 \end{itemize}
 
-So könnte zum Beispiel eine DSL für\todo{Beispiel}
+So könnte zum Beispiel eine DSL für\todo{Beispiel oder weg}

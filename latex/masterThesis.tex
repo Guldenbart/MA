@@ -51,16 +51,18 @@
 
 % Einbettung von Code (C/C++, Java, ...)
 %-------------------------------------------------------------------
-\usepackage{verbatim}		% Sorgt dafür, dass Text so dargestellt wird wie er eingegeben ist,
+%\usepackage{verbatim}		% Sorgt dafür, dass Text so dargestellt wird wie er eingegeben ist,
                             % es werden keine Leerzeichen oder Tabs entfernnt
-\usepackage{moreverb}		% Erweiterte Möglichkeiten für verbatim                            
+%\usepackage{moreverb}		% Erweiterte Möglichkeiten für verbatim                            
+\usepackage{courier}
 \usepackage{listings}		% Source-Code printer for LaTeX
 \lstset{language=Java}  	% Java
 \lstset{numbers=left, numberstyle=\tiny, numbersep=-6pt,tabsize=3, stepnumber=1}
-\lstset{framexleftmargin=-5mm, frame=shadowbox, rulesepcolor=\color{darkGray}}
+\lstset{framexleftmargin=-5mm, frame=single, rulesepcolor=\color{gray}}
 \lstset{captionpos=b} 							% Beschriftung unter Listing
-\lstset{backgroundcolor=\color{gray}}
-\lstset{basicstyle=\scriptsize} 				% alle listings winzig drucken 
+\lstset{backgroundcolor=\color[gray]{0.92}}
+%\lstset{basicstyle=\scriptsize} 				% alle listings winzig drucken 
+\lstset{basicstyle=\footnotesize\ttfamily, breaklines=true}
 \lstset{commentstyle=\color{green}} 			% Kommentare gruen drucken 
 \lstset{keywordstyle=\color{blue}\bfseries}		% Schlüsselwörter fett und blau
 
