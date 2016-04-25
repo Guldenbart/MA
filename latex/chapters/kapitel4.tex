@@ -78,10 +78,17 @@ Die andere Baum-Struktur ist der abstrakte Syntax-Baum oder Abstract Syntax Tree
 
 Der große Vorteil des AST gegenüber dem Parse-Tree ist die Unabhängigkeit von der Syntax der Sprache. Das bedeutet, dass der AST und auch  nachfolgende Verarbeitungsschritte, die auf dem AST operieren, sich nicht ändern, wenn eine Umbenennung einer Regel in der Sprache vorgenommen wird. Außerdem kann der AST schneller als der Parse-Tree durchlaufen werden, weil die Anzahl der Knoten niedriger ist. Allerdings kann der abstrakte Syntax-Baum nicht vollautomatisch aus dem Parse-Tree generiert werden, sondern nur mithilfe von Regeln, die der Kenntnis der Sprach-Semantik bedürfen und diese widerspiegeln.
 
+%\subsection{Verwendung in dieser Arbeit}\label{ssct:4.2.1:verwendung}\todo{weg?}
+
 
 \section{Implementierung und verwendete Datenstrukturen}\label{ssct:4.3:implementierung}
+Die im Abschnitt \ref{sct:4.2:datenstrukturen} beschriebenen Datenstrukturen, ihre Implementierung und Verwendung im Rahmen dieser Abschlussarbeit werden in den folgenden Abschnitten detailliert beschrieben. Die folgende Grafik soll einen Überblick über die einzelnen Komponenten und ihr Zusammenspiel geben:
+
+
+
+
 \todo{text}
 Alle nachfolgend beschriebenen Codebeispiele der Implementierung beziehen sich auf eine DSL für arithmetische Ausdrücke. Mit ihr lassen sich Rechnungen in den vier Grundrechenarten in Infix-Notation beschreiben (\texttt{plus()}, \texttt{minus()}, \texttt{times()}, \texttt{divided}). Ein Ausdruck wird mit \texttt{begin()} eröffnet und mit \texttt{end()} abgeschlossen. Das erste Element eines Ausdrucks wird mit der Methode \texttt{expr()} gefasst.
 
 \subsection{Definition einer Grammatik durch Interfaces}\label{ssct:4.3.1:grammatik}
-Der erste Schritt bei der Implementierung einer Sprache ist das Festlegen der Grammatik. Dabei soll es, wie in Abschnitt \ref{ssct:4.1.3:scoping} beschrieben, möglich sein, bestimmte Aufrufreihenfolgen festzulegen. Außerdem soll
+Der erste Schritt bei der Implementierung einer Sprache ist das Festlegen der Grammatik. Dies soll, wie in \ref{sct:2.3:ziel} beschrieben, nur durch Interfaces geschehen. Dabei soll es, wie in Abschnitt \ref{ssct:4.1.3:scoping} beschrieben, möglich sein, bestimmte Aufrufreihenfolgen festzulegen. 
