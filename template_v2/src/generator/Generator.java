@@ -26,7 +26,7 @@ public final class Generator {
 	private final Path sourcePath;
 	private final Path parseTreeDestPath;
 	private final Path visitorDestPath;
-	private final String firstInterfaceName = "Start";
+	private final String firstInterfaceName;
 	private String parseTreeDestPackage;
 	private String visitorDestPackage;
 	
@@ -54,12 +54,13 @@ public final class Generator {
 	 * @see ParseTree
 	 * @see AVisitor
 	 */
-	public Generator(final String dslName, final Path srcPath,
-			final Path parseTreeGenPath, final Path visitorGenPath) {
+	public Generator(final String dslName, final Path srcPath, final Path parseTreeGenPath,
+			final Path visitorGenPath, final String firstIName) {
 		this.dslName = dslName;
 		sourcePath = srcPath;
 		parseTreeDestPath = parseTreeGenPath;
 		visitorDestPath = visitorGenPath;
+		firstInterfaceName = firstIName;
 		interfaceMap = new HashMap<Class<?>, List<Class<?>> >();
 		
 		parseTreeDestPackage = (parseTreeDestPath.subpath(parseTreeDestPath.getNameCount()-1, parseTreeDestPath.getNameCount())).toString();

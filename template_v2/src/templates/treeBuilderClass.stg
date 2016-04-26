@@ -26,7 +26,6 @@ public final class <toUC(dslName)>TreeBuilder {
 	}
 	
 	<scopesList:{scopeObject | <scope(dslName, scopeObject.scopeName, scopeObject.allMethods)>}>
-	
 }
 >>
 
