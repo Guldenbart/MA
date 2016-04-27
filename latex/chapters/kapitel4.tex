@@ -51,7 +51,7 @@ Um sie verketten zu können, müsste man dieselbe Methode folgendermaßen implem
 \end{lstlisting}
 
 \subsection{Method Nesting}\label{ssct:4.1.2:nesting}
-Method Nesting beschreibt das Verschachteln von Funktionen um hierarchische Strukturen abzubilden, insbesondere rekursive Aufrufe\cite{book:fowlerDSL}, \cite{vl:drachen:teil3}. Dies wird erreicht, indem Rückgabewerte von Methoden als Argumente von Methoden einsetzbar sind.
+Method Nesting beschreibt das Verschachteln von Funktionen um hierarchische Strukturen abzubilden, insbesondere rekursive Aufrufe\cite{book:fowlerDSL}, \cite{vl:drachen:teil3}. Letzteres wird erreicht, indem Rückgabewerte von Methoden als Argumente von Methoden einsetzbar sind.
 
 In diesem Beispiel nehmen wir eine Sprache an, die Flächen beschreibt. Die Form der Fläche wird durch die Koordinaten einzelner Punkte angegeben. Der Code zeigt eine Fläche, die durch das Zusammensetzen zweier Flächen entsteht:
 
@@ -73,7 +73,7 @@ Damit ein Computer eine nicht-trivialen Anweisung verstehen kann, muss er in Ope
 
 Generell kann hierbei zwischen zwei Arten von Bäumen unterschieden werden. Sie folgen logisch gesehen in der Verarbeitung hintereinander, müssen allerdings nicht immer beide verwendet werden.
 
-Die eine Baum-Struktur ist der sogenannte Parse-Tree oder Syntax-Baum. Er besitzt eine Datenstruktur, in der sich speichern lässt, welche Regeln der Parser auf eine Anweisung angewendet hat und welche Terminalsymbole von ihm erkannt wurden. Innere Knoten des Baums repräsentieren die Regeln, Blätter stehen für Terminalsymbole. Das Prinzip zur Erstellung von Parse-Trees ist einfach und regulär, daher können Syntaxbäume automatisch erstellt werden.\\
+Die eine Baum-Struktur ist der sogenannte Parse-Tree oder Syntax-Baum. Er besitzt eine Datenstruktur, in der sich speichern lässt, welche Regeln der Parser auf eine Anweisung angewendet hat und welche Terminalsymbole von ihm erkannt wurden \cite{book:parrLang}. Innere Knoten des Baums repräsentieren die Regeln, Blätter stehen für Terminalsymbole. Das Prinzip zur Erstellung von Parse-Trees ist einfach und regulär, daher können Syntaxbäume automatisch erstellt werden.\\
 Die andere Baum-Struktur ist der abstrakte Syntax-Baum oder Abstract Syntax Tree (kurz: AST). Er repräsentiert, wie der Name vermuten lässt, die abstrakte Syntax-Struktur des Codes. Den AST erhält man, indem man aus dem Parse-Tree alle Knoten entfernt, die nur eine syntaktische und keine semantische Bedeutung haben. Ein einfaches Beispiel für einen solchen Knoten ist das Semikolon am Ende einer Anweisung. Die folgende Abbildung verdeutlicht beispielhaft den Unterschied der beiden Baum-Typen anhand der Anweisung \texttt{x = 0;}:\todo{Bilder von Syntax-Baum und AST}
 
 \begin{figure}[H]
@@ -107,20 +107,30 @@ Die im Abschnitt \ref{sct:4.2:datenstrukturen} beschriebenen Datenstrukturen kom
 \label{fig:komponenten}
 \end{figure}
 
-Die von Abschnitt \ref{ssct:4.3.1:grammatik} bis\todo{Ende} beschriebenen Implementierungen sind das Ergebnis dieser Abschlussarbeit. Abschnitt\todo{Referenz} beschreibt alternativ mögliche Implementierungen.\\
-Alle nachfolgend beschriebenen Codebeispiele der Implementierung beziehen sich auf eine DSL für arithmetische Ausdrücke, genannt \textquotedblleft Expression\textquotedblright. Mit ihr lassen sich Rechnungen in den vier Grundrechenarten (\texttt{plus()}, \texttt{minus()}, \texttt{times()}, \texttt{divided}). Das erste Element eines Ausdrucks wird mit der Methode \texttt{expr()} gefasst, um eine Infix-Notation zu ermöglichen.
+Die von Abschnitt \ref{ssct:4.3.1:grammatik} bis \todo{Ende} beschriebenen Implementierungen sind das Ergebnis dieser Abschlussarbeit. Sie werden in der Reihenfolge beschrieben, in der ein Sprach-Ausdruck verarbeitet wird. Abschnitt \todo{Referenz} beschreibt alternativ mögliche Implementierungen.\\
+Alle nachfolgend beschriebenen Codebeispiele der Implementierung beziehen sich auf eine DSL für arithmetische Ausdrücke, genannt \textquotedblleft Expression\textquotedblright. Mit ihr lassen sich Rechnungen in den vier Grundrechenarten (\texttt{plus()}, \texttt{minus()}, \texttt{times()}, \texttt{divided}). Das erste Element eines Ausdrucks wird mit der Methode \texttt{expr()} gefasst, um eine Infix-Notation zu ermöglichen. Ihre Grammatik wird nachfolgend näher beschrieben.
 
 \subsection{Definition einer Grammatik durch Interfaces}\label{ssct:4.3.1:grammatik}
-Der erste Schritt bei der Implementierung einer Sprache ist das Festlegen der Grammatik. Dies soll, wie in \ref{sct:2.3:ziel} beschrieben, nur durch Interfaces geschehen. Dabei soll es, wie in Abschnitt \ref{ssct:4.1.3:scoping} beschrieben, möglich sein, bestimmte Aufrufreihenfolgen festzulegen.\todo{restliche Beschreibung}
+Der erste Schritt bei der Implementierung einer Sprache ist das Festlegen der Grammatik. Sie beschreibt durch Regeln, wie ein Strom von Zeichen in einen Syntax-Baum umgewandelt wird \cite{book:fowlerDSL}. Die Grammatik soll, wie in \ref{sct:2.3:ziel} erwähnt, nur durch Interfaces festgelegt werden. Dabei soll es, wie in Abschnitt \ref{ssct:4.1.3:scoping} beschrieben, möglich sein, bestimmte Aufrufreihenfolgen festzulegen.\\ Eine in der EBNF formulierte Grammatik kann äquivalent als Flussdiagramm dargestellt werden. Anhand dieses Flussdiagramms können die dazugehörigen Interfaces folgendermaßen erstellt werden (übernommen und leicht abgeändert von \cite{www:jooq:fluentAPI}):
+
+\begin{itemize}
+	\item Jedes Schlüsselwort der DSL ergibt eine Java-Methode
+	\item Jede Verbindung ergibt ein Interface
+	\item Hat man die Wahl zwischen mehreren Schlüsselwörtern, ohne dass es die Möglichkeit gibt, diese zu überspringen, werden alle diese Schlüsselwörter Methoden in \emph{einem} Interface.
+	\item Gibt es ein Schlüsselwort, das wiederholt werden kann, dann hat die Methode, die aus diesem Schlüsselwort resultiert, als Rückgabewert den Typ ihr eigenes Interfaces und nicht den des nächsten.
+	\item Kann das nächste Schlüsselwort optional ausgelassen werden, erweitert das aktuelle Interface das Interface mit jenem Schlüsselwort.
+	\item Für Schlüsselwörter, die entweder ausgelassen oder genau einmal verwendet werden können, ist Abschnitt \todo{Ref generator-Teil} zu beachten.
+	\item Um Rekursion zu ermöglichen, haben betroffene Methoden den Objekt-Typ des Ergebnisses eines Ausdrucks als Parameter. \emph{Bemerkung:} Vollständige Unabhängigkeit zwischen einer Grammatik und ihrer Implementierung kann nur erreicht werden, wenn das Ergebnis eines Ausdrucks in der Sprach-Definition ein generischer Typ-Parameter ist. Aus zeitliche Gründen wurde in dieser Abschlussarbeit auf diesen Schritt verzichtet, da er die Komplexität des Generators (siehe Kapitel \ref{chp:5:automatisierung}) erheblich erhöht. Stattdessen wurde der Typ \emph{ParseTree} (siehe auch Abschnitt)
+\end{itemize}
 
 \begin{lstlisting}[caption={Grammatik der Expression-DSL, spezifiziert in EBNF},label=lst:grammar]
-Expression ::= expr '(' ([0-9]+ | Expression) ')'
-               (
-                    plus '(' ([0-9]+ | Expression) ')'
-                  | minus '(' ([0-9]+ | Expression) ')'
-                  | times '(' ([0-9]+ | Expression) ')'
-                  | divided '(' ([0-9]+ | Expression) ')'
-                )*
+	Expression ::= expr '(' ([0-9]+ | Expression) ')'
+	               (
+	                    plus '(' ([0-9]+ | Expression) ')'
+	                  | minus '(' ([0-9]+ | Expression) ')'
+	                  | times '(' ([0-9]+ | Expression) ')'
+	                  | divided '(' ([0-9]+ | Expression) ')'
+	                )*
 \end{lstlisting}
 
 \begin{figure}[H]
@@ -132,47 +142,53 @@ Expression ::= expr '(' ([0-9]+ | Expression) ')'
 Beispiel-Code
 
 \subsection{TreeBuilder und Scopes}\label{ssct:4.3.2:treebuilder}
-Damit die Methoden der durch die Interfaces definierten Grammatik aufgerufen werden können, müssen die Interfaces implementiert werden. Mithilfe von Object Scoping (siehe Abschnitt \ref{ssct:4.1.3:scoping}) wird die gewünschte Aufrufreihenfolge der Methoden festgelegt. Dazu implementiert eine Klasse \texttt{C} jeweils die Methoden eines Interfaces \texttt{I}, inklusive der Methoden derjenigen Interfaces, die \texttt{I} erweitert. Der Inhalt der Methoden dient allein dem Aufbau der Parse-Tree-Struktur (siehe auch: Abschnitt \ref{ssct:4.3.3:parsetree}) und hat keinen semantischen Inhalt. Jede der genannten Klassen - im Folgenden auch speziell Scope-Klassen genannt - hat einen privaten Konstruktor. Dadurch wird verhindert, dass unkontrolliert ein Objekt dieser Klasse instantiiert wird, wodurch die Aufrufreihenfolge verletzt werden könnte.\\
+Damit die Methoden der durch die Interfaces definierten Grammatik aufgerufen werden können, müssen die Interfaces implementiert werden. Mithilfe von Object Scoping (siehe Abschnitt \ref{ssct:4.1.3:scoping}) wird die gewünschte Aufrufreihenfolge der Methoden festgelegt. Dazu implementiert eine Klasse \textbf{\texttt{C}} jeweils die Methoden eines Interfaces \textbf{\texttt{I}}, inklusive der Methoden derjenigen Interfaces, die \textbf{\texttt{I}} erweitert. Der Inhalt der Methoden dient allein dem Aufbau der Parse-Tree-Struktur (siehe auch: Abschnitt \ref{ssct:4.3.3:parsetree}) und hat keinen semantischen Inhalt. Jede der genannten Klassen - im Folgenden auch speziell Scope-Klassen genannt - hat einen privaten Konstruktor. Dadurch wird verhindert, dass unkontrolliert ein Objekt dieser Klasse instantiiert wird, wodurch die Aufrufreihenfolge verletzt werden könnte.\\
 Der Zugriff auf diese Klassen und deren Methoden erfolgt über eine Builder-Klasse, in die alle Scope-Klassen als innere Klassen eingebettet werden. Diese Klasse hält eine private Instanz jeder Scope-Klasse, welche in ihrem Konstruktor erstellt wird. Jede Methode gibt entsprechend der festgelegten Aufrufreihenfolge das Scope-Objekt zurück, welches die nächste erlaubte(n) Methode(n) enthält. Auch der Konstruktor der äußeren Klasse ist privat, da eine Instanz dieser Klasse für einen User keinen Nutzen hat - alle Felder und inneren Klassen sind privat.\todo{Pattern?} Stattdessen erfolgt der Zugriff über eine statische Methode (auch Einstiegsfunktion genannt; im Beispiel: \texttt{begin()}), welche gleichzeitig den Beginn eines jeden Ausdrucks der DSL markiert. Sie ruft den Konstruktor der äußeren Builder-Klasse sowie den derjenigen inneren Klasse mit der ersten Methode auf. Sie gibt das zuletzt erstellte Objekt zurück. Danach kann die erste Methode der DSL aufgerufen werden, usw. Codeausschnitt \ref{lst:treebuilder1} zeigt beispielhaft den Code für eine Builder-Klasse.
 
 \begin{lstlisting}[caption={Code für eine Builder-Klasse mit inneren Scope-Klassen},label=lst:treebuilder1]
-public final class TreeBuilder {
-	private final IntermediateScope intermediateScope;
-	
-	// privater Konstruktor
-	private ExprDSLTreeBuilder() {
-		this.intermediateScope = this.new IntermediateScope();
-	}
-	
-	// Einstiegs-Funktion
-	public static StartScope begin() {
-		return new ExprDSLTreeBuilder().new StartScope();
-	}
-	
-	public final class StartScope implements Start {
-
-		private StartScope() {
+	public final class TreeBuilder {
+		private final IntermediateScope intermediateScope;
+		
+		// privater Konstruktor
+		private ExprDSLTreeBuilder() {
+			this.intermediateScope = this.new IntermediateScope();
 		}
-
-		@Override
-		public IntermediateScope expr(final double value) {
-			// Code	
+		
+		// Einstiegs-Funktion
+		public static StartScope begin() {
+			return new ExprDSLTreeBuilder().new StartScope();
+		}
+		
+		// Scope zum Interface "Start"
+		public final class StartScope implements Start {
+	
+			private StartScope() {
+			}
+	
+			@Override
+			public IntermediateScope expr(final double value) {
+				// Code	
+			}
+		}
+		
+		public final class IntermediateScope implements Intermediate {
+			// ...
 		}
 	}
-	
-	public final class IntermediateScope implements Intermediate {
-		// ...
-	}
-}
 \end{lstlisting}
 
 Von der Scope-Klasse, welche die erste(n) Methode(n) eines Ausdrucks der DSL enthält, wird kein Objekt in der äußeren Klasse benötigt, da bereits die Einstiegsfunktion das entsprechende Objekt zurückgibt.
 
-
+Die durch diese Implementierung erreichte Methoden-Verkettung in der DSL bringt den Nachteil des sogenannten \emph{finishing problem} \cite{book:fowlerDSL} mit sich. Es besagt, dass der Methoden-Kette ohne weitere Zusätze ein klarer End-Punkt fehlt. Ohne ihn bleibt ein Ausdruck immer unvollendet und kann nicht weiterverarbeitet werden. Es gibt mehrere Möglichkeiten, dieses Problem zu lösen. In der Implementierung dieser Abschlussarbeit wird eine abschließende Methode verwendet, die ein ParseTree-Objekt des entsprechenden Ausdrucks zurückliefert. Andere Möglichkeiten werden unter Abschnitt\todo{Referenz} beschrieben. Diese Methode - hier \texttt{end()} genannt - wird in einem eigenen Interface platziert.\\
+Die Implementierung dieser Methode sowie die vollständige Implementierung der TreeBuilder-Klasse werden im nächsten Abschnitt (\ref{ssct:4.3.3:parsetree}) im Zusammenhang mit der Syntax-Baum-Struktur erklärt.
 
 \subsection{Parse-Tree}\label{ssct:4.3.3:parsetree}
 
 
-Danach:
-AST erwähnen
-nochmal erklären, warum Aufteilung in Grammatik, TreeBuilder, ParseTree (und AST) Vorteile mit sich bringt.
+\subsection{AST}\label{sct:4.3.4:ast}
+%Danach:
+%AST erwähnen
+%nochmal erklären, warum Aufteilung in Grammatik, TreeBuilder, ParseTree (und AST) Vorteile mit sich bringt.
+%Note, it is possible to model the above DSL with classes instead of interfaces, as well. But as soon as
+%you want to reuse similar keywords, multiple inheritance of methods may come in very handy and
+%you might just be better off with interfaces.
