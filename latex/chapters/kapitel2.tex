@@ -69,8 +69,8 @@ Das Erstellen einer DSL kann grundsätzlich in folgende Schritte eingeteilt werd
 \end{itemize}
 Bei modernen Entwicklungsumgebungen für allgemeine Programmiersprachen sind üblicherweise die drei zuletzt genannten Werkzeuge in einer Entwicklungsumgebung integriert.
 \\ \\ %============================================================
-In dieser Abschlussarbeit soll ein Ansatz betrachtet werden, bei dem eine interne DSL ausschließlich in Java realisiert wird. Auf externe Werkzeuge wird bewusst verzichtet, um Abhängigkeiten zu vermeiden. Die Grammatik der Sprache wird dabei durch Interfaces beschrieben (siehe auch ref\todo{Verweis auf Regeln}). Diese Interfaces sollen nur die Definition der Sprache enthalten und keine Aussage über ihre Implementierung machen. Die strikte Trennung von Sprache und Implementierung soll es ermöglichen, beide beliebig wiederzuverwenden und unabhängig voneinander zu ändern.
-Das Implementieren eines Parsers und eines Editors entfällt damit, da wie bei jeder internen DSL die bereits vorhandenen Werkzeuge der Wirtssprache verwendet werden können.
+In dieser Abschlussarbeit soll ein Ansatz betrachtet werden, bei dem eine interne DSL ausschließlich in Java realisiert wird. Auf externe Werkzeuge wird bewusst verzichtet, um Abhängigkeiten zu vermeiden. Die Grammatik der Sprache wird dabei durch Interfaces beschrieben (siehe auch Abschnitt \ref{ssct:4.3.1:grammatik}). Diese Interfaces sollen nur die Definition der Sprache enthalten und keine Aussage über ihre Implementierung machen. Die strikte Trennung von Sprache und Implementierung soll es ermöglichen, beide beliebig wiederzuverwenden und unabhängig voneinander zu ändern.
+Das Implementieren eines Parsers und eines Editors entfällt, da wie bei jeder internen DSL die bereits vorhandenen Werkzeuge der Wirtssprache verwendet werden können.
 
 Ziel der Anschlussarbeit ist die teilweise Automatisierung der Implementierung einer Sprache in der oben beschriebenen Form anhand einer gegebenen Grammatik. Folgende Schritte sind dafür notwendig:
 \begin{itemize}
