@@ -74,7 +74,8 @@ Damit ein Computer eine nicht-trivialen Anweisung verstehen kann, muss er in Ope
 Generell kann hierbei zwischen zwei Arten von Bäumen unterschieden werden. Sie folgen logisch gesehen in der Verarbeitung hintereinander, müssen allerdings nicht immer beide verwendet werden.
 
 Die eine Baum-Struktur ist der sogenannte Parse-Tree oder Syntax-Baum. Er besitzt eine Datenstruktur, in der sich speichern lässt, welche Regeln der Parser auf eine Anweisung angewendet hat und welche Terminalsymbole von ihm erkannt wurden \cite{book:parrLang}. Innere Knoten des Baums repräsentieren die Regeln, Blätter stehen für Terminalsymbole. Das Prinzip zur Erstellung von Parse-Trees ist einfach und regulär, daher können Syntaxbäume automatisch erstellt werden.\\
-Die andere Baum-Struktur ist der abstrakte Syntax-Baum oder Abstract Syntax Tree (kurz: AST). Er repräsentiert, wie der Name vermuten lässt, die abstrakte Syntax-Struktur des Codes. Den AST erhält man, indem man aus dem Parse-Tree alle Knoten entfernt, die nur eine syntaktische und keine semantische Bedeutung haben. Ein einfaches Beispiel für einen solchen Knoten ist das Semikolon am Ende einer Anweisung. Die folgende Abbildung verdeutlicht beispielhaft den Unterschied der beiden Baum-Typen anhand der Anweisung \texttt{x = 0;}:\todo{Bilder von Syntax-Baum und AST}
+Die andere Baum-Struktur ist der abstrakte Syntax-Baum oder Abstract Syntax Tree (kurz: AST). Er repräsentiert, wie der Name vermuten lässt, die abstrakte Syntax-Struktur des Codes. Den AST zu eine Parse-Tree erhält man, indem man aus dem Parse-Tree alle Knoten entfernt, die nur eine syntaktische und keine semantische Bedeutung haben\cite{book:parrLang}. Ein einfaches Beispiel für einen solchen Knoten ist das Semikolon am Ende einer Anweisung. Im AST bleiben nur Operatoren (innere Konten) und Operanden (Blätter).\\
+Die folgende Abbildung verdeutlicht beispielhaft den Unterschied der beiden Baum-Typen anhand der Anweisung \texttt{x = 0;}:
 
 \begin{figure}[H]
         \begin{subfigure}[b]{0.45\textwidth}
@@ -95,9 +96,6 @@ Die andere Baum-Struktur ist der abstrakte Syntax-Baum oder Abstract Syntax Tree
 
 Der große Vorteil des AST gegenüber dem Parse-Tree ist die Unabhängigkeit von der Syntax der Sprache. Das bedeutet, dass der AST und auch  nachfolgende Verarbeitungsschritte, die auf dem AST operieren, sich nicht ändern, wenn eine Umbenennung einer Regel in der Sprache vorgenommen wird. Außerdem kann der AST schneller als der Parse-Tree durchlaufen werden, weil die Anzahl der Knoten niedriger ist. Allerdings kann der abstrakte Syntax-Baum nicht vollautomatisch aus dem Parse-Tree generiert werden, sondern nur mithilfe von Regeln, die der Kenntnis der Sprach-Semantik bedürfen und diese widerspiegeln.
 
-%\subsection{Verwendung in dieser Arbeit}\label{ssct:4.2.1:verwendung}\todo{weg?}
-
-
 \section{Implementierung und verwendete Datenstrukturen}\label{ssct:4.3:implementierung}
 Die im Abschnitt \ref{sct:4.2:datenstrukturen} beschriebenen Datenstrukturen kommen - so oder in ähnlicher Form - im Rahmen dieser Abschlussarbeit vor. Ihre Implementierung und Verwendung werden in den folgenden Abschnitten detailliert beschrieben. Abbildung \ref{fig:komponenten} soll einen Überblick über die einzelnen Komponenten und ihr Zusammenspiel geben:
 
@@ -107,7 +105,7 @@ Die im Abschnitt \ref{sct:4.2:datenstrukturen} beschriebenen Datenstrukturen kom
 \label{fig:komponenten}
 \end{figure}
 
-Die von Abschnitt \ref{ssct:4.3.1:grammatik} bis \todo{Ende} beschriebenen Implementierungen sind das Ergebnis dieser Abschlussarbeit. Sie werden in der Reihenfolge beschrieben, in der ein Sprach-Ausdruck verarbeitet wird. Abschnitt \todo{Referenz} beschreibt alternativ mögliche Implementierungen.\\
+Die von Abschnitt \ref{ssct:4.3.1:grammatik} bis \todo{Ende} beschriebenen Implementierungen sind ein Ergebnis dieser Abschlussarbeit. Sie werden in der Reihenfolge beschrieben, in der ein Sprach-Ausdruck verarbeitet wird. Abschnitt \todo{Referenz} beschreibt alternativ mögliche Implementierungen.\\
 Alle nachfolgend beschriebenen Codebeispiele der Implementierung beziehen sich auf eine DSL für arithmetische Ausdrücke, genannt \textquotedblleft Expression\textquotedblright. Mit ihr lassen sich Rechnungen in den vier Grundrechenarten (\texttt{plus()}, \texttt{minus()}, \texttt{times()}, \texttt{divided}). Das erste Element eines Ausdrucks wird mit der Methode \texttt{expr()} gefasst, um eine Infix-Notation zu ermöglichen. Ihre Grammatik wird nachfolgend näher beschrieben.
 
 \subsection{Definition einer Grammatik durch Interfaces}\label{ssct:4.3.1:grammatik}
@@ -147,11 +145,11 @@ Der Zugriff auf diese Klassen und deren Methoden erfolgt über eine Builder-Klas
 
 \begin{lstlisting}[caption={Code für eine Builder-Klasse mit inneren Scope-Klassen},label=lst:treebuilder1]
 	public final class TreeBuilder {
-		private final IntermediateScope intermediateScope;
+		private final OperatorScope operatorScope;
 		
 		// privater Konstruktor
 		private ExprDSLTreeBuilder() {
-			this.intermediateScope = this.new IntermediateScope();
+			this.operatorScope = this.new OperatorScope();
 		}
 		
 		// Einstiegs-Funktion
@@ -166,12 +164,15 @@ Der Zugriff auf diese Klassen und deren Methoden erfolgt über eine Builder-Klas
 			}
 	
 			@Override
-			public IntermediateScope expr(final double value) {
+			public OperatorScope expr(final double value) {
 				// Code	
 			}
+			
+			// ...
 		}
 		
-		public final class IntermediateScope implements Intermediate {
+		// Scope zum Interface "Operator"
+		public final class OperatorScope implements Operator {
 			// ...
 		}
 	}
@@ -183,7 +184,48 @@ Die durch diese Implementierung erreichte Methoden-Verkettung in der DSL bringt 
 Die Implementierung dieser Methode sowie die vollständige Implementierung der TreeBuilder-Klasse werden im nächsten Abschnitt (\ref{ssct:4.3.3:parsetree}) im Zusammenhang mit der Syntax-Baum-Struktur erklärt.
 
 \subsection{Parse-Tree}\label{ssct:4.3.3:parsetree}
+Bei dieser Implementierung handelt sich um eine abgewandelte Form eines Syntax-Baums. Sie ist an DSLs angepasst, die in der Art entworfen wird, welche in dieser Abschlussarbeit vorgeschlagen werden. In der Datenstruktur des Parse-Tree werden, hierarchisch angeordnet, Scope- und Methoden-Knoten gespeichert, wobei Methoden-Knoten demjenigen Scope-Knoten zugeordnet ist, in dem die entsprechende Methode im TreeBuilder steht. Ein Parse-Tree-Objekt kann beliebig viele Scope-Knoten enthalten und ein Scope-Knoten beliebig viele Methoden-Knoten (sofern die Grammatik dies erlaubt). Abbildung \ref{fig:parse-tree} verdeutlicht den Aufbau der Datenstruktur:
 
+\begin{figure}[H]
+\centering\includegraphics[width=.8\textwidth]{images/kapitel4/parseTree.png}
+\caption{Komponenten der internen DSL}
+\label{fig:parse-tree}
+\end{figure}
+
+Zu jeder Methode der DSL gibt es eine Methoden-Knoten-Klasse. Sie beinhaltet
+Jede Methode kann nur einen Parameter haben. Dies erhöht in den meisten Fällen die Lesbarkeit der DSL und eliminiert gleichzeitig die Möglichkeit, Parameter einer Methode zu verwechseln.
+
+Analog dazu
+
+
+Die Konstruktion eines Parse-Tree-Objekts geschieht durch die Tree-Builder-Klasse: Wird eine Methode aufgerufen, erstellt sie einen Methoden-Knoten mit ihrem Namen und Parameter.
+
+\begin{lstlisting}[caption={Code für eine Builder-Klasse mit inneren Scope-Klassen},label=lst:treebuilder1]
+	public final class SimpleMethodNodePlus {
+	
+		private final String name;
+		private final double value;
+		
+		public SimpleMethodNodePlus(final String methodName, final double val) {
+			name = methodName;
+			value = val;
+		}
+	
+		public final double getValue() {
+			return value;
+		}
+		
+		@Override
+		public final String toString() {
+			return getName() + '(' + value + ").";
+		}
+	
+	}
+\end{lstlisting}
+
+\subsection{Aufbau des Parse-Trees durch den TreeBuilder}\todo{label}
+
+\section{Alternative Implementierungen}
 
 \subsection{AST}\label{sct:4.3.4:ast}
 %Danach:
