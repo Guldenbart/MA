@@ -192,10 +192,10 @@ Bei dieser Implementierung handelt sich um eine abgewandelte Form eines Syntax-B
 \label{fig:parse-tree}
 \end{figure}
 
-Zu jeder Methode der DSL gibt es eine Methoden-Knoten-Klasse. Sie beinhaltet
-Jede Methode kann nur einen Parameter haben. Dies erhöht in den meisten Fällen die Lesbarkeit der DSL und eliminiert gleichzeitig die Möglichkeit, Parameter einer Methode zu verwechseln.
+Zu jeder Methode der DSL gibt es eine Methoden-Knoten-Klasse. Sie beinhaltet den Namen der Methode und den Wert des Parameters. Dazu hat sie einen Konstruktor, getter-Methoden für beide Felder und die überschriebene \texttt{toString()}-Methode. Um keinen überflüssigen Code schreiben zu müssen, werden Name der Methode und Wert des Parameters in zwei Stufen in abstrakte Oberklassen ausgelagert, welche von den konkreten Methoden-Knoten erweitert werden. Es wird grundsätzlich zwischen zwei Methoden-Typen unterschieden: Diejenigen, die als Parameter \texttt{ParseTree} haben und damit Verschachtelung ermöglichen und alle anderen Methoden. Dementsprechend gibt es auch für jeden der beiden Typen eine eigene Oberklasse, die entweder ParseTree als Parameter oder einen generischen Typ-Parameter hat. Jede Methode kann nur einen Parameter haben. Dies erhöht in den meisten Fällen die Lesbarkeit der DSL und eliminiert gleichzeitig die Möglichkeit, Parameter einer Methode zu verwechseln. \\
+Analog zu den Methoden gibt es auch zu jeder Scope-Klasse eine ScopeNode-Klasse. Sie enthält den Namen des Scopes und eine Liste aller Methoden-Knoten, die entsprechend dem DSL-Ausdruck zu diesem Scope-Knoten gehören. nur eine oberklasse
 
-Analog dazu
+Abbildung\todo{in Abschnitt...} stellt den Zusammenhang zwischen den Klassen in einem UML-Klassendiagramm dar.
 
 
 Die Konstruktion eines Parse-Tree-Objekts geschieht durch die Tree-Builder-Klasse: Wird eine Methode aufgerufen, erstellt sie einen Methoden-Knoten mit ihrem Namen und Parameter.
