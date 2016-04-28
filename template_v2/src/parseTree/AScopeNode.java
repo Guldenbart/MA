@@ -9,7 +9,7 @@ import java.util.List;
  * 
  * @author Daniel Fritz
  */
-public abstract class ScopeNode implements Visitable, Iterable<AMethodNode> {
+public abstract class AScopeNode implements Visitable, Iterable<AMethodNode> {
 	
 	/**
 	 * name of the interface in the grammar definition all methods belong to.
@@ -29,7 +29,7 @@ public abstract class ScopeNode implements Visitable, Iterable<AMethodNode> {
 	 * @param iName name of the interface
 	 * @param methodList list of all AMethod objects that belong to this lope.
 	 */
-	public ScopeNode(final String iName, final List<AMethodNode> methodList) {
+	public AScopeNode(final String iName, final List<AMethodNode> methodList) {
 		this.interfaceName = iName;
 		this.methods = methodList;
 	}

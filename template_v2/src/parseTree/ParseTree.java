@@ -13,19 +13,19 @@ import visitor.AVisitor;
  * 
  * @author Daniel Fritz
  */
-public final class ParseTree implements Visitable, Iterable<ScopeNode> {
+public final class ParseTree implements Visitable, Iterable<AScopeNode> {
 
 	/**
-	 * list of all {@link ScopeNode} objects of this tree.
+	 * list of all {@link AScopeNode} objects of this tree.
 	 */
-	private List<ScopeNode> scopes;
+	private List<AScopeNode> scopes;
 	
 	/**
 	 * constructor that initializes 'list' with a given list of ScopeNode
 	 * objects.
 	 * @param scopeNodeList value that list is set to.
 	 */
-	public ParseTree(final List<ScopeNode> scopeNodeList) {
+	public ParseTree(final List<AScopeNode> scopeNodeList) {
 		this.scopes = scopeNodeList;
 	}
 	
@@ -34,7 +34,7 @@ public final class ParseTree implements Visitable, Iterable<ScopeNode> {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("begin().");
-		for (ScopeNode sn : scopes) {
+		for (AScopeNode sn : scopes) {
 			sb.append(sn.toString());
 		}
 		// delete the last dot (easier than checking when last scope happens)
@@ -49,7 +49,7 @@ public final class ParseTree implements Visitable, Iterable<ScopeNode> {
 	}
 
 	@Override
-	public Iterator<ScopeNode> iterator() {
+	public Iterator<AScopeNode> iterator() {
 		return this.scopes.iterator();
 	}
 	

@@ -7,21 +7,21 @@ import parseTree.ParseTree;
  *
  * @author Daniel Fritz
  */
-public interface Intermediate extends End {
+public interface Operator extends End {
 	
 	/**
 	 * add a simple value to your expression.
 	 * @param value	the desired value
 	 * @return	scope object of the same scope
 	 */
-	Intermediate plus(double value);
+	Operator plus(double value);
 	
 	/**
 	 * add a complete expression to another expression.
 	 * @param tree	the desired expression
 	 * @return	scope object of the same scope
 	 */
-	Intermediate plus(ParseTree tree);
+	Operator plus(ParseTree tree);
 	
 	
 	/**
@@ -29,40 +29,40 @@ public interface Intermediate extends End {
 	 * @param value	the desired value
 	 * @return	scope object of the same scope
 	 */
-	Intermediate minus(double value);
+	Operator minus(double value);
 	
 	/**
 	 * subtract a complete expression from another expression.
 	 * @param tree	the desired expression
 	 * @return	scope object of the same scope
 	 */
-	Intermediate minus(ParseTree tree);
+	Operator minus(ParseTree tree);
 	
 	/**
 	 * multiply your expression with a simple value.
 	 * @param value	the desired value
 	 * @return	scope object of the same scope
 	 */
-	Intermediate times(double value);
+	Operator times(double value);
 	
 	/**
 	 * multiply an expression with another complete expression.
 	 * @param tree	the desired expression
 	 * @return	scope object of the same scope
 	 */
-	Intermediate times(ParseTree tree);
+	Operator times(ParseTree tree);
 	
 	/**
 	 * divide your expression by a simple value.
 	 * @param value	the desired value
 	 * @return	scope object of the same scope
 	 */
-	Intermediate divided(double value);
+	Operator divided(double value);
 	
 	/**
 	 * divide an expression by another complete expression.
 	 * @param tree	the desired expression
 	 * @return	scope object of the same scope
 	 */
-	Intermediate divided(ParseTree tree);
+	Operator divided(ParseTree tree);
 }

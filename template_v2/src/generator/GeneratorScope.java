@@ -14,7 +14,7 @@ import java.util.List;
  * 
  * @author Daniel Fritz
  * @see GeneratorMethod
- * @see ScopeNode
+ * @see AScopeNode
  */
  // TODO Frage: ^ zu kompliziert oder wäre es kürzer zu ungenau/falsch?
 final class GeneratorScope implements Iterable<GeneratorMethod> {
@@ -114,11 +114,11 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 	}
 
 	/**
-	 * Composes the file path for the {@link ScopeNode} file that is generated
+	 * Composes the file path for the {@link AScopeNode} file that is generated
 	 * from the information of the correspondingGeneratorScope object.
 	 * @param basePath path that the file path is based on.
 	 * @return composed path object
-	 * @see ScopeNode
+	 * @see AScopeNode
 	 */
 	public Path getScopeNodePath(final Path basePath) {
 		return basePath.resolve(Paths.get("ScopeNode" + scopeName + ".java"));

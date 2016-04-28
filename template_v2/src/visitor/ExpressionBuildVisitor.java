@@ -4,7 +4,7 @@ import expressions.Expr;
 import expressions.Operation;
 import expressions.Value;
 import parseTree.AMethodNode;
-import parseTreeGen.ScopeNodeIntermediate;
+import parseTreeGen.ScopeNodeOperator;
 import parseTreeGen.ScopeNodeStart;
 import parseTreeGen.NestedMethodNodeDivided;
 import parseTreeGen.NestedMethodNodeExpr;
@@ -54,8 +54,8 @@ public final class ExpressionBuildVisitor extends AExprDSLVisitor {
 	}
 	
 	@Override
-	public void visit(final ScopeNodeIntermediate scopeIntermediate) {
-		for (AMethodNode m : scopeIntermediate) {
+	public void visit(final ScopeNodeOperator scopeOperator) {
+		for (AMethodNode m : scopeOperator) {
 			m.accept(this);
 		}
 	}
