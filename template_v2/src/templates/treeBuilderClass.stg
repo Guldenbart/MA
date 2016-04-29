@@ -14,11 +14,11 @@ import <dslName>.<firstInterfaceName>;
 public final class <toUC(dslName)>TreeBuilder {
 	private ParseTree parseTree;
 	<interfaceNames:{iName | private final <iName>Scope <toLC(iName)>Scope;<\n>}>
-	private List\<AScopeNode> scopeNodeList;
+	private List\<AScopeNode> scopes;
 	
 	private <toUC(dslName)>TreeBuilder() {
 		<interfaceNames:{iName | this.<toLC(iName)>Scope = this.new <iName>Scope();<\n>}>
-		this.scopeNodeList = new ArrayList\<AScopeNode>();
+		this.scopes = new ArrayList\<AScopeNode>();
 	}
 	
 	public static <firstInterfaceName>Scope begin() {
@@ -61,12 +61,12 @@ public <getReturnType(toUC(returnType))> <toLC(mName)>(<getSignature(argType, ar
 	<if(scopeEnds)>
 	// new ScopeNode
 	AScopeNode scopeNode<iName> = new ScopeNode<iName>(methodList<iName>);
-	<toUC(dslName)>TreeBuilder.this.scopeNodeList.add(scopeNode<iName>);
+	<toUC(dslName)>TreeBuilder.this.scopes.add(scopeNode<iName>);
 	
 	<endif>
 	<if(treeEnds)>
 	// new ParseTree
-	parseTree = new ParseTree(scopeNodeList);
+	parseTree = new ParseTree(scopes);
 	
 	<endif>
 	return <getReturnLine(scopeEnds, treeEnds, toLC(iName), toUC(dslName))>;	
