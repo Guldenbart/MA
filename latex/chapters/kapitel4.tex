@@ -193,37 +193,110 @@ Bei dieser Implementierung handelt sich um eine abgewandelte Form eines Syntax-B
 \end{figure}
 
 Zu jeder Methode der DSL gibt es eine Methoden-Knoten-Klasse. Sie beinhaltet den Namen der Methode und den Wert des Parameters. Dazu hat sie einen Konstruktor, getter-Methoden für beide Felder und die überschriebene \texttt{toString()}-Methode. Um keinen überflüssigen Code schreiben zu müssen, werden Name der Methode und Wert des Parameters in zwei Stufen in abstrakte Oberklassen ausgelagert, welche von den konkreten Methoden-Knoten erweitert werden. Es wird grundsätzlich zwischen zwei Methoden-Typen unterschieden: Diejenigen, die als Parameter \texttt{ParseTree} haben und damit Verschachtelung ermöglichen und alle anderen Methoden. Dementsprechend gibt es auch für jeden der beiden Typen eine eigene Oberklasse, die entweder ParseTree als Parameter oder einen generischen Typ-Parameter hat. Jede Methode kann nur einen Parameter haben. Dies erhöht in den meisten Fällen die Lesbarkeit der DSL und eliminiert gleichzeitig die Möglichkeit, Parameter einer Methode zu verwechseln. \\
-Analog zu den Methoden gibt es auch zu jeder Scope-Klasse eine ScopeNode-Klasse. Sie enthält den Namen des Scopes und eine Liste aller Methoden-Knoten, die entsprechend dem DSL-Ausdruck zu diesem Scope-Knoten gehören. nur eine oberklasse
+Analog zu den Methoden gibt es auch zu jeder Scope-Klasse eine ScopeNode-Klasse. Sie enthält den Namen des Scopes und eine Liste aller Methoden-Knoten, die entsprechend dem DSL-Ausdruck zu diesem Scope-Knoten gehören. Hier ist nur eine abstrakte Oberklasse - (\texttt{ASCopeNode} -  nötig, in der beide Felder und die dazugehörigen getter deklariert sind. \texttt{AScopeNode} implementiert das \texttt{Iterable}-Interface, um das Iterieren über \texttt{methods} mit einer for-each-Schleife zu ermöglichen.
 
+\noindent
 Abbildung\todo{in Abschnitt...} stellt den Zusammenhang zwischen den Klassen in einem UML-Klassendiagramm dar.
 
+\subsection{Aufbau des Parse-Trees durch den TreeBuilder}\label{ssct:4.3.4:aufbau}
+Die Konstruktion eines Parse-Tree-Objekts geschieht durch die Tree-Builder-Klasse: Wird eine Methode aufgerufen, erstellt sie einen Methoden-Knoten mit ihrem Namen und Parameter. Jede Scope-Klasse hat eine Liste, in der diese Methoden-Knoten in der Reihenfolge ihrer Erstellung abgelegt werden. Wird eine Methode aufgerufen, nach deren Aufruf der Scope gewechselt wird, dann wird mit der Methoden-Liste ein Scope-Objekt erstellt. Dieses wird wiederum in einer Liste in der äußeren Klasse gespeichert. Die abschließende Methode erstellt mit diese Liste ein \texttt{ParseTree}-Objekt, welches sie zurückgibt. Auf diese Weise entsteht aus einem Ausdruck der DSL der dazu gehörige Syntax-Baum.\\
+Listing \ref{lst:treebuilder2} zeigt für einzelne Methoden die vollständige Implementierung der TreeBuilder-Klasse.\\
 
-Die Konstruktion eines Parse-Tree-Objekts geschieht durch die Tree-Builder-Klasse: Wird eine Methode aufgerufen, erstellt sie einen Methoden-Knoten mit ihrem Namen und Parameter.
-
-\begin{lstlisting}[caption={Code für eine Builder-Klasse mit inneren Scope-Klassen},label=lst:treebuilder1]
-	public final class SimpleMethodNodePlus {
+\begin{lstlisting}[caption={vollständige Implementierung einer Builder-Klasse},label=lst:treebuilder2]
+	public final class TreeBuilder {
+		private ParseTree parseTree;
+		private final OperatorScope operatorScope;
 	
-		private final String name;
-		private final double value;
-		
-		public SimpleMethodNodePlus(final String methodName, final double val) {
-			name = methodName;
-			value = val;
+		private List<AScopeNode> scopes;
+	
+		private TreeBuilder() {
+			this.operatorScope = this.new OperatorScope();
+	
+			this.scopeNodeList = new ArrayList<AScopeNode>();
 		}
 	
-		public final double getValue() {
-			return value;
+		public static StartScope begin() {
+			return new TreeBuilder().new StartScope();
 		}
 		
-		@Override
-		public final String toString() {
-			return getName() + '(' + value + ").";
+		public final class StartScope implements Start {
+			
+			private List<AMethodNode> methodListStart;
+	
+			private StartScope() {
+				methodListStart = new ArrayList<AMethodNode>();
+			}
+			
+			@Override
+			public Operator plus(final double value) {
+				AMethodNode m = new SimpleMethodNodePlus(value);
+				methodListOperator.add(m);
+	
+				return this;	
+			}
+	
+			@Override
+			public OperatorScope expr(final double value) {
+				AMethodNode m = new SimpleMethodNodeExpr(value);
+				methodListStart.add(m);
+	
+				// new ScopeNode
+				AScopeNode scopeNodeStart = new ScopeNodeStart(methodListStart);
+				TreeBuilder.this.scopeNodeList.add(scopeNodeStart);
+	
+				return TreeBuilder.this.operatorScope;	
+			}
+	
+			// ...
+		}
+	
+		public final class OperatorScope implements Operator {
+	
+			private List<AMethodNode> methodListOperator;
+	
+			private OperatorScope() {
+				methodListOperator = new ArrayList<AMethodNode>();
+			}
+	
+			@Override
+			public Operator plus(final double value) {
+				AMethodNode m = new SimpleMethodNodePlus(value);
+				methodListOperator.add(m);
+	
+				return this;
+			}
+	
+			@Override
+			public ParseTree end() {
+				AMethodNode m = new MethodNodeEnd();
+				methodListOperator.add(m);
+	
+				// new ScopeNode
+				AScopeNode scopeNodeOperator = new ScopeNodeOperator(methodListOperator);
+				TreeBuilder.this.scopeNodeList.add(scopeNodeOperator);
+	
+				// new ParseTree
+				parseTree = new ParseTree(scopeNodeList);
+	
+				return TreeBuilder.this.parseTree;	
+			}
 		}
 	
 	}
 \end{lstlisting}
 
-\subsection{Aufbau des Parse-Trees durch den TreeBuilder}\todo{label}
+\subsection{Visitor}\label{ssct:4.3.5:visitor}
+Beim nächsten Schritt in der Verarbeitung eines Sprach-Ausdrucks
+
+Interpreter oder von der Sprache unabhängiges Modell umwandeln
+
+Damit ergibt sich für die Knoten-Klassen folgendes Klassen-Diagramm:
+
+\begin{figure}[H]
+\centering\includegraphics[width=.9\textwidth]{images/kapitel4/classDiagram1.png}
+\caption{Klassendiagramm aller Knoten-Klassen des Syntax-Baums. Grau eingefärbt sind beispielhafte konkrete Knoten-Klassen.}
+\label{fig:class-diagram1}
+\end{figure}
 
 \section{Alternative Implementierungen}
 
