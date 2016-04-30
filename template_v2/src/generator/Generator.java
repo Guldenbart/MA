@@ -90,7 +90,9 @@ public final class Generator {
 		List<GeneratorScope> genScopeList = buildGenScopeList();
 		if (!checkAllRequirements(genScopeList)) {
 			System.err.println("Generator could not be started because the input didn't satisfy the specifications.");
+			return;
 		}
+		createPackages();
 		runTemplates(genScopeList);
 	}
 	
@@ -235,6 +237,15 @@ public final class Generator {
 			}
 		}		
 		return new GeneratorScope(iName, generatorMethodList);
+	}
+	
+	private void createPackages() throws IOException {
+		if (!Files.exists(parseTreeDestPath)) {
+			Files.createDirectory(parseTreeDestPath);
+		}
+		if (!Files.exists(visitorDestPath)) {
+			Files.createDirectory(visitorDestPath);
+		}
 	}
 	
 	/**
