@@ -118,7 +118,8 @@ Der erste Schritt bei der Implementierung einer Sprache ist das Festlegen der Gr
 	\item Gibt es ein Schlüsselwort, das wiederholt werden kann, dann hat die Methode, die aus diesem Schlüsselwort resultiert, als Rückgabewert den Typ ihr eigenes Interfaces und nicht den des nächsten.
 	\item Kann das nächste Schlüsselwort optional ausgelassen werden, erweitert das aktuelle Interface das Interface mit jenem Schlüsselwort.
 	\item Für Schlüsselwörter, die entweder ausgelassen oder genau einmal verwendet werden können, ist Abschnitt \todo{Ref generator-Teil} zu beachten.
-	\item Um Rekursion zu ermöglichen, haben betroffene Methoden den Objekt-Typ des Ergebnisses eines Ausdrucks als Parameter. \emph{Bemerkung:} Vollständige Unabhängigkeit zwischen einer Grammatik und ihrer Implementierung kann nur erreicht werden, wenn das Ergebnis eines Ausdrucks in der Sprach-Definition ein generischer Typ-Parameter ist. Aus zeitliche Gründen wurde in dieser Abschlussarbeit auf diesen Schritt verzichtet, da er die Komplexität des Generators (siehe Kapitel \ref{chp:5:automatisierung}) erheblich erhöht. Stattdessen wurde der Typ \emph{ParseTree} (siehe auch Abschnitt)
+	\item Um Rekursion zu ermöglichen, haben betroffene Methoden den Objekt-Typ des Ergebnisses eines Ausdrucks als Parameter. \emph{Bemerkung:} Vollständige Unabhängigkeit zwischen einer Grammatik und ihrer Implementierung kann nur erreicht werden, wenn das Ergebnis eines Ausdrucks in der Sprach-Definition ein generischer Typ-Parameter ist. Aus zeitliche Gründen wurde in dieser Abschlussarbeit auf diesen Schritt verzichtet, da er die Komplexität des Generators (siehe Kapitel \ref{chp:5:automatisierung}) erheblich erhöht. Stattdessen wurde der Typ \emph{ParseTree} (siehe auch Abschnitt\todo{Referenz zu Ausbaumöglichkeiten})
+	\item \todo{genau einmal oder kein mal}
 \end{itemize}
 
 \begin{lstlisting}[caption={Grammatik der Expression-DSL, spezifiziert in EBNF},label=lst:grammar]
@@ -286,9 +287,21 @@ Listing \ref{lst:treebuilder2} zeigt für einzelne Methoden die vollständige Im
 \end{lstlisting}
 
 \subsection{Visitor}\label{ssct:4.3.5:visitor}
-Beim nächsten Schritt in der Verarbeitung eines Sprach-Ausdrucks
+Beim nächsten Schritt in der Verarbeitung eines Sprach-Ausdrucks gibt, wie in Abbildung \ref{fig:komponenten} bereits angedeutet, hauptsächlich zwei Möglichkeiten: Aus dem Syntaxbaum wird durch einen Interpreter ausführbarer Code erzeugt oder ein von der Sprache unabhängiger abstrakter Syntaxbaum wird erstellt. Beide Varianten erfordern eine Möglichkeit, den Parse-Tree in Tiefensuche zu durchlaufen und bei jedem Knoten, wenn es die Semantik der Sprache erfordert, Code auszuführen.\\
+In dieser Arbeit wurde dafür das in Sprachanwendungen häufig verwendete \cite{book:parrLang}, \cite{www:wiki:visitor} Besucher-Entwurfsmuster oder Visitor-Pattern der \emph{Gang of four} \cite{book:designPatterns} verwendet. Es erlaubt, Operationen in eine Objektstruktur zu integrieren, ohne diese bei jeder Änderung der Operationen anpassen zu müssen. Damit kann man die Struktur des Syntax-Baums wie vorgesehen von seiner Auswertung trennen.
 
-Interpreter oder von der Sprache unabhängiges Modell umwandeln
+Die Implementierung des Visitor-Patterns besteht aus folgenden Teilen:
+
+Das Interface \textbf{Visitable}, dessen Code im Listing \ref{lst:visitable} zu sehen ist, enthält nur die Methode \texttt{accept}. Dieses Interface wird von jedem Knoten des Parse-Trees, inklusive ParseTree selbst, implementiert. \todo{Die Implementierung ist zwar immer genau dieselbe, kann aber nicht von der abstrakten Oberklasse übernommen werden} Bildlich gesprochen erlaubt der Knoten damit dem Visitor, ihn zu besuchen. Praktisch gesehen ruft er beim Visitor eine \texttt{visit}-Methode auf, welcher er als Parameter eine \texttt{this}-Referenz übergibt. Damit kann der Visitor auf die Eigenschaften des Knotens zugreifen.\\
+
+\begin{lstlisting}[caption={Code des Visitable-Interfaces},label=lst:visitable]
+	public interface Visitable {
+		void accept(AVisitor visitor);
+	}
+\end{lstlisting}
+
+Der \textbf{Visitor} selbst ist eine einzelne Klasse. Sie besitzt für jeden Knoten-Klasse des Syntax-Baums eine \texttt{visit}-Methode, in der definiert ist, welcher Code beim Besuch dieses Knotens auszuführen ist. Dadurch, dass jede Knoten-Klasse direkt \texttt{accept()} implementiert, wird der Aufruf an die richtige \texttt{visit()}-Methode weitergeleitet.\\
+Um Coderedundanz zu vermeiden, gibt es für alle konkreten Visitor-Implementierungen eine abstrakte Oberklasse \texttt{AVisitor}, welche bereits den Besuch des ParseTree-Objekts implementiert.\\
 
 Damit ergibt sich für die Knoten-Klassen folgendes Klassen-Diagramm:
 
@@ -298,12 +311,19 @@ Damit ergibt sich für die Knoten-Klassen folgendes Klassen-Diagramm:
 \label{fig:class-diagram1}
 \end{figure}
 
-\section{Alternative Implementierungen}
-
-\subsection{AST}\label{sct:4.3.4:ast}
+Der Visitor implementiert das sogenannte \emph{double dispatch}, da die ausgeführte Operation sowohl vom Typ des Visitors als auch von dem Element, welches besucht wird, abhängt \cite{www:visitor-sourcemaking}.
 %Danach:
 %AST erwähnen
 %nochmal erklären, warum Aufteilung in Grammatik, TreeBuilder, ParseTree (und AST) Vorteile mit sich bringt.
 %Note, it is possible to model the above DSL with classes instead of interfaces, as well. But as soon as
 %you want to reuse similar keywords, multiple inheritance of methods may come in very handy and
 %you might just be better off with interfaces.
+
+\section{Alternative Implementierungen}\label{sct:4.4:alternativen}
+Für die in Abschnitt \ref{sct:4.2:datenstrukturen} beschriebenen Datenstrukturen sind alternative Implementierungen möglich, welche in diesem Abschnitt erläutert werden sollen.
+
+\subsection{TreeBuilder und ParseTree}\label{ssct:4.4.1:alt-treebuilder-parsetree}
+Anstatt das \emph{ParseTree}-Objekt am Ende einer Aufruf-Kette zu erstellen, könnte man dies schon im Konstruktor des Tree-Builders tun. Ein Knoten-Objekt wird direkt nach der Erstellung an den ParseTree gereicht, der es entsprechend einfügt. Der Nachteil gegenüber der vorgenommenen Implementierung ist hierbei, dass zusätzliche Methoden benötigt werden, um die Baum-Knoten innerhalb des ParseTree an der richtigen Stelle zu platzieren.
+
+\subsection{Baum-Knoten und Visitor}\label{ssct:4.4.2:alt-knoten-visitor}
+Statt für jede Methode und jeden Scope eine Baumknoten-Klasse zu haben, gibt es die alternative Möglichkeit, nur drei verschiedene Klassen zu verwenden. Dazu werden die abstrakten Klassen \texttt{ASimpleMethodNode} und \texttt{ANestedMethodNode} (siehe Abschnitt \ref{ssct:4.3.3:parsetree} und Abbildung \ref{fig:class-diagram1}) als konkrete Klassen verwendet. Analog dazu gibt es auch nur eine ScopeNode-Klasse. Der Vorteil daran ist, dass die Implementierung der Sprache weniger Klassen hat; bei einer größeren Sprache kann das ein beträchtlicher Unterschied sein. Der Nachteil ist, dass im Visitor für jeden Scope- und Methodenknoten der Name abgefragt werden muss, um den passenden Code auszuführen. Dies wird bei größeren Sprachen sehr unübersichtlich.
