@@ -230,7 +230,6 @@ final class GeneratorMethod {
 	// TODO FRAGE: Gestaltung der Variablen-Namen (auch: *packageNAME, damit man weiß, dass es ein String und keine Variable ist?)
 	// TODO <code> tags in javadoc: alles mit 'Node'
 	// TODO FRAGE: GeneratorScope und GeneratorMethod als interne Klassen?
-	// TODO alle restrictions reincoden
 	// TODO werden finalizers benötigt? bzw. try-with
 	// TODO immer this oder nie?
 }

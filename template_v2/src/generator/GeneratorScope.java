@@ -59,6 +59,8 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 	
 	/**
 	 * gets a list of all <code>GeneratorMethod</code> objects with no argument.
+	 * This method is used in the <code>visitorSuperClass</code> template to be able to name all
+	 * method nodes correctly.
 	 * @return list of all <code>GeneratorMethod</code> objects without
 	 * argument.
 	 * @see AMethodNode
@@ -78,6 +80,8 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 	/**
 	 * gets a list of all <code>GeneratorMethod</code> objects with a simple
 	 * argument.
+	 * This method is used in the <code>visitorSuperClass</code> template to be able to name all
+	 * method nodes correctly.
 	 * @return list of all <code>GeneratorMethod</code> objects with a simple
 	 * argument.
 	 * @see ASimpleMethodNode
@@ -97,6 +101,8 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 	/**
 	 * gets a list of all <code>GeneratorMethod</code> objects with a nested
 	 * argument.
+	 * This method is used in the <code>visitorSuperClass</code> template to be able to name all
+	 * method nodes correctly.
 	 * @return list of all <code>GeneratorMethod</code> objects with a nested
 	 * argument.
 	 * @see ANestedMethodNode
