@@ -14,7 +14,7 @@ import java.util.List;
  * 
  * @author Daniel Fritz
  * @see GeneratorMethod
- * @see AScopeNode
+ * @see ScopeNode
  */
  // TODO Frage: ^ zu kompliziert oder wäre es kürzer zu ungenau/falsch?
 final class GeneratorScope implements Iterable<GeneratorMethod> {
@@ -45,7 +45,7 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 	 * gets the name of the interface.
 	 * @return interface name
 	 */
-	public String getScopeName() {
+	public String getName() {
 		return scopeName;
 	}
 	
@@ -59,8 +59,6 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 	
 	/**
 	 * gets a list of all <code>GeneratorMethod</code> objects with no argument.
-	 * This method is used in the <code>visitorSuperClass</code> template to be able to name all
-	 * method nodes correctly.
 	 * @return list of all <code>GeneratorMethod</code> objects without
 	 * argument.
 	 * @see AMethodNode
@@ -80,8 +78,6 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 	/**
 	 * gets a list of all <code>GeneratorMethod</code> objects with a simple
 	 * argument.
-	 * This method is used in the <code>visitorSuperClass</code> template to be able to name all
-	 * method nodes correctly.
 	 * @return list of all <code>GeneratorMethod</code> objects with a simple
 	 * argument.
 	 * @see ASimpleMethodNode
@@ -101,8 +97,6 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 	/**
 	 * gets a list of all <code>GeneratorMethod</code> objects with a nested
 	 * argument.
-	 * This method is used in the <code>visitorSuperClass</code> template to be able to name all
-	 * method nodes correctly.
 	 * @return list of all <code>GeneratorMethod</code> objects with a nested
 	 * argument.
 	 * @see ANestedMethodNode
@@ -120,11 +114,11 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 	}
 
 	/**
-	 * Composes the file path for the {@link AScopeNode} file that is generated
+	 * Composes the file path for the {@link ScopeNode} file that is generated
 	 * from the information of the correspondingGeneratorScope object.
 	 * @param basePath path that the file path is based on.
 	 * @return composed path object
-	 * @see AScopeNode
+	 * @see ScopeNode
 	 */
 	public Path getScopeNodePath(final Path basePath) {
 		return basePath.resolve(Paths.get("ScopeNode" + scopeName + ".java"));
@@ -136,6 +130,14 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 	
 	public GeneratorMethod get(int index) {
 		return this.methods.get(index);
+	}
+	
+	public boolean contains(GeneratorMethod gm) {
+		return this.methods.contains(gm);
+	}
+	
+	public int lastIndexOf(Object o) {
+		return this.methods.lastIndexOf(o);
 	}
 	
 	@Override
@@ -155,11 +157,38 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 		return methods.iterator();
 	}
 	
-	public boolean contains(GeneratorMethod gm) {
-		return this.methods.contains(gm);
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		
+		if (o == null && !(o instanceof GeneratorScope)) {
+			return false;
+		}		
+		GeneratorScope gs = (GeneratorScope)o;
+		
+		if (!this.scopeName.equals(gs.scopeName)) {
+			return false;
+		}
+		
+		for (GeneratorMethod gm : this.methods) {
+			if (!gs.contains(gm)) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
-	public int lastIndexOf(Object o) {
-		return this.methods.lastIndexOf(o);
+	@Override
+	public int hashCode() {
+		int result = 17;
+
+		for (GeneratorMethod gm : methods) {
+			result = 31 * result + gm.hashCode();
+		}
+		
+		return result;
 	}
 }

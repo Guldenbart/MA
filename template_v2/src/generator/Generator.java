@@ -11,9 +11,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
@@ -43,6 +45,22 @@ public final class Generator {
 	private Map<Class<?>, List<Class<?>>> interfaceMap;
 	
 	/**
+	 * Set with all interface types that will generate a scope even if they appear in
+	 * {@link #skipList}.
+	 * We add the return types of a method to this set except when the interface that the method
+	 * is in extends the interface of the return type.
+	 */
+	private Set<String> keepList;
+	
+	/**
+	 * list with all interface types that will not generate a scope if they don't appear in
+	 * {@link #keepList}
+	 */
+	private List<String> skipList;
+	
+	private GeneratorParseTree tree;
+	
+	/**
 	 * constructor that initializes all instance variables.
 	 * 
 	 * @param dslName name of the domain specific language
@@ -62,6 +80,8 @@ public final class Generator {
 		visitorDestPath = visitorGenPath;
 		firstInterfaceName = firstIName;
 		interfaceMap = new HashMap<Class<?>, List<Class<?>> >();
+		keepList = new HashSet<String>();
+		skipList = new ArrayList<String>();
 		
 		parseTreeDestPackage = (parseTreeDestPath.subpath(parseTreeDestPath.getNameCount()-1, parseTreeDestPath.getNameCount())).toString();
 		visitorDestPackage = (visitorDestPath.subpath(visitorDestPath.getNameCount()-1, visitorDestPath.getNameCount())).toString();
@@ -87,13 +107,13 @@ public final class Generator {
 	public void generate() throws IOException {
 		fillInterfaceMap();
 		
-		List<GeneratorScope> genScopeList = buildGenScopeList();
-		if (!checkAllRequirements(genScopeList)) {
+		this.tree = new GeneratorParseTree(buildGenScopeList());
+		if (!checkAllRequirements()) {
 			System.err.println("Generator could not be started because the input didn't satisfy the specifications.");
 			return;
 		}
 		createPackages();
-		runTemplates(genScopeList);
+		runTemplates();
 	}
 	
 	/**
@@ -103,12 +123,6 @@ public final class Generator {
 	 * @see #interfaceMap
 	 */
 	private void fillInterfaceMap() throws IOException {
-		/*
-		 * We remember which interfaces are extended by others,
-		 * because we have to skip these.
-		 */
-		List<Class<?>> skipList = new ArrayList<Class<?>>();
-		
 		DirectoryStream<Path> stream = Files.newDirectoryStream(sourcePath); // throws IOException
 		for (Path file : stream) {
 			
@@ -144,7 +158,7 @@ public final class Generator {
 				// now, add all interfaces that you extend
 				for (Class<?> clazz : classArray) {
 					interfaceMapValue.add(clazz);
-					skipList.add(clazz);
+					skipList.add(clazz.getSimpleName().toString());
 				}
 				interfaceMap.put(c, interfaceMapValue);
 				
@@ -153,16 +167,8 @@ public final class Generator {
 				e.printStackTrace();
 				continue;
 			}
-        }
-		stream.close();
-        
-		for (Class<?> clazz : skipList) {
-			/* 
-			 * We have to do this because we might add some classes to 'interfaceMap'
-			 * initially only to later find out that we have to skip them.
-			 */
-			this.interfaceMap.remove(clazz);
 		}
+		stream.close();
 	}
 	
 	/**
@@ -183,8 +189,16 @@ public final class Generator {
 			String curInterfaceName = entry.getKey().getSimpleName();
 			
 			// scope list zusammenstellen
-			GeneratorScope genScope = createGeneratorScope(curInterfaceName, entry.getValue());			
+			GeneratorScope genScope = createGeneratorScope(curInterfaceName, entry.getValue());
 			generatorScopeList.add(genScope);
+		}
+		
+		for (GeneratorScope gs : generatorScopeList) {
+			if(skipList.contains(gs.getName()) && !keepList.contains(gs.getName())) {
+				// TODO remove!
+				System.out.println(gs.getName() + " will be tossed");
+				generatorScopeList.remove(gs);
+			}
 		}
 		
 		return generatorScopeList;
@@ -234,6 +248,7 @@ public final class Generator {
 				}
 				
 				generatorMethodList.add(genMethod);
+				keepList.add(retType);
 			}
 		}		
 		return new GeneratorScope(iName, generatorMethodList);
@@ -255,7 +270,7 @@ public final class Generator {
 	 * @param genScopeList list of <code>GeneratorScope</code> that contains all information needed
 	 * from the grammar interfaces for code generation.
 	 */
-	private void runTemplates(List<GeneratorScope> genScopeList) {
+	private void runTemplates() {
 		// ========== create ST variables
 		// methodNode:
 		STGroup methodNodeGroup = new STGroupFile("./src/templates/methodNodeClass.stg");
@@ -276,19 +291,19 @@ public final class Generator {
 		
 		
 		// ========== add all information to the templates
-		for (GeneratorScope gs : genScopeList) {
-			if (!gs.getScopeName().equals(firstInterfaceName)) {
+		for (GeneratorScope gs : this.tree) {
+			if (!gs.getName().equals(firstInterfaceName)) {
 				/*
 				 *  we must not add the interface with 'firstInterfaceName'
 				 *  because it has to be handled separately
 				 */
-				treeBuilderTemp.add("interfaceNames", gs.getScopeName());
+				treeBuilderTemp.add("interfaceNames", gs.getName());
 			}
 			
 			// scopeNode:
 			ST scopeNodeTemp = scopeNodeGroup.getInstanceOf("scopeNode");
 			scopeNodeTemp.add("dslNameUC", toUC(dslName));
-			scopeNodeTemp.add("iName", gs.getScopeName());
+			scopeNodeTemp.add("iName", gs.getName());
 			scopeNodeTemp.add("packageName", parseTreeDestPackage);
 			scopeNodeTemp.add("visitorGenPackageName", visitorDestPackage);
 			writeToFile(gs.getScopeNodePath(parseTreeDestPath), scopeNodeTemp.render());
@@ -308,13 +323,13 @@ public final class Generator {
 		treeBuilderTemp.add("dslName", dslName);
 		treeBuilderTemp.add("packageName", parseTreeDestPackage);
 		treeBuilderTemp.add("firstInterfaceName", firstInterfaceName);
-		treeBuilderTemp.add("scopesList", genScopeList);
+		treeBuilderTemp.add("scopesList", this.tree);
 		
 		//visitorSuperClass:
 		visitorSuperClassTemp.add("dslName", dslName);
 		visitorSuperClassTemp.add("package", visitorDestPackage);
 		visitorSuperClassTemp.add("parseTreePackage", parseTreeDestPackage);
-		visitorSuperClassTemp.add("scopesList", genScopeList);
+		visitorSuperClassTemp.add("tree", this.tree);
 		
 		// ========== write templates to file
 		// treeBuilder:
@@ -370,16 +385,16 @@ public final class Generator {
 	 * @throws IOException
 	 * @see ParseTree
 	 */
-	private boolean checkAllRequirements(List<GeneratorScope> genScopeList) throws IOException {
+	private boolean checkAllRequirements() throws IOException {
 		if (!checkInterfacesUpperCase()) {
 			return false;
 		}
 		
-		if (!checkAllMethodsUnique(genScopeList)) {
+		if (!checkAllMethodsUnique()) {
 			return false;
 		}
 		
-		if (!checkEndingMethod(genScopeList)) {
+		if (!checkEndingMethod()) {
 			return false;
 		}
 		
@@ -439,10 +454,11 @@ public final class Generator {
 	 * false otherwise.
 	 * @see #checkAllRequirements(List)
 	 */
-	private boolean checkAllMethodsUnique(List<GeneratorScope> genScopeList) {
-		
-		/* we use an old-fashioned loop here because
-		 * we want to skip the elements we already visited */
+	
+	private boolean checkAllMethodsUnique() {
+		/*
+		// we use an old-fashioned loop here because
+		// we want to skip the elements we already visited 
 		for (int s = 0; s < genScopeList.size(); s++) {
 			for (GeneratorMethod gm : genScopeList.get(s)) {
 				
@@ -453,8 +469,13 @@ public final class Generator {
 						StringBuilder message = new StringBuilder();
 						message.append("There are multiple methods with name ");
 						message.append(gm.getName());
-						message.append(" and argument type ");
-						message.append(gm.getArgumentType());
+						message.append(" and ");
+						if (gm.getHasArgument()) {
+							message.append("argument type ");
+							message.append(gm.getArgumentType());
+						} else {
+							message.append("no argument");
+						}
 						message.append("!");
 						System.err.println(message.toString());
 						return false;
@@ -462,9 +483,10 @@ public final class Generator {
 				}
 			}
 		}
-		
+		*/
 		return true;
 	}
+	
 	
 	/**
 	 * checks if at least one method exists that concludes a DSL statement.
@@ -475,8 +497,8 @@ public final class Generator {
 	 * @return true, if at least one method with return type <code>ParseTree</code> is found.
 	 * @see #checkAllRequirements(List)
 	 */
-	private boolean checkEndingMethod(List<GeneratorScope> genScopeList) {
-		for (GeneratorScope gs : genScopeList) {
+	private boolean checkEndingMethod() {
+		for (GeneratorScope gs : this.tree) {
 			for (GeneratorMethod gm : gs) {
 				if (gm.getTreeEnds()) {
 					return true;
