@@ -1,2 +1,61 @@
+% -------------------------------------------------------------------
+% Masterarbeit
+% Kapitel 5: Automatisierung der Implementierung
+% Autor: Daniel Fritz
+% Datum: 30.04.2016
+% -------------------------------------------------------------------
+
 \chapter{Automatisierung der Implementierung}\label{chp:5:automatisierung}
-Dieses Kapitel 
+Dieses Kapitel behandelt die automatische Generierung von Teilen einer internen-DSL-Implementierung anhand einer gegebenen Grammatik in Form von Interfaces, wie sie in Abschnitt \ref{ssct:4.3.1:grammatik} beschrieben wird.\\
+Zunächst wird die Template-Sprache \emph{StringTemplate} vorgestellt, die in dieser Abschlussarbeit zur Codegenerierung verwendet wird, danach die Codegenerierung selbst.
+
+\section{StringTemplate}\label{sct:5.1:st}
+StringTemplate \cite{www:stringtemplate} ist eine Template-Sprache, die von Terence Parr entwickelt wurde. Gegenüber anderen Template-Sprachen bietet sie eine vollständige Trennung von einem Modell und dessen Präsentation. Die Template-Engine ist einfach in ein Projekt einzubinden\\todo{mehr},
+Lückentext, der an den dafür vorgesehen Stellen mit Attributen gefüllt wird
+kann:
+Eigenschaften auslesen
+andere templates aufrufen
+listen iterieren
+
+
+\section{Codegenerierung}\label{sct:5.2:codegenerierung}
+In diesem Abschnitt werden automatisch generierbaren Teile der Sprache sowie der Aufbau des Generators erläutert.
+
+\subsection{Generierte Elemente}\label{ssct:5.2.1:generiertes}
+Große Teile der in Abschnitt \ref{sct:4.3:implementierung} besprochenen Implementierung können anhand der in Form von Interfaces gegebenen Informationen automatisch erzeugt werden. Die Regeln dafür wurden in Kapitel \ref{chp:4:implementierungstechniken} bereits teilweise genannt. Alle weiteren Informationen, die benötigt werden, sind in Abschnitt \ref{ssct:5.2.2:generator} beschrieben.
+Nachfolgend ist eine vollständige Auflistung aller Teile einer DSL-Implementierung, die aus vorgegebenen Interfaces, welche die Grammatik definieren, generiert werden.
+\\ \\ %---------------------------------------------------------------
+Die \textbf{Tree-Builder-Klasse} inklusive ihrer inneren Scope-Klassen kann nach folgenden Regeln automatisch generiert werden:
+
+\begin{itemize}
+	\item Für jedes Interface, das nicht von einem anderen Interface erweitert wird, wird eine Scope-Klasse generiert. Sie besitzt einen privaten Konstruktor und eine private Liste von Methoden-Knoten. Der Name der Scope-Klasse wird nach dem Schema <Interface-Name>Scope festgelegt.
+	\item Jede Methode in den Interfaces resultiert in einer Methode in der entsprechenden Scope-Klasse. Allen Methoden ist gemein, dass sie ein entsprechendes Methoden-Knoten-Objekt erstellen und es in der Liste des Scopes ablegen. Davon abgesehen muss unterschieden werden, ob nach Aufruf der Methode im aktuellen Scope verblieben wird, ob er verlassen wird, oder ob das Ende eines Sprach-Ausdrucks erreicht ist.
+	\item Die äußere Klasse besitzt ein privates Scope-Objekt für jede vorhandene innere Klasse außer für diejenige, welche die erste Methode eines Ausdrucks enthält. Außerdem hat sie einen privaten Konstruktor, eine private Liste von Scope-Knoten und die Einstiegs-Methode, die das Scope-Objekt mit der (/den) ersten Methode(n) eines Ausdrucks zurückgibt.
+\end{itemize}
+
+Für den Namen der Klasse gilt das Schema <DSL-Name>TreeBuilder
+
+\noindent
+Pro Scope-Klasse wird auch eine \textbf{Scope-Knoten-Klasse} generiert. Im Konstruktor wird der Name des Scopes eingefügt. Der Name der Klasse ergibt sich aus dem Schema ScopeNode<Interface-Name>.
+\\ \\
+\noindent
+Pro Methode wird eine \textbf{Methoden-Knoten-Klasse} generiert.
+Der Name der Klasse ergibt sich aus dem Schema <Methoden-Typ>MethodNode<Interface-Name>. Im Konstruktor wird der Name der Methode eingefügt. Der Methoden-Typ ist entweder \emph{Simple}, \emph{Nested} oder er ist leer.
+\\ \\
+\noindent
+Eine abstrakte Oberklasse für alle Visitor-Implementierungen dieser DSL wird generiert. Sie erbt von \texttt{AVisitor} und enthält leere Implementierungen der visit-Methode für alle Scope- und Methoden-Knoten. Dies ermöglicht eine leichtere Implementierung von konkreten Besuchern, da bereits vorgegeben ist, welche Methoden implementiert werden können. Der Name der Klasse ist durch das Schema A<DSL-Name>Visitor festgelegt.
+\\ \\
+Für alle generierten Klassen müssen zusätzlich noch korrekte Paket-Definitionen und benötigte import-Statements generiert werden.
+
+\subsection{Aufbau des Generators}\label{ssct:5.2.2:generator}
+Der Generator muss alle nötigen Informationen aus den Grammatik-Interfaces extrahieren, und sie für die Code-Generierung an die Templates weitergeben.
+
+Die Codegenerierung umfasst vier Schritte:
+
+\textbf{1. Interfaces analysieren:} Mittels Java Reflection werden alle Interfaces eines vom User spezifizierten Paketes analysiert. Zunächst wird nur festgehalten, welche Interfaces andere erweitern und welche umgekehrt von anderen erweitert werden.
+
+\textbf{2. Informationen auslesen:} Aus den Interfaces werden alle für die Codegenerierung relevanten Informationen ausgelesen und in einer Datenstruktur ähnlich der des \texttt{ParseTree} gespeichert: Ein \emph{\texttt{GeneratorScope}}-Objekt alle nötigen Informationen um Scope- und ScopeNode-Klassen zu generieren. Die GeneratorScope-Klasse hält eine Liste von \emph{\texttt{GeneratorMethod}}-Objekten, welche wiederum die Informationen zum Generieren von MethodNode-Klassen und von Methoden im TreeBuilder enthalten. Informationen aus beiden Klassen gehen in die abstrakte Visitor-Oberklasse ein. Beide Generatorklassen enthalten auch einige Methoden, die nur innerhalb von Templates benötigt werden.
+
+\textbf{3. Überprüfen:} Bei der Verwendung
+
+\subsection{Aufbau der Templates?}
