@@ -261,12 +261,25 @@ public final class Generator {
 	}
 	
 	private void createPackages() throws IOException {
-		if (!Files.exists(this.parseTreeDestPath)) {
-			Files.createDirectory(this.parseTreeDestPath);
+		createFolder(this.parseTreeDestPath);
+		createFolder(this.visitorDestPath);
+	}
+	
+	private void createFolder(Path path) throws IOException {
+		Path parent = path.getParent();
+		// exit condition:
+		if (parent == null) {
+			if (!Files.exists(path)) {
+				Files.createDirectory(path);
+			}
+			return;
 		}
-		if (!Files.exists(this.visitorDestPath)) {
-			Files.createDirectory(this.visitorDestPath);
+		
+		createFolder(parent);
+		if (!Files.exists(path)) {
+			Files.createDirectory(path);
 		}
+		return;
 	}
 	
 	/**

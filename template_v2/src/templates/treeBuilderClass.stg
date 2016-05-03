@@ -25,8 +25,7 @@ public final class <toUC(dslName)>TreeBuilder {
 		return new <toUC(dslName)>TreeBuilder().new <firstInterfaceName>Scope();
 	}
 	
-	<scopesList.allScopes:{scopeObject | <scope(dslName, scopeObject.name, scopeObject.allMethods)>}>
-	
+	<scopesList.allScopes:{scopeObject | <scope(dslName, scopeObject.name, scopeObject.allMethods)><\n>}>
 }
 >>
 
@@ -47,7 +46,7 @@ public final class <interfaceName>Scope implements <interfaceName> {
 		methodList<interfaceName> = new ArrayList\<AMethodNode>();
 	}
 	
-	<methodList: {mObj | <method(dslName, interfaceName, mObj.name, mObj.returnType, mObj.argumentType, mObj.argumentName, mObj.hasArgument, mObj.scopeEnds, mObj.treeEnds)>}>
+	<methodList:{m | <method(dslName, interfaceName, m.name, m.returnType, m.argumentType, m.argumentName, m.hasArgument, m.scopeEnds, m.treeEnds)>}>
 }
 
 >>
