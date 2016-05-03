@@ -9,7 +9,7 @@ import parseTree.AScopeNode;
 import parseTree.AMethodNode;
 import <dslName>.<firstInterfaceName>;
 <interfaceNames:{iName | import <dslName>.<iName>;<\n>}>
-<! scopesList:{scopeObject | <getImports(scopeObject.methods, scopeObject.simpleMethods, scopeObject.nestedMethods, packageName)>} !>
+<! scopesList:{scope | <getImports(scope.methods, scope.simpleMethods, scope.nestedMethods, packageName)>} !>
 
 public final class <toUC(dslName)>TreeBuilder {
 	private ParseTree parseTree;

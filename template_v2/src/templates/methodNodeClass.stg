@@ -6,7 +6,7 @@ methodNodeDispatch(dslName, parseTreeDestPackage, visitorDestPackage, method) ::
 >>
 
 methodNode(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
-<getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
+<getHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
 import parseTree.AMethodNode;
 
 public final class MethodNode<toUC(method.name)> extends AMethodNode {
@@ -21,7 +21,7 @@ public final class MethodNode<toUC(method.name)> extends AMethodNode {
 
 
 simpleMethodNode(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
-<getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
+<getHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
 import parseTree.ASimpleMethodNode;
 
 public final class SimpleMethodNode<toUC(method.name)> extends ASimpleMethodNode\<<getArgType(method.argumentType)>\> {
@@ -36,7 +36,7 @@ public final class SimpleMethodNode<toUC(method.name)> extends ASimpleMethodNode
 >>
 
 nestedMethodNode(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
-<getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
+<getHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
 import parseTree.ParseTree;
 import parseTree.ANestedMethodNode;
 
@@ -65,7 +65,7 @@ primitiveTypeMap ::= [
 	default:{argType}
 ]
 
-getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage) ::= <<
+getHeader(dslName, parseTreeDestPackage, visitorDestPackage) ::= <<
 package <parseTreeDestPackage>;
 
 import <visitorDestPackage>.A<toUC(dslName)>Visitor;

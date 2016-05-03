@@ -1,9 +1,5 @@
 visitorSuperClass(dslName, package, parseTreePackage, tree) ::= <<
-package <package>;
-
-import visitor.AVisitor;
-
-<getImports(parseTreePackage, tree)>
+<getHeader(parseTreePackage, tree)>
 public abstract class A<toUC(dslName)>Visitor extends AVisitor {
 	<getBody(tree)>
 }
@@ -11,7 +7,11 @@ public abstract class A<toUC(dslName)>Visitor extends AVisitor {
 >>
 
 
-getImports(parseTreePackage, tree) ::= <<
+getHeader(parseTreePackage, tree) ::= <<
+package <package>;
+
+import visitor.AVisitor;
+
 <tree.allScopes:{s | import <parseTreePackage>.ScopeNode<s.name>; <\n>}>
 <tree.methodsUnique:{method | import <parseTreePackage>.MethodNode<toUC(method.name)>;<\n>}>
 <tree.simpleMethodsUnique:{method | import <parseTreePackage>.SimpleMethodNode<toUC(method.name)>;<\n>}>
