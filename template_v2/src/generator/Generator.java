@@ -91,6 +91,7 @@ public final class Generator {
 				)).toString();
 	}
 	
+	//TODO anpassen!
 	/**
 	 * method that invokes the code generation steps.
 	 * <p>
@@ -388,12 +389,13 @@ public final class Generator {
 	 * <li>All interface types that define the grammar of a DSL have to start with an upper
 	 * 	case letter. Although it is already discouraged in Java to use type names that
 	 * 	start with a lower case letter, we have to make sure that none of the interfaces does.
-	 * <li>There must not be two (or more) methods that have the same name AND argument type.
+	 * <li>There must not be two (or more) methods that have the same name AND are both nested or
+	 * not nested methods.
 	 * <li>There has to be at least one method that has <code>ParseTree</code> as its return type
 	 * 	and thus concludes a statement of the DSL.
 	 * </ul>
-	 * See {@link #checkInterfacesUpperCase()}, {@link #checkAllMethodsUnique(List)} and
-	 * {@link #checkEndingMethod(List)} for more details.
+	 * See {@link #checkInterfacesUpperCase()}and {@link #checkEndingMethod(List)}
+	 * for more details.
 	 * <p>
 	 * There is one more requirement that is not checked by this method but directly in
 	 * {@link #fillInterfaceMap()}: Every method cannot have more than one argument.
@@ -406,10 +408,6 @@ public final class Generator {
 	 */
 	private boolean checkAllRequirements() throws IOException {
 		if (!checkInterfacesUpperCase()) {
-			return false;
-		}
-		
-		if (!checkAllMethodsUnique()) {
 			return false;
 		}
 		
@@ -462,50 +460,6 @@ public final class Generator {
 		
 		return true;
 	}
-	
-	/**
-	 * checks if all methods are unique, meaning that no two methods in the DSL grammar definition
-	 * have the same name AND the same argument type.
-	 * 
-	 * @param genScopeList list of all {@link GeneratorScope} objects needed for the generation
-	 * of code later.
-	 * @return true, if no two methods have the same name AND the same argument type;
-	 * false otherwise.
-	 * @see #checkAllRequirements(List)
-	 */
-	
-	private boolean checkAllMethodsUnique() {
-		/*
-		// we use an old-fashioned loop here because
-		// we want to skip the elements we already visited 
-		for (int s = 0; s < genScopeList.size(); s++) {
-			for (GeneratorMethod gm : genScopeList.get(s)) {
-				
-				// look up if this methods name+argument type exists again
-				for (int t = s; t < genScopeList.size(); t++) {
-					int i = genScopeList.get(t).lastIndexOf(gm);
-					if (i != -1 && genScopeList.get(t).get(i) != gm) {
-						StringBuilder message = new StringBuilder();
-						message.append("There are multiple methods with name ");
-						message.append(gm.getName());
-						message.append(" and ");
-						if (gm.getHasArgument()) {
-							message.append("argument type ");
-							message.append(gm.getArgumentType());
-						} else {
-							message.append("no argument");
-						}
-						message.append("!");
-						System.err.println(message.toString());
-						return false;
-					}
-				}
-			}
-		}
-		*/
-		return true;
-	}
-	
 	
 	/**
 	 * checks if at least one method exists that concludes a DSL statement.
