@@ -72,19 +72,23 @@ public final class Generator {
 	 * @see ParseTree
 	 * @see AVisitor
 	 */
-	public Generator(final String dslName, final Path srcPath, final Path parseTreeGenPath,
+	public Generator(final Path srcPath, final Path parseTreeGenPath,
 			final Path visitorGenPath, final String firstIName) {
-		this.dslName = dslName;
-		sourcePath = srcPath;
-		parseTreeDestPath = parseTreeGenPath;
-		visitorDestPath = visitorGenPath;
-		firstInterfaceName = firstIName;
-		interfaceMap = new HashMap<Class<?>, List<Class<?>> >();
-		keepList = new HashSet<String>();
-		skipList = new ArrayList<String>();
+		this.dslName = srcPath.getName(srcPath.getNameCount()-1).toString();
+		this.sourcePath = srcPath;
+		this.parseTreeDestPath = parseTreeGenPath;
+		this.visitorDestPath = visitorGenPath;
+		this.firstInterfaceName = firstIName;
+		this.interfaceMap = new HashMap<Class<?>, List<Class<?>> >();
+		this.keepList = new HashSet<String>();
+		this.skipList = new ArrayList<String>();
 		
-		parseTreeDestPackage = (parseTreeDestPath.subpath(parseTreeDestPath.getNameCount()-1, parseTreeDestPath.getNameCount())).toString();
-		visitorDestPackage = (visitorDestPath.subpath(visitorDestPath.getNameCount()-1, visitorDestPath.getNameCount())).toString();
+		this.parseTreeDestPackage = (this.parseTreeDestPath.subpath(
+				this.parseTreeDestPath.getNameCount()-1, this.parseTreeDestPath.getNameCount()
+				)).toString();
+		this.visitorDestPackage = (this.visitorDestPath.subpath(
+				this.visitorDestPath.getNameCount()-1, this.visitorDestPath.getNameCount()
+				)).toString();
 	}
 	
 	/**
@@ -123,9 +127,11 @@ public final class Generator {
 	 * @see #interfaceMap
 	 */
 	private void fillInterfaceMap() throws IOException {
-		DirectoryStream<Path> stream = Files.newDirectoryStream(sourcePath); // throws IOException
-		for (Path file : stream) {
-			
+		
+		// throws IOException
+		DirectoryStream<Path> stream = Files.newDirectoryStream(this.sourcePath);
+		
+		for (Path file : stream) {			
 			Path filePath = file.getFileName();
 			if (filePath == null) {
 				// TODO: just for findBugs; could it happen?
@@ -140,7 +146,7 @@ public final class Generator {
 			
 			try {
 				String interfaceName = fileName.substring(0, fileName.lastIndexOf("."));
-				Class<?> c = Class.forName(dslName + '.' + interfaceName); // TODO geht das auch ohne package-Name?
+				Class<?> c = Class.forName(this.dslName + '.' + interfaceName); // TODO geht das auch ohne package-Name?
 				
 				if (!c.isInterface()) {
 					// TODO FRAGE: Sollte das eher eine Exception sein?
@@ -158,9 +164,9 @@ public final class Generator {
 				// now, add all interfaces that you extend
 				for (Class<?> clazz : classArray) {
 					interfaceMapValue.add(clazz);
-					skipList.add(clazz.getSimpleName().toString());
+					this.skipList.add(clazz.getSimpleName().toString());
 				}
-				interfaceMap.put(c, interfaceMapValue);
+				this.interfaceMap.put(c, interfaceMapValue);
 				
 			} catch (ClassNotFoundException e) {
 				System.err.println("There is no such class named " + e.getClass() + '!');
@@ -185,7 +191,7 @@ public final class Generator {
 	private List<GeneratorScope> buildGenScopeList() {
 		List<GeneratorScope> generatorScopeList = new ArrayList<GeneratorScope>();
 		
-		for (Entry<Class<?>, List<Class<?>>> entry : interfaceMap.entrySet()) {
+		for (Entry<Class<?>, List<Class<?>>> entry : this.interfaceMap.entrySet()) {
 			String curInterfaceName = entry.getKey().getSimpleName();
 			
 			// scope list zusammenstellen
@@ -194,7 +200,7 @@ public final class Generator {
 		}
 		
 		for (GeneratorScope gs : generatorScopeList) {
-			if(skipList.contains(gs.getName()) && !keepList.contains(gs.getName())) {
+			if(this.skipList.contains(gs.getName()) && !this.keepList.contains(gs.getName())) {
 				// TODO remove!
 				System.out.println(gs.getName() + " will be tossed");
 				generatorScopeList.remove(gs);
@@ -248,18 +254,18 @@ public final class Generator {
 				}
 				
 				generatorMethodList.add(genMethod);
-				keepList.add(retType);
+				this.keepList.add(retType);
 			}
 		}		
 		return new GeneratorScope(iName, generatorMethodList);
 	}
 	
 	private void createPackages() throws IOException {
-		if (!Files.exists(parseTreeDestPath)) {
-			Files.createDirectory(parseTreeDestPath);
+		if (!Files.exists(this.parseTreeDestPath)) {
+			Files.createDirectory(this.parseTreeDestPath);
 		}
-		if (!Files.exists(visitorDestPath)) {
-			Files.createDirectory(visitorDestPath);
+		if (!Files.exists(this.visitorDestPath)) {
+			Files.createDirectory(this.visitorDestPath);
 		}
 	}
 	
@@ -292,7 +298,7 @@ public final class Generator {
 		
 		// ========== add all information to the templates
 		for (GeneratorScope gs : this.tree) {
-			if (!gs.getName().equals(firstInterfaceName)) {
+			if (!gs.getName().equals(this.firstInterfaceName)) {
 				/*
 				 *  we must not add the interface with 'firstInterfaceName'
 				 *  because it has to be handled separately
@@ -302,42 +308,42 @@ public final class Generator {
 			
 			// scopeNode:
 			ST scopeNodeTemp = scopeNodeGroup.getInstanceOf("scopeNode");
-			scopeNodeTemp.add("dslNameUC", toUC(dslName));
+			scopeNodeTemp.add("dslNameUC", toUC(this.dslName));
 			scopeNodeTemp.add("iName", gs.getName());
-			scopeNodeTemp.add("packageName", parseTreeDestPackage);
-			scopeNodeTemp.add("visitorGenPackageName", visitorDestPackage);
-			writeToFile(gs.getScopeNodePath(parseTreeDestPath), scopeNodeTemp.render());
+			scopeNodeTemp.add("packageName", this.parseTreeDestPackage);
+			scopeNodeTemp.add("visitorGenPackageName", this.visitorDestPackage);
+			writeToFile(gs.getScopeNodePath(this.parseTreeDestPath), scopeNodeTemp.render());
 			
 			for (GeneratorMethod gm : gs) {
 				// methodNode:
 				ST methodNodeTemp = methodNodeGroup.getInstanceOf("methodNodeDispatch");
-				methodNodeTemp.add("dslName", dslName);
-				methodNodeTemp.add("parseTreeDestPackage", parseTreeDestPackage);
-				methodNodeTemp.add("visitorDestPackage", visitorDestPackage);
+				methodNodeTemp.add("dslName", this.dslName);
+				methodNodeTemp.add("parseTreeDestPackage", this.parseTreeDestPackage);
+				methodNodeTemp.add("visitorDestPackage", this.visitorDestPackage);
 				methodNodeTemp.add("method", gm);
-				writeToFile(gm.getMethodNodePath(parseTreeDestPath), methodNodeTemp.render());
+				writeToFile(gm.getMethodNodePath(this.parseTreeDestPath), methodNodeTemp.render());
 			}
 		}
 		
 		// treeBuilder:
-		treeBuilderTemp.add("dslName", dslName);
-		treeBuilderTemp.add("packageName", parseTreeDestPackage);
-		treeBuilderTemp.add("firstInterfaceName", firstInterfaceName);
+		treeBuilderTemp.add("dslName", this.dslName);
+		treeBuilderTemp.add("packageName", this.parseTreeDestPackage);
+		treeBuilderTemp.add("firstInterfaceName", this.firstInterfaceName);
 		treeBuilderTemp.add("scopesList", this.tree);
 		
 		//visitorSuperClass:
-		visitorSuperClassTemp.add("dslName", dslName);
-		visitorSuperClassTemp.add("package", visitorDestPackage);
-		visitorSuperClassTemp.add("parseTreePackage", parseTreeDestPackage);
+		visitorSuperClassTemp.add("dslName", this.dslName);
+		visitorSuperClassTemp.add("package", this.visitorDestPackage);
+		visitorSuperClassTemp.add("parseTreePackage", this.parseTreeDestPackage);
 		visitorSuperClassTemp.add("tree", this.tree);
 		
 		// ========== write templates to file
 		// treeBuilder:
-		Path tPath = parseTreeDestPath.resolve(Paths.get(toUC(dslName) + "TreeBuilder.java"));
+		Path tPath = parseTreeDestPath.resolve(Paths.get(toUC(this.dslName) + "TreeBuilder.java"));
 		writeToFile(tPath, treeBuilderTemp.render());
 		
 		//visitorSuperClass:
-		Path vPath = visitorDestPath.resolve(Paths.get("A" + toUC(dslName) + "Visitor.java"));
+		Path vPath = visitorDestPath.resolve(Paths.get("A" + toUC(this.dslName) + "Visitor.java"));
 		writeToFile(vPath, visitorSuperClassTemp.render());
 		
 	}
@@ -412,7 +418,7 @@ public final class Generator {
 	private boolean checkInterfacesUpperCase() throws IOException {
 
 		// throws IOException
-		DirectoryStream<Path> stream = Files.newDirectoryStream(sourcePath, "*.java");
+		DirectoryStream<Path> stream = Files.newDirectoryStream(this.sourcePath, "*.java");
 		
 		for (Path file : stream) {
 			
