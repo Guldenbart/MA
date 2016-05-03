@@ -6,7 +6,7 @@ methodNodeDispatch(dslName, parseTreeDestPackage, visitorDestPackage, method) ::
 >>
 
 methodNode(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
-<getHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
+<getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
 import parseTree.AMethodNode;
 
 public final class MethodNode<toUC(method.name)> extends AMethodNode {
@@ -21,12 +21,12 @@ public final class MethodNode<toUC(method.name)> extends AMethodNode {
 
 
 simpleMethodNode(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
-<getHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
+<getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
 import parseTree.ASimpleMethodNode;
 
-public final class SimpleMethodNode<toUC(method.name)> extends ASimpleMethodNode\<<getArgType(method.argumentType)>\> {
+public final class SimpleMethodNode<toUC(method.name)> extends ASimpleMethodNode\<<getParamType(method.parameterType)>\> {
 
-	public SimpleMethodNode<toUC(method.name)>(final <getArgType(method.argumentType)> value) {
+	public SimpleMethodNode<toUC(method.name)>(final <getParamType(method.parameterType)> value) {
 		super("<toLC(method.name)>", value);
 	}
 	
@@ -36,7 +36,7 @@ public final class SimpleMethodNode<toUC(method.name)> extends ASimpleMethodNode
 >>
 
 nestedMethodNode(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
-<getHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
+<getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
 import parseTree.ParseTree;
 import parseTree.ANestedMethodNode;
 
@@ -51,7 +51,7 @@ public final class NestedMethodNode<toUC(method.name)> extends ANestedMethodNode
 }
 >>
 
-getArgType(argType) ::= <%<primitiveTypeMap.(argType)>%> 
+getParamType(paraamType) ::= <%<primitiveTypeMap.(paraamType)>%> 
 
 primitiveTypeMap ::= [
 	"boolean":"Boolean",
@@ -62,10 +62,10 @@ primitiveTypeMap ::= [
 	"long":"Long",
 	"short":"Short",
 	"double":"Double",
-	default:{argType}
+	default:{paraamType}
 ]
 
-getHeader(dslName, parseTreeDestPackage, visitorDestPackage) ::= <<
+getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage) ::= <<
 package <parseTreeDestPackage>;
 
 import <visitorDestPackage>.A<toUC(dslName)>Visitor;

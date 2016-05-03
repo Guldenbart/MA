@@ -91,7 +91,6 @@ public final class Generator {
 				)).toString();
 	}
 	
-	//TODO anpassen!
 	/**
 	 * method that invokes the code generation steps.
 	 * <p>
@@ -100,10 +99,11 @@ public final class Generator {
 	 * <li>{@link #fillInterfaceMap()}: fill {@link #interfaceMap} with data according to the
 	 * 	specification.
 	 * <li>{@link #buildGenScopeList(): creates a nested list with <code>GeneratorScope</code>
-	 * objects (including GeneratorMethod objects) that contains all information needed from
-	 * the grammar interfaces for code generation.
+	 * 	objects (including GeneratorMethod objects) that contains all information needed from
+	 * 	the grammar interfaces for code generation.
 	 * <li>{@link #checkAllRequirements(List)}: checks if all requirements that have been made
-	 * have been met.
+	 * 	have been met.
+	 * <li>
 	 * <li>{@link #runTemplates(List)}: invokes the code generation.
 	 * </ul><p>
 	 * 
@@ -336,6 +336,7 @@ public final class Generator {
 				methodNodeTemp.add("visitorDestPackage", this.visitorDestPackage);
 				methodNodeTemp.add("method", gm);
 				writeToFile(gm.getMethodNodePath(this.parseTreeDestPath), methodNodeTemp.render());
+				System.out.println("generated method " + gm.toString() + "to " + gm.getMethodNodePath(this.parseTreeDestPath).toString());
 			}
 		}
 		

@@ -9,7 +9,7 @@ import parseTree.AScopeNode;
 import parseTree.AMethodNode;
 import <dslName>.<firstInterfaceName>;
 <interfaceNames:{iName | import <dslName>.<iName>;<\n>}>
-<! scopesList:{scope | <getImports(scope.methods, scope.simpleMethods, scope.nestedMethods, packageName)>} !>
+<! scopesList:{scopeObject | <getImports(scopeObject.methods, scopeObject.simpleMethods, scopeObject.nestedMethods, packageName)>} !>
 
 public final class <toUC(dslName)>TreeBuilder {
 	private ParseTree parseTree;
@@ -25,7 +25,8 @@ public final class <toUC(dslName)>TreeBuilder {
 		return new <toUC(dslName)>TreeBuilder().new <firstInterfaceName>Scope();
 	}
 	
-	<scopesList.allScopes:{scopeObject | <scope(dslName, scopeObject.name, scopeObject.allMethods)><\n>}>
+	<scopesList.allScopes:{scopeObject | <scope(dslName, scopeObject.name, scopeObject.allMethods)>}>
+	
 }
 >>
 
@@ -46,16 +47,16 @@ public final class <interfaceName>Scope implements <interfaceName> {
 		methodList<interfaceName> = new ArrayList\<AMethodNode>();
 	}
 	
-	<methodList:{m | <method(dslName, interfaceName, m.name, m.returnType, m.argumentType, m.argumentName, m.hasArgument, m.scopeEnds, m.treeEnds)>}>
+	<methodList: {m | <method(dslName, interfaceName, m.name, m.returnType, m.parameterType, m.parameterName, m.hasParameter, m.scopeEnds, m.treeEnds)>}>
 }
 
 >>
 
 
-method(dslName, iName, mName, returnType, argType, argName, hasArgument, scopeEnds, treeEnds) ::= <<
+method(dslName, iName, mName, returnType, paramType, paramName, hasParam, scopeEnds, treeEnds) ::= <<
 @Override
-public <getReturnType(toUC(returnType))> <toLC(mName)>(<getSignature(argType, argName, hasArgument)>) {
-	AMethodNode m = new <if(hasArgument)><methodTypeMap.(argType)><endif>MethodNode<toUC(mName)>(<argName>);
+public <getReturnType(toUC(returnType))> <toLC(mName)>(<getSignature(paramType, paramName, hasParam)>) {
+	AMethodNode m = new <if(hasParam)><methodTypeMap.(paramType)><endif>MethodNode<toUC(mName)>(<paramName>);
 	methodList<iName>.add(m);
 	
 	<if(scopeEnds)>
@@ -77,9 +78,9 @@ public <getReturnType(toUC(returnType))> <toLC(mName)>(<getSignature(argType, ar
 
 getReturnType(returnTypeUC) ::= "<returnTypeUC><if(scopeEnds&&!treeEnds)>Scope<endif>"
 
-getSignature(argType, argName, hasArgument) ::= "<if(hasArgument)>final <getArgType(argType)> <argName><endif>"
+getSignature(paramType, paramName, hasParam) ::= "<if(hasParam)>final <getParamType(paramType)> <paramName><endif>"
 
-getArgType(argType) ::= "<argType>"
+getParamType(paramType) ::= "<paramType>"
 
 getReturnLine(scopeEnds, treeEnds, iNameLC, dslNameUC) ::= <<
 <if(scopeEnds)><dslNameUC>TreeBuilder.<endif>this<if(treeEnds)>.parseTree<elseif(scopeEnds)>.<toLC(returnType)>Scope<endif>
