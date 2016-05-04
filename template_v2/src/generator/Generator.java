@@ -202,8 +202,6 @@ public final class Generator {
 		
 		for (GeneratorScope gs : generatorScopeList) {
 			if(this.skipList.contains(gs.getName()) && !this.keepList.contains(gs.getName())) {
-				// TODO remove!
-				System.out.println(gs.getName() + " will be tossed");
 				generatorScopeList.remove(gs);
 			}
 		}
@@ -231,7 +229,6 @@ public final class Generator {
 		for (Class<?> clazz : list) {
 			for (Method method : clazz.getDeclaredMethods()) {
 				if (method.getParameters().length > 1) {
-					// TODO exception?
 					System.err.println("only one argument per Method allowed!");
 					continue;
 				}
