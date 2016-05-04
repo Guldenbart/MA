@@ -79,7 +79,7 @@ final class GeneratorMethod {
 	 * @param paramType type of the method argument.
 	 * @param paramName name of the method argument.
 	 */
-	public GeneratorMethod(final String iName, final String mName,
+	GeneratorMethod(final String iName, final String mName,
 			final String retType, final String paramType, final String paramName) {
 		interfaceName = iName;
 		name = mName;
@@ -88,9 +88,7 @@ final class GeneratorMethod {
 		parameterName = paramName;
 		if (parameterType.equals("ParseTree")) {
 			this.type = TYPE_NESTED_METHOD;
-		} /*else if (returnType.equals("")){
-			this.type = TYPE_METHOD;
-		}*/ else {
+		} else {
 			this.type = TYPE_SIMPLE_METHOD;
 		}
 	}
@@ -103,7 +101,7 @@ final class GeneratorMethod {
 	 * @param mName name of the method.
 	 * @param retType return type of the method.
 	 */
-	public GeneratorMethod(final String iName, final String mName,
+	GeneratorMethod(final String iName, final String mName,
 			final String retType) {
 		this(iName, mName, retType, "", "");
 		this.type = TYPE_METHOD;
@@ -230,7 +228,7 @@ final class GeneratorMethod {
 	
 	//TODO may comment on this?
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (this == o) {
 			return true;
 		}
@@ -241,7 +239,7 @@ final class GeneratorMethod {
 		if (!(o instanceof GeneratorMethod)) {
 			return false;
 		}
-		GeneratorMethod gm = (GeneratorMethod)o;
+		GeneratorMethod gm = (GeneratorMethod) o;
 		
 		if (this.name.equals(gm.name)) {
 			if (this.type == TYPE_NESTED_METHOD && gm.type == TYPE_NESTED_METHOD) {
@@ -269,11 +267,4 @@ final class GeneratorMethod {
 		
 		return result;
 	}
-	
-	// TODO FRAGE: Gestaltung der Variablen-Namen (auch: *packageNAME, damit man weiß, dass es ein String und keine Variable ist?)
-	// TODO <code> tags in javadoc: alles mit 'Node'
-	// TODO FRAGE: GeneratorScope und GeneratorMethod als interne Klassen?
-	// TODO alle restrictions reincoden
-	// TODO werden finalizers benötigt? bzw. try-with
-	// TODO immer this oder nie?
 }

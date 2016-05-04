@@ -22,14 +22,47 @@ import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
 import org.stringtemplate.v4.StringRenderer;
 
+/**
+ * class that includes all methods necessary for code generation.
+ * 
+ * @author Daniel Fritz
+ *
+ */
 public final class Generator {
 	
+	/**
+	 * Name of the DSL, inferred from {@link #sourcePath}.
+	 */
 	private final String dslName;
+	
+	/**
+	 * Path to the grammar defining interfaces.
+	 */
 	private final Path sourcePath;
+	
+	/**
+	 * Desired path for generated parse tree nodes and the TreeBuilder class. 
+	 */
 	private final Path parseTreeDestPath;
+	
+	/**
+	 * Desired path for the generated abstract visitor super class.
+	 */
 	private final Path visitorDestPath;
+	
+	/**
+	 * Name of the interface that includes the first method of a language statement.
+	 */
 	private final String firstInterfaceName;
+	
+	/**
+	 * Name of the package inferred from {@link #parseTreeDestPath}.
+	 */
 	private String parseTreeDestPackage;
+	
+	/**
+	 * Name of the package inferred from {@link #visitorDestPath}.
+	 */
 	private String visitorDestPackage;
 	
 	/**
@@ -54,10 +87,14 @@ public final class Generator {
 	
 	/**
 	 * list with all interface types that will not generate a scope if they don't appear in
-	 * {@link #keepList}
+	 * {@link #keepList}.
 	 */
 	private List<String> skipList;
 	
+	/**
+	 * {@link GeneratorParseTree} object that holds all {@link GeneratorScope} and
+	 * {@link GeneratorMethod} objects necessary for code genration.
+	 */
 	private GeneratorParseTree tree;
 	
 	/**
@@ -74,7 +111,7 @@ public final class Generator {
 	 */
 	public Generator(final Path srcPath, final Path parseTreeGenPath,
 			final Path visitorGenPath, final String firstIName) {
-		this.dslName = srcPath.getName(srcPath.getNameCount()-1).toString();
+		this.dslName = srcPath.getName(srcPath.getNameCount() - 1).toString();
 		this.sourcePath = srcPath;
 		this.parseTreeDestPath = parseTreeGenPath;
 		this.visitorDestPath = visitorGenPath;
@@ -84,10 +121,10 @@ public final class Generator {
 		this.skipList = new ArrayList<String>();
 		
 		this.parseTreeDestPackage = (this.parseTreeDestPath.subpath(
-				this.parseTreeDestPath.getNameCount()-1, this.parseTreeDestPath.getNameCount()
+				this.parseTreeDestPath.getNameCount() - 1, this.parseTreeDestPath.getNameCount()
 				)).toString();
 		this.visitorDestPackage = (this.visitorDestPath.subpath(
-				this.visitorDestPath.getNameCount()-1, this.visitorDestPath.getNameCount()
+				this.visitorDestPath.getNameCount() - 1, this.visitorDestPath.getNameCount()
 				)).toString();
 	}
 	
@@ -114,7 +151,8 @@ public final class Generator {
 		
 		this.tree = new GeneratorParseTree(buildGenScopeList());
 		if (!checkAllRequirements()) {
-			System.err.println("Generator could not be started because the input didn't satisfy the specifications.");
+			System.err.println("Generator could not be started "
+					+ "because the input didn't satisfy the specifications.");
 			return;
 		}
 		createPackages();
@@ -147,7 +185,7 @@ public final class Generator {
 			
 			try {
 				String interfaceName = fileName.substring(0, fileName.lastIndexOf("."));
-				Class<?> c = Class.forName(this.dslName + '.' + interfaceName); // TODO geht das auch ohne package-Name?
+				Class<?> c = Class.forName(this.dslName + '.' + interfaceName);
 				
 				if (!c.isInterface()) {
 					// TODO FRAGE: Sollte das eher eine Exception sein?
@@ -258,12 +296,23 @@ public final class Generator {
 		return new GeneratorScope(iName, generatorMethodList);
 	}
 	
+	/**
+	 * Method that invokes creation of packages where the generated files should be saved.
+	 * 
+	 * It uses {@link #createFolder(Path)} to generate all folders recursively.
+	 * @throws IOException
+	 */
 	private void createPackages() throws IOException {
 		createFolder(this.parseTreeDestPath);
 		createFolder(this.visitorDestPath);
 	}
 	
-	private void createFolder(Path path) throws IOException {
+	/**
+	 * Recursive function that creates every folder of <code>path</code> that doesn't exist yet.
+	 * @param path Path that will be created if it doesn't exist.
+	 * @throws IOException
+	 */
+	private void createFolder(final Path path) throws IOException {
 		Path parent = path.getParent();
 		// exit condition:
 		if (parent == null) {
@@ -492,7 +541,7 @@ public final class Generator {
 	 * @return empty String if <code>null</code> or an empty String was given.
 	 * String with a capital first letter otherwise.
 	 */
-	private String toUC(String s) {
+	private String toUC(final String s) {
 		if (s == null || s.length() == 0) {
 			return "";
 		} else if(s.length() == 1) {
