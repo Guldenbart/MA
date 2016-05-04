@@ -8,6 +8,9 @@ import java.sql.*;
 import org.jooq.*;
 import org.jooq.impl.*;
 
+import jooq.generated.tables.Author;
+import jooq.generated.tables.Book;
+
 public class Main {
 
 	/**
@@ -31,14 +34,29 @@ public class Main {
 			 * 			SelectSelectStep extends SelectDistinctOnStep
 			 * 			
 			 */
-			Result<Record> result = create.select().from(AUTHOR).fetch();
+			Result<Record> result1 = create.select().from(AUTHOR).fetch();
 		
-			for (Record r : result) {
+			for (Record r : result1) {
 				Integer id = r.getValue(AUTHOR.ID);
 				String firstName = r.getValue(AUTHOR.FIRST_NAME);
 				String lastName = r.getValue(AUTHOR.LAST_NAME);
 		
 				System.out.println("ID: " + id + " first name: " + firstName + ", last name: " + lastName);
+			}
+			
+			Author a = AUTHOR.as("a");
+			Book b = BOOK.as("b");
+			
+			Result<Record1<String>> result2 = create.select(BOOK.TITLE)
+					.from(BOOK)
+					.join(AUTHOR).using(BOOK.ID)
+					.where(AUTHOR.LAST_NAME.equal("Ende"))
+					.fetch();
+			
+			for (Record r : result2) {
+				String title = r.getValue(BOOK.TITLE);
+		
+				System.out.println(" Titel: " + title);
 			}
 		} 
 		
