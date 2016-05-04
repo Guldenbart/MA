@@ -5,10 +5,44 @@
 % Datum: 01.05.2016
 % -------------------------------------------------------------------
 
-\chapter{Ergebnis}
+\chapter{Anwendung der Implementierung}\label{chp:6:ergebnis}
+Um die im Rahmen dieser Anschlussarbeit entstandene Implementierung nützen zu können, benötigt man die folgenden Pakete:
 
-\section{Ergebnis der Implementierung}
+\begin{itemize}
+	\item \textbf{language-package:} Ein Paket mit allen Interfaces, welche die Grammatik der DSL definieren. Der Name des Pakets ist frei wählbar und gibt der DSL ihren Namen.
+	\item \textbf{generator:} Ein Paket mit allen Klassen, die für die Codegenerierung nötig sind.
+	\item \textbf{main:} Ein Paket, das die Klasse mit der Main-Methode enthält. Dieses Paket ist nicht zwingend notwendig und wird nicht generiert. Das Ablegen der Klasse mit main-Methode schafft hier nur eine bessere Übersicht.
+	\item \textbf{parseTree:} Ein Paket, dass alle nicht-generierten Klassen enthält, die im Zusammenhang mit dem Syntax-Baum stehen. Dies sind die abstrakten Baumknoten-Oberklassen \texttt{AMethodNode}, \texttt{ASimpleMethodNode},\\ \texttt{ANestedMethodNode}, \texttt{AScopeNode}, das Interface \texttt{Visitable} und die Klasse \texttt{ParseTree}.
+	\item \textbf{templates:} Ein Paket mit allen Template-Dateien, die für die Code-Generierung verwendet werden.
+	\item \textbf{visitor:} Ein Paket mit der abstrakten Oberklasse \texttt{AVisitor}. Dies ist auch ein geeigneter Ort für alle konkreten Visitor-Implementierungen.
+\end{itemize}
 
-\subsection{Paket-Übersicht}
+\noindent
+Durch das Ausführen der Methode GeneratorMain.main() wird die Codegenerierung  gestartet.
+Nach erfolgreicher Generierung stehen folgende Pakete zur Verfügung:
 
-\section{Hinweise zur Anwendung}
+\begin{itemize}
+	\item \textbf{parseTreeGen:} Ein Paket, das alle generierten Baumknoten-Klassen enthält. Des weiteren enthält es die generierte TreeBuilder-Klasse.
+	\item \textbf{visitorGen:} Ein Paket mit der generierten abstrakten Oberklasse aller konkreten Visitors dieser DSL.
+\end{itemize}
+
+\section{Hinweise zur Anwendung}\label{sct:6.1:hinweise}
+Abgesehen von der Definition der DSL-Grammatik durch Interfaces benötigt der Code-Generator folgende Informationen vom User:
+
+\begin{itemize}
+	 \item Den relativen oder absoluten Pfad zum Paket, in dem alle Grammatik-Interfaces liegen. Der Name des Pakets ist gleichzeitig auch der Name der internen DSL.
+	 \item Den Pfad, unter dem die generierte TreeBuilder-Klasse und alle generierten Baum-Knoten-Klassen gespeichert werden sollen.
+	 \item Den Pfad, unter dem die generierte abstrakte Visitor-Oberklasse gespeichert werden soll.
+	 \item Anmerkung: Bei beiden Pfaden sind keine sub-packages erlaubt.
+	 \item den Namen des Interfaces, das die erste(n) Methode(n) eines DSL-Ausdrucks enthält.
+\end{itemize}
+
+\noindent
+Außerdem müssen die folgenden Einschränkungen beachtet werden:
+
+\begin{itemize}
+	\item Alle Grammatik-Interfaces müssen einen eindeutigen Namen haben. Zusätzlich müssen die Namen mit einem Großbuchstaben beginnen. Obwohl beides meist erzwungen wird, sei der Hinweis an dieser Stelle gegeben.
+	\item Pro Methode ist höchstens ein Parameter erlaubt. Grundsätzlich ist es natürlich möglich, Methoden mit mehreren Parametern in einer DSL zu haben. Jedoch birgt es die Gefahr in sich, dass die Parameter versehentlich vertauscht werden oder der Charakter einer flüssig lesbaren Sprache verloren geht. Darum wurde diese Einschränkung bewusst vorgenommen.
+	\item Mindestens eine Methode der Sprache muss den Rückgabewert \texttt{ParseTree} haben. Ansonsten kann kein Ausdruck der Sprache vervollständigt werden.
+	\item In allen Grammatik-Interfaces darf es keine zwei \emph{gleichen} Methoden geben. Zwei Methoden werden in dieser Implementierung als \emph{gleich} erachtet, wenn ihr Name übereinstimmt und beide Methoden entweder den Parameter \emph{ParseTree} oder beide nicht den Parameter \texttt{ParseTree} haben. In diesem Fall würden beide Methoden mit demselben Methoden-Knoten im ParseTree abgebildet und würden von derselben \texttt{visit}-Methode besucht.
+\end{itemize}

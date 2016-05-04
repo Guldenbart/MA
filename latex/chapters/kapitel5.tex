@@ -10,13 +10,8 @@ Dieses Kapitel behandelt die automatische Generierung von Teilen einer internen-
 Zunächst wird die Template-Sprache \emph{StringTemplate} vorgestellt, die in dieser Abschlussarbeit zur Codegenerierung verwendet wird, danach die Codegenerierung selbst.
 
 \section{StringTemplate}\label{sct:5.1:st}
-StringTemplate \cite{www:stringtemplate} ist eine Template-Sprache, die von Terence Parr entwickelt wurde. Gegenüber anderen Template-Sprachen bietet sie eine vollständige Trennung von einem Modell und dessen Präsentation. Die Template-Engine ist einfach in ein Projekt einzubinden\\todo{mehr},
-Lückentext, der an den dafür vorgesehen Stellen mit Attributen gefüllt wird
-kann:
-Eigenschaften auslesen
-andere templates aufrufen
-listen iterieren
-
+StringTemplate \cite{www:stringtemplate} ist eine Template-Sprache, die von Terence Parr entwickelt wurde. Gegenüber anderen Template-Sprachen wie \emph{Velocity} \cite{www:velocity}, \emph{XText} \cite{www:xtext} oder \emph{T4} von Microsoft \cite{www:mst4} bietet sie eine vollständige Trennung von einem Modell und dessen Präsentation. Dies ermöglicht eine hohe Modularität und Wiederverwendbarkeit. Die Template-Engine ist einfach in ein Projekt einzubinden, da sie nur aus einer einzigen .jar-Datei besteht.\\
+Ein Template ist \glqq im Grunde ein Lückentext, der an den dafür vorgesehen Stellen mit Attributen gefüllt wird\grqq \cite{www:stGithub}. Ein Attribut kann entweder eine einzelne Variable, ein anderes Template oder eine Liste von Attributen sein. StringTemplate kann aus Objekten Eigenschaften auslesen (entweder direkt, wenn öffentlich, oder anhand der den allgemeinen Namenskonventionen entsprechenden get-Methoden). Sind alle gewünschten Attribute des Templates mit Werten versehen, wird mithilfe der Methode \texttt{render()} aus dem Template ein String generiert.
 
 \section{Codegenerierung}\label{sct:5.2:codegenerierung}
 In diesem Abschnitt werden automatisch generierbaren Teile der Sprache sowie der Aufbau des Generators erläutert.
@@ -33,7 +28,7 @@ Die \textbf{Tree-Builder-Klasse} inklusive ihrer inneren Scope-Klassen kann nach
 	\item Die äußere Klasse besitzt ein privates Scope-Objekt für jede vorhandene innere Klasse außer für diejenige, welche die erste Methode eines Ausdrucks enthält. Außerdem hat sie einen privaten Konstruktor, eine private Liste von Scope-Knoten und die Einstiegs-Methode, die das Scope-Objekt mit der (/den) ersten Methode(n) eines Ausdrucks zurückgibt.
 \end{itemize}
 
-Für den Namen der Klasse gilt das Schema <DSL-Name>TreeBuilder
+Für den Namen der Klasse gilt das Schema <DSL-Name>TreeBuilder.\\
 
 \noindent
 Pro Scope-Klasse wird auch eine \textbf{Scope-Knoten-Klasse} generiert. Im Konstruktor wird der Name des Scopes eingefügt. Der Name der Klasse ergibt sich aus dem Schema ScopeNode<Interface-Name>.
@@ -50,12 +45,32 @@ Für alle generierten Klassen müssen zusätzlich noch korrekte Paket-Definition
 \subsection{Aufbau des Generators}\label{ssct:5.2.2:generator}
 Der Generator muss alle nötigen Informationen aus den Grammatik-Interfaces extrahieren, und sie für die Code-Generierung an die Templates weitergeben.
 
-Die Codegenerierung umfasst vier Schritte:
+Die Codegenerierung umfasst vier Schritte:\\
 
 \textbf{1. Interfaces analysieren:} Mittels Java Reflection werden alle Interfaces eines vom User spezifizierten Paketes analysiert. Zunächst wird nur festgehalten, welche Interfaces andere erweitern und welche umgekehrt von anderen erweitert werden.
 
-\textbf{2. Informationen auslesen:} Aus den Interfaces werden alle für die Codegenerierung relevanten Informationen ausgelesen und in einer Datenstruktur ähnlich der des \texttt{ParseTree} gespeichert: Ein \emph{\texttt{GeneratorScope}}-Objekt alle nötigen Informationen um Scope- und ScopeNode-Klassen zu generieren. Die GeneratorScope-Klasse hält eine Liste von \emph{\texttt{GeneratorMethod}}-Objekten, welche wiederum die Informationen zum Generieren von MethodNode-Klassen und von Methoden im TreeBuilder enthalten. Informationen aus beiden Klassen gehen in die abstrakte Visitor-Oberklasse ein. Beide Generatorklassen enthalten auch einige Methoden, die nur innerhalb von Templates benötigt werden.
+\textbf{2. Informationen auslesen:} Aus den Interfaces werden alle für die Codegenerierung relevanten Informationen ausgelesen und in einer Datenstruktur ähnlich der des \texttt{ParseTree} gespeichert: Ein \emph{\texttt{GeneratorParseTree}}-Objekt hält eine Liste von  \emph{\texttt{GeneratorScope}}-Objekten. Diese beinhalten alle nötigen Informationen um Scope- und ScopeNode-Klassen zu generieren. Die GeneratorScope-Klasse hält eine Liste von \emph{\texttt{GeneratorMethod}}-Objekten, welche wiederum die Informationen zum Generieren von MethodNode-Klassen und von Methoden im TreeBuilder enthalten. Informationen aus beiden Klassen gehen in die abstrakte Visitor-Oberklasse ein. Beide Generatorklassen enthalten auch einige Methoden, die nur innerhalb von Templates benötigt werden.
 
-\textbf{3. Überprüfen:} Bei der Verwendung
+\textbf{3. Überprüfen:} Um die Codegenerierung erfolgreich durchführen zu können, müssen bestimmte Voraussetzungen, die in Abschnitt \ref{sct:6:hinweise} beschrieben sind, erfüllt sein. Dies wird im dritten Schritt überprüft. Ist eine Voraussetzung nicht erfüllt, wird die Codegenerierung nicht gestartet.
 
-\subsection{Aufbau der Templates?}
+\textbf{4. Generieren:} Die Templates werden mit den gesammelten Informationen angereichert, gerendert und das Resultat in Dateien geschrieben. Die Dateinamen werden aus den vorgegebenen Pfaden und dem Namen und Typ der zu generierenden Datei zusammengestellt.
+
+\subsection{Aufbau der Templates}\label{ssct:5.2.3:templates}\todo{Template oder Template-Datei??}
+Insgesamt gibt es vier Dateien, die alle Templates enthalten, welche für die Code-Generierung notwendig sind. Dabei handelt es sich um sogenannte TemplateGroup-Dateien mit der Dateieindung \texttt{.stg}, die mehrere Templates pro Datei enthalten können. Aus dem Java-Code des Generators heraus wird immer nur ein Template einer Datei aufgerufen, alle anderen werden nur intern aufgerufen.
+
+Im Folgenden werden die vier TemplateGroup-Dateien kurz beschrieben:\\
+
+\noindent
+\textbf{methodNodeClass.stg:} Diese Datei wird zum Generieren von MethodNode-Klassen verwendet. Für jeden der drei Methodentypen - ohne Parameter, mit Parameter \texttt{ParseTree} oder mit einem anderen Parameter - existiert ein Template. Die Unterscheidung geschieht durch Methoden der Klassen \texttt{GeneratorParseTree} und \texttt{GeneratorScope}.\\
+
+\noindent
+\textbf{scopeNode.stg:} Die kürzeste der vier Dateien. Mit ihr werden ScopeNode-Klassen generiert.\\
+
+\noindent
+\textbf{treeBuilderClass.stg:} Diese Datei wird zum Generieren der TreeBuilder-Klasse verwendet. Das Template, das die äußere Klasse definiert, bekommt das vom Generator erstellte GeneratorParseTree-Objekt übergeben. Für jedes enthaltene GeneratorScope-Objekt ruft es das Template \texttt{scope} auf. Dies definiert eine innere Klasse und ruft für jedes GeneratorMethod-Objekt das Template \texttt{method} auf.\\
+
+\noindent
+\textbf{visitorSuperClass.stg:} Mit dieser Template-Datei wird die abstrakte Visitor-Oberklasse generiert. UNter anderem muss auch hier adzu zwischen den drei Methoden-Typen unterschieden werden.\\
+
+\noindent
+Allen Template-Dateien gemeinsam ist, dass sie ein Template zur Generierung des Datei-Kopfes, d.h. Paket-Deklarierung und import-Statements, haben. Außerdem haben alle Dateien außer scopeNodeClass.stg einen sogenannten \emph{StringRenderer}. Mit dessen Hilfe kann der erste Buchstabe einer Zeichenkette wahlweise in einen Groß- oder Kleinbuchstaben umgewandelt werden.

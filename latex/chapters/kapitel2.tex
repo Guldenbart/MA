@@ -17,7 +17,7 @@ Eine weitere Eigenschaft, die eine DSL charakterisiert, ist ihr Bezug auf eine D
 \\ %===============================================================
 Ist eine domänenspezifische Sprache gut entworfen, kann das die Produktivität bei der Entwicklung steigern. So lässt sich zum Beispiel die Sprache auf eine Weise entwerfen, welche die Anzahl möglicher semantischer Fehler minimiert. Außerdem macht leicht zu lesender Code es einfacher, ihn abzuändern und, falls nötig, zu korrigieren. Die Verwendung von Fachbegriffen in der Syntax der Sprache macht es Domänenexperten mit wenig oder keiner Programmiererfahrung leichter, Code zu verstehen und inhaltliche Fehler zu entdecken. Der eingeschränkte Umfang der Sprache macht es grundsätzlich einfacher, sie zu erlernen.
 
-Das Verwenden von DSLs kann auch Probleme mit sich bringen. Das Entwerfen, Implementieren und das Pflegen einer Sprache kostet Zeit und Geld. Diese Kosten müssen stets dem Nutzen gegenübergestellt werden, wenn entschieden wird ob eine DSL entwickelt wird. Ist eine DSL fertig entwickelt, besteht die Gefahr, dass sie durch stetige Erweiterung zu groß und unübersichtlich wird, sodass die Eigenschaft des begrenzten Umfangs verloren geht. Deshalb muss bei jeder Erweiterung hinterfragt werden, ob ihre Funktionalität dem Problem gewidmet ist, für das die Sprache ursprünglich entwickelt wurde. Auch muss man stets vor dem Verwenden einer DSL abwägen, ob das Erlernen der Sprache durch den Vorteil, den die Sprache bringt, wett gemacht wird\cite{www:fowlerWorkbench}.\todo{mehr Probleme?}
+Das Verwenden von DSLs kann auch Probleme mit sich bringen. Das Entwerfen, Implementieren und das Pflegen einer Sprache kostet Zeit und Geld. Diese Kosten müssen stets dem Nutzen gegenübergestellt werden, wenn entschieden wird ob eine DSL entwickelt wird. Ist eine DSL fertig entwickelt, besteht die Gefahr, dass sie durch stetige Erweiterung zu groß und unübersichtlich wird, sodass die Eigenschaft des begrenzten Umfangs verloren geht. Deshalb muss bei jeder Erweiterung hinterfragt werden, ob ihre Funktionalität dem Problem gewidmet ist, für das die Sprache ursprünglich entwickelt wurde. Auch muss man stets vor dem Verwenden einer DSL abwägen, ob das Erlernen der Sprache durch den Vorteil, den die Sprache bringt, wett gemacht wird \cite{www:fowlerWorkbench}.\todo{mehr Probleme?}
 
 \section{Interne vs. Externe DSL}\label{sct:2.2:intvsext}
 Domänenspezifische Sprachen lassen sich grundsätzlich in zwei Kategorien aufteilen: interne und externe DSLs. Obwohl in dieser Abschlussarbeit nur interne DSLs behandelt werden, sollen an dieser Stelle kurz Eigenschaften, sowie Vor- und Nachteile beider Ansätze aufgezeigt werden.
@@ -56,8 +56,70 @@ Da die Sprachkonzepte der bereits vorhandenen Wirtssprache verwendet werden, ist
 \\ \\ %==========================================================
 Bekannte Beispiele für interne DSLs sind JMock und \todo{noch eins}. SQL, make und CSS sind Beispiele für bekannte externe DSLs.
 
+\section{Beispiele für DSLs}\label{sct:2.3:beispiele}
+\textbf{SQL} ist ein Beispiel für eine weit verbreitete und viel genutzte externe DSL. Die Domäne der Sprache ist die der relationalen Datenbanken. Listing \ref{lst:exampleSQL} zeigt ein SQL-Statement, das eine neue Tabelle mit den Spalten \emph{id}, \emph{first name} und \emph{last name} anlegt.\\
 
-\section{Ziel der Arbeit}\label{sct:2.3:ziel}
+\begin{lstlisting}[caption={beispielhafter SQL-Code}, language=SQL, label=lst:exampleSQL]
+	CREATE TABLE 'author' (
+		'id' int NOT NULL,
+		'first name' varchar(255) DEFAULT NULL,
+		'last name' varchar(255) DEFAULT NULL,
+		PRIMARY KEY ('id')
+	);
+\end{lstlisting}
+
+Die Sprache zum gleichnamigen Werkzeug \textbf{make} ist ein weiteres Beispiel für eine externe DSL. Ihre Domäne ist das Verwalten von Software-Build-Prozessen. Listing \ref{lst:exampleMake} zeigt den Inhalt eines Makefiles, mit dem make aus den beiden Quelldateien \texttt{foo.c} und \texttt{bar.c} das ausführbare Programm \texttt{prog} erstellt.\\
+
+\begin{lstlisting}[caption={beispielhaftes Makefile}, language=make, label=lst:exampleMake]
+	CC = cc
+	LD = ld
+	
+	prog: foo.o bar.o
+		$(LD) -o prog foo.o bar.o
+	
+	foo.o: foo.c
+		$(CC) -c foo.c
+	
+	bar.o: bar.c
+		$(CC) -c bar.c
+\end{lstlisting}
+
+\textbf{jMock} \cite{www:jmock} ist eine Java-Bibliothek für Mock-Objekte, die beim Testen verwendet werden. Eine interne Java-DSL beschreibt Erwartungen, die an zu testende Objekte gestellt werden. Nach dem Durchführen eines Tests werden die Erwartungen mit den tatsächlichen Ergebnissen verglichen. Listing \ref{lst:exampleJMock} zeigt beispielhaft die Implementierung einer Erwartung.
+
+\begin{lstlisting}[caption={Beispiel für eine Erwartung in jMock},label=lst:exampleJMock]
+	final String message = "message";
+	        
+	// expectations
+	context.checking(new Expectations() {{
+		oneOf (subscriber).receive(message);
+	}});
+\end{lstlisting}
+
+\subsection{jOOQ}
+\emph{jOOQ}\texttrademark \cite{www:jooq:home} ist eine interne DSL, dessen Domäne relationale Datenbanken sind. jOOQ steht für \textbf{J}ava \textbf{O}bject \textbf{O}riented \textbf{Q}uerying. Es wird von der Firma DataGeekery GmbH \cite{www:datageekery} entwickelt und gepflegt.
+
+jOOQ ermöglicht es mit seiner fließenden API, typsichere SQl-Abfragen zu erstellen. Dazu wird Code verwendet, der aus einer vorhandenen Datenbank generiert wird. Darin werden Tabellen als Klassen und Spalten als Felder der entsprechenden Klasse abgebildet, wobei der Tabellenname als konstante Instanz im Code des Anwenders verwendet wird.
+Listing \ref{lst:sql} zeigt eine beispielhafte SQL-Abfrage und Listing \ref{lst:jooq} zeigt, wie sie in jOOQ umgesetzt wird.
+
+
+\begin{lstlisting}[caption={Code einer SQL-Abfrage}, language=SQL, label=lst:sql]
+	SELECT title
+	FROM BOOK
+	JOIN author BY(ID)
+	WHERE author.last_name='Ende'
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Code der SQL-Abfrage implementiert mit jOOQ}, label=lst:jooq]
+	create.select(BOOK.TITLE)
+	.from(BOOK)
+	.join(AUTHOR).using(BOOK.ID)
+	.where(AUTHOR.LAST_NAME.equal("Ende"))
+	.fetch();
+\end{lstlisting}
+
+Mit jOOQ werden syntaktische Fehler in einer SQL-Anfrage bereits vor dem Versenden der Anfrage an die Datenbank entdeckt; bei modernen IDEs bereits während dem Schreiben. Weil jOOQ als interne DSL SQL-Abfragen in Java abbildet, bleiben die Ausdrucksmöglichkeiten von SQL erhalten, die ansonsten in einer funktionalen Sprache verloren gehen würden. Ein mit jOOQ formuliertes SQL-Statement kann direkt ausgeführt werden. Alternativ kann eine SQL-Abfrage als String generiert werden, die weiterverwendet werden kann. jOOQ-Statements sind unabhängig von SQL-Dialekten. Zum Ausführen der Statements muss ein Dialekt einmalig genannt werden, damit alle Anfragen entsprechend korrekt ausgeführt werden.
+
+\section{Ziel der Arbeit}\label{sct:2.4:ziel}
 Das Erstellen einer DSL kann grundsätzlich in folgende Schritte eingeteilt werden:
 \begin{itemize}
 	\item Definieren der \textbf{abstrakten Syntax} der Sprache. Sie ist die Struktur der Sprache und hält die semantisch relevanten Inhalte in einer Datenstruktur fest \cite{www:heise},\cite{vl:drachen:teil3}.
@@ -69,7 +131,7 @@ Das Erstellen einer DSL kann grundsätzlich in folgende Schritte eingeteilt werd
 \end{itemize}
 Bei modernen Entwicklungsumgebungen für allgemeine Programmiersprachen sind üblicherweise die drei zuletzt genannten Werkzeuge in einer Entwicklungsumgebung integriert.
 \\ \\ %============================================================
-In dieser Abschlussarbeit soll ein Ansatz betrachtet werden, bei dem eine interne DSL ausschließlich in Java realisiert wird. Auf externe Werkzeuge wird bewusst verzichtet, um Abhängigkeiten zu vermeiden. Die Grammatik der Sprache wird dabei durch Interfaces beschrieben (siehe auch Abschnitt \ref{ssct:4.3.1:grammatik}). Diese Interfaces sollen nur die Definition der Sprache enthalten und keine Aussage über ihre Implementierung machen. Die strikte Trennung von Sprache und Implementierung soll es ermöglichen, beide beliebig wiederzuverwenden und unabhängig voneinander zu ändern.
+In dieser Abschlussarbeit soll ein Ansatz betrachtet werden, bei dem eine interne DSL ausschließlich in Java realisiert wird. Auf externe Werkzeuge wie z.B. XText, wird bewusst verzichtet, um Abhängigkeiten zu vermeiden. Die Grammatik der Sprache wird dabei durch Interfaces beschrieben (siehe auch Abschnitt \ref{ssct:4.3.1:grammatik}). Diese Interfaces sollen nur die Definition der Sprache enthalten und keine Aussage über ihre Implementierung machen. Die strikte Trennung von Sprache und Implementierung soll es ermöglichen, beide beliebig wiederzuverwenden und unabhängig voneinander zu ändern.
 Das Implementieren eines Parsers und eines Editors entfällt, da wie bei jeder internen DSL die bereits vorhandenen Werkzeuge der Wirtssprache verwendet werden können.
 
 Ziel der Anschlussarbeit ist die teilweise Automatisierung der Implementierung einer Sprache in der oben beschriebenen Form anhand einer gegebenen Grammatik. Folgende Schritte sind dafür notwendig:
@@ -79,4 +141,4 @@ Ziel der Anschlussarbeit ist die teilweise Automatisierung der Implementierung e
 	\item Implementieren einer Software, die diese Automatisierung durchführt.
 \end{itemize}
 
-So könnte zum Beispiel eine DSL für\todo{Beispiel oder weg}
+Es soll untersucht werden, ob 
