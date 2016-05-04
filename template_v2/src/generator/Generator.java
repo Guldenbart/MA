@@ -333,7 +333,6 @@ public final class Generator {
 				methodNodeTemp.add("visitorDestPackage", this.visitorDestPackage);
 				methodNodeTemp.add("method", gm);
 				writeToFile(gm.getMethodNodePath(this.parseTreeDestPath), methodNodeTemp.render());
-				System.out.println("generated method " + gm.toString() + "to " + gm.getMethodNodePath(this.parseTreeDestPath).toString());
 			}
 		}
 		
