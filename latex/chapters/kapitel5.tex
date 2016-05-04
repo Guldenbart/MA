@@ -11,10 +11,10 @@ Zunächst wird die Template-Sprache \emph{StringTemplate} vorgestellt, die in di
 
 \section{StringTemplate}\label{sct:5.1:st}
 StringTemplate \cite{www:stringtemplate} ist eine Template-Sprache, die von Terence Parr entwickelt wurde. Gegenüber anderen Template-Sprachen wie \emph{Velocity} \cite{www:velocity}, \emph{XText} \cite{www:xtext} oder \emph{T4} von Microsoft \cite{www:mst4} bietet sie eine vollständige Trennung von einem Modell und dessen Präsentation. Dies ermöglicht eine hohe Modularität und Wiederverwendbarkeit. Die Template-Engine ist einfach in ein Projekt einzubinden, da sie nur aus einer einzigen .jar-Datei besteht.\\
-Ein Template ist \glqq im Grunde ein Lückentext, der an den dafür vorgesehen Stellen mit Attributen gefüllt wird\grqq \cite{www:stGithub}. Ein Attribut kann entweder eine einzelne Variable, ein anderes Template oder eine Liste von Attributen sein. StringTemplate kann aus Objekten Eigenschaften auslesen (entweder direkt, wenn öffentlich, oder anhand der den allgemeinen Namenskonventionen entsprechenden get-Methoden). Sind alle gewünschten Attribute des Templates mit Werten versehen, wird mithilfe der Methode \texttt{render()} aus dem Template ein String generiert.
+Ein Template ist \glqq im Grunde ein Lückentext, der an den dafür vorgesehen Stellen mit Attributen gefüllt wird\grqq~\cite{www:stGithub}. Ein Attribut kann entweder eine einzelne Variable, ein anderes Template oder eine Liste von Attributen sein. StringTemplate kann aus Objekten Eigenschaften auslesen (entweder direkt, wenn diese öffentlich sind, oder anhand der den allgemeinen Namenskonventionen entsprechenden get-Methoden). Sind alle gewünschten Attribute des Templates mit Werten versehen, wird mithilfe der Methode \texttt{render()} aus dem Template ein String generiert.
 
 \section{Codegenerierung}\label{sct:5.2:codegenerierung}
-In diesem Abschnitt werden automatisch generierbaren Teile der Sprache sowie der Aufbau des Generators erläutert.
+In diesem Abschnitt werden die automatisch generierbaren Teile der Sprache sowie der Aufbau des Generators erläutert.
 
 \subsection{Generierte Elemente}\label{ssct:5.2.1:generiertes}
 Große Teile der in Abschnitt \ref{sct:4.3:implementierung} besprochenen Implementierung können anhand der in Form von Interfaces gegebenen Informationen automatisch erzeugt werden. Die Regeln dafür wurden in Kapitel \ref{chp:4:implementierungstechniken} bereits teilweise genannt. Alle weiteren Informationen, die benötigt werden, sind in Abschnitt \ref{ssct:5.2.2:generator} beschrieben.
@@ -43,7 +43,7 @@ Eine abstrakte Oberklasse für alle Visitor-Implementierungen dieser DSL wird ge
 Für alle generierten Klassen müssen zusätzlich noch korrekte Paket-Definitionen und benötigte import-Statements generiert werden.
 
 \subsection{Aufbau des Generators}\label{ssct:5.2.2:generator}
-Der Generator muss alle nötigen Informationen aus den Grammatik-Interfaces extrahieren, und sie für die Code-Generierung an die Templates weitergeben.
+Der Generator muss alle nötigen Informationen aus den Grammatik-Interfaces extrahieren und sie für die Code-Generierung an die Templates weitergeben.
 
 Die Codegenerierung umfasst vier Schritte:\\
 
@@ -55,7 +55,7 @@ Die Codegenerierung umfasst vier Schritte:\\
 
 \textbf{4. Generieren:} Die Templates werden mit den gesammelten Informationen angereichert, gerendert und das Resultat in Dateien geschrieben. Die Dateinamen werden aus den vorgegebenen Pfaden und dem Namen und Typ der zu generierenden Datei zusammengestellt.
 
-\subsection{Aufbau der Templates}\label{ssct:5.2.3:templates}\todo{Template oder Template-Datei??}
+\subsection{Aufbau der Templates}\label{ssct:5.2.3:templates}
 Insgesamt gibt es vier Dateien, die alle Templates enthalten, welche für die Code-Generierung notwendig sind. Dabei handelt es sich um sogenannte TemplateGroup-Dateien mit der Dateieindung \texttt{.stg}, die mehrere Templates pro Datei enthalten können. Aus dem Java-Code des Generators heraus wird immer nur ein Template einer Datei aufgerufen, alle anderen werden nur intern aufgerufen.
 
 Im Folgenden werden die vier TemplateGroup-Dateien kurz beschrieben:\\

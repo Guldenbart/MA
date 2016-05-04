@@ -16,6 +16,17 @@ In den folgenden Abschnitten werden die Ergebnisse dieser Arbeit zusammengefasst
 Die erste Phase dieser Abschlussarbeit bestand aus der manuellen Implementierung einer internen Java-DSL anhand einer einfachen Sprache für arithmetische Ausdrücke. In mehreren Iterations-Schritten wurden den Anforderungen genügende Daten-Strukturen entwickelt, die in Kapitel \ref{chp:4:implementierungstechniken} beschrieben sind.
 Dabei spielte die Unabhängigkeit der Definition einer Sprache von ihrer Implementierung und die klare Trennung der Komponenten untereinander eine wichtige Rolle.
 
-In der zweiten Phase 
+In der zweiten Phase der Arbeit wurde ein Generator implementiert. Mit ihm können die Teile der bereits manuell implementierten Datenstrukturen, welche keine semantischen Informationen enthalten, automatisch generiert werden.
+Im Gegensatz zur ersten Phase konnte hier aus zeitlichen Gründen keine vollständige Trennung zwischen Sprach-Grammatik und Implementierung erreicht werden. Das Ergebnis einer Anweisung ist immer durch den Datentyp \texttt{ParseTree} festgelegt.
+
+Durch die Ergebnisse dieser Abschlussarbeit kann die Implementierung einer internen Java-DSL vereinfacht werden. Nur die Definition der Grammatik und die Semantik der Sprache müssen noch von Hand programmiert werden. Wird die in diesem Ansatz angestrebte, wenn auch noch nicht ganz erreichte separation of concerns nicht als notwendig erachtet, können auch mit anderen Methoden und Werkzeugen schnell Ergebnisse erzielt werden.
 
 \section{Ausblick}\label{sct:7.2:ausblick}
+Die vorgestellte Implementierung bietet noch Verbesserungsmöglichkeiten. Einige Vorschläge sind hier aufgelistet:
+
+\begin{itemize}
+	\item Der Generator kann noch keine generischen Typ-Parameter verarbeiten. Da dies wünschenswert wäre, ist dies ein Ansatzpunkt zur Erweiterung bzw. Verbesserung des Generators.
+	\item Damit im Zusammenhang steht das in Abschnitt \ref{ssct:4.3.1:grammatik} und \ref{sct:7.1:ergebnisse} bereits erwähnte Problem, dass das Ergebnis einer Anweisung mit \texttt{ParseTree} festgelegt ist. Dadurch ist die Forderung nach der vollkommenen Unabhängigkeit der Sprache von ihrem Ergebnis nicht erfüllt. Dies könnte ein Ansatzpunkt für zukünftige Arbeiten sein.
+	\item Sollte die Möglichkeit gewünscht sein, innerhalb der Grammatik-Interfaces zwei \emph{gleiche} Methoden (siehe Kapitel \ref{chp:6:ergebnis}) verwenden zu können, müsste die Logik zum Generieren der Methoden-Knoten-Klassen dahingehend angepasst werden.
+	\item Für eine höhere Benutzerfreundlichkeit wäre es denkbar, einen Algorithmus zu integrieren der Probleme mit der Sprache, wie z.B. unerreichbare Methoden, detektieren könnte.
+\end{itemize}

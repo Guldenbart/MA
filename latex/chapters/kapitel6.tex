@@ -45,4 +45,5 @@ Außerdem müssen die folgenden Einschränkungen beachtet werden:
 	\item Pro Methode ist höchstens ein Parameter erlaubt. Grundsätzlich ist es natürlich möglich, Methoden mit mehreren Parametern in einer DSL zu haben. Jedoch birgt es die Gefahr in sich, dass die Parameter versehentlich vertauscht werden oder der Charakter einer flüssig lesbaren Sprache verloren geht. Darum wurde diese Einschränkung bewusst vorgenommen.
 	\item Mindestens eine Methode der Sprache muss den Rückgabewert \texttt{ParseTree} haben. Ansonsten kann kein Ausdruck der Sprache vervollständigt werden.
 	\item In allen Grammatik-Interfaces darf es keine zwei \emph{gleichen} Methoden geben. Zwei Methoden werden in dieser Implementierung als \emph{gleich} erachtet, wenn ihr Name übereinstimmt und beide Methoden entweder den Parameter \emph{ParseTree} oder beide nicht den Parameter \texttt{ParseTree} haben. In diesem Fall würden beide Methoden mit demselben Methoden-Knoten im ParseTree abgebildet und würden von derselben \texttt{visit}-Methode besucht.
+	\item Es dürfen keine generischen Typ-Parameter verwendet werden.
 \end{itemize}
