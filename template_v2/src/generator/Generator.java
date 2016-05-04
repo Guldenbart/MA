@@ -442,10 +442,10 @@ public final class Generator {
 				continue;
 			}
 			
-			if (!Character.isUpperCase(file.getFileName().toString().charAt(0))) {
+			if (!Character.isUpperCase(filePath.toString().charAt(0))) {
 				StringBuilder message = new StringBuilder();
 				message.append("Interface ");
-				message.append(file.getFileName().toString());
+				message.append(filePath.toString());
 				message.append(" does not start with an upper case letter!");
 				System.err.println(message);
 				

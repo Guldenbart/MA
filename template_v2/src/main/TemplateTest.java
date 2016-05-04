@@ -4,7 +4,7 @@ import parseTree.ParseTree;
 import visitor.ExpressionBuildVisitor;
 import static parseTreeGen.ExprDSLTreeBuilder.begin;
 
-public class TemplateTest {
+public final class TemplateTest {
 
 	public static void main(String[] args) {
 		
@@ -36,28 +36,6 @@ public class TemplateTest {
         y.accept(ebvY);
         System.out.printf("%s = %f%n", "Ergebnis des Ausdrucks y:", ebvY.getExpression().getValue());
         
-        
-
-        
-        ParseTree p = begin().expr(1).plus(2).times(3).minus(4).divided(5).end();
-        System.out.printf("%s = %s%n", "x", x.toString());
-        
-        // visitor_p baut zuerst einen AST aus und errechnet dann das Ergegnis
-        ExpressionBuildVisitor visitor_p = new ExpressionBuildVisitor();
-        p.accept(visitor_p);
-        System.out.printf("%s = %f%n", "Ergebnis des Ausdrucks x:", visitor_p.getExpression().getValue());
-        
-        
-        
-
-        ParseTree q = 
-        		begin().expr(
-        			begin().expr(1).plus(2).end()
-        		).
-        		times(3).minus(
-        			begin().expr(4).plus(1).divided(5).end()
-        		).end();
-		
 	}
 
 }

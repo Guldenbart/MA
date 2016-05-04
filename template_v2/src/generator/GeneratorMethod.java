@@ -235,9 +235,12 @@ final class GeneratorMethod {
 			return true;
 		}
 		
-		if (o == null && !(o instanceof GeneratorMethod)) {
+		if (o == null) {
 			return false;
-		}		
+		}
+		if (!(o instanceof GeneratorMethod)) {
+			return false;
+		}
 		GeneratorMethod gm = (GeneratorMethod)o;
 		
 		if (this.name.equals(gm.name)) {

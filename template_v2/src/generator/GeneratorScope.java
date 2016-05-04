@@ -163,9 +163,14 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 			return true;
 		}
 		
-		if (o == null && !(o instanceof GeneratorScope)) {
+		if (o == null) {
 			return false;
-		}		
+		}
+		
+		if (!(o instanceof GeneratorScope)) {
+			return false;
+		}
+		
 		GeneratorScope gs = (GeneratorScope)o;
 		
 		if (!this.scopeName.equals(gs.scopeName)) {

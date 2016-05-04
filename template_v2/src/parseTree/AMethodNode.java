@@ -37,6 +37,11 @@ public abstract class AMethodNode implements Visitable {
 		return name;
 	}
 	
+	/*
+	 * Although toString() is overwritten in ASimpleMethodNode and ANestedMethodNode again,
+	 * we still want to overwrite it here for all MethodNodes without parameter.
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return getName() + "().";
