@@ -8,9 +8,6 @@ import java.sql.*;
 import org.jooq.*;
 import org.jooq.impl.*;
 
-import jooq.generated.tables.Author;
-import jooq.generated.tables.Book;
-
 public class Main {
 
 	/**
@@ -43,9 +40,6 @@ public class Main {
 		
 				System.out.println("ID: " + id + " first name: " + firstName + ", last name: " + lastName);
 			}
-			
-			Author a = AUTHOR.as("a");
-			Book b = BOOK.as("b");
 			
 			Result<Record1<String>> result2 = create.select(BOOK.TITLE)
 					.from(BOOK)
