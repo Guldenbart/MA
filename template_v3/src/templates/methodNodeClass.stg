@@ -1,0 +1,89 @@
+methodNodeDispatch(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
+<if(method.isSimpleMethod)><simpleMethodNode(dslName, parseTreeDestPackage, visitorDestPackage, method)>
+<elseif(method.isNestedMethod)><nestedMethodNode(dslName, parseTreeDestPackage, visitorDestPackage, method)>
+<else><methodNode(dslName, parseTreeDestPackage, visitorDestPackage, method)>
+<endif>
+>>
+
+methodNode(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
+<getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
+import parseTree.AMethodNode;
+
+public final class MethodNode<toUC(method.name)> extends AMethodNode {
+	public MethodNode<toUC(method.name)>() {
+		super("<toLC(method.name)>");
+	}
+	
+	<getAcceptMethod(dslName)>
+	
+}
+>>
+
+
+simpleMethodNode(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
+<getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
+import parseTree.ASimpleMethodNode;
+
+public final class SimpleMethodNode<toUC(method.name)> extends ASimpleMethodNode\<<getParamType(method.parameterType)>\> {
+
+	public SimpleMethodNode<toUC(method.name)>(final <getParamType(method.parameterType)> value) {
+		super("<toLC(method.name)>", value);
+	}
+	
+	<getAcceptMethod(dslName)>
+	
+}
+>>
+
+nestedMethodNode(dslName, parseTreeDestPackage, visitorDestPackage, method) ::= <<
+<getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage)>
+import parseTree.ParseTree;
+import parseTree.ANestedMethodNode;
+
+public final class NestedMethodNode<toUC(method.name)> extends ANestedMethodNode {
+
+	public NestedMethodNode<toUC(method.name)>(final ParseTree parseTree) {
+		super("<toLC(method.name)>", parseTree);
+	}
+	
+	<getAcceptMethod(dslName)>
+	
+}
+>>
+
+getParamType(paraamType) ::= <%<primitiveTypeMap.(paraamType)>%> 
+
+primitiveTypeMap ::= [
+	"boolean":"Boolean",
+	"byte":"Byte",
+	"char":"Char",
+	"float":"Float",
+	"int":"Integer",
+	"long":"Long",
+	"short":"Short",
+	"double":"Double",
+	default:{paraamType}
+]
+
+getVisitorMethodHeader(dslName, parseTreeDestPackage, visitorDestPackage) ::= <<
+package <parseTreeDestPackage>;
+
+import <visitorDestPackage>.A<toUC(dslName)>Visitor;
+import visitor.AVisitor;
+>>
+
+getAcceptMethod(dslName) ::= <<
+@Override
+public void accept(final AVisitor visitor) {
+	((A<toUC(dslName)>Visitor) visitor).visit(this);
+}
+>>
+
+
+toUC(str) ::= <<
+<str; format="cap">
+>>
+
+toLC(str) ::= <<
+<str; format="lower">
+>>

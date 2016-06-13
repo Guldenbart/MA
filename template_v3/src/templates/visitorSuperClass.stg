@@ -1,0 +1,32 @@
+visitorSuperClass(dslName, package, parseTreePackage, tree) ::= <<
+<getHeader(parseTreePackage, tree)>
+public abstract class A<toUC(dslName)>Visitor extends AVisitor {
+	<getBody(tree)>
+}
+
+>>
+
+
+getHeader(parseTreePackage, tree) ::= <<
+package <package>;
+
+import visitor.AVisitor;
+
+<tree.allScopes:{s | import <parseTreePackage>.ScopeNode<s.name>; <\n>}>
+<tree.methodsUnique:{method | import <parseTreePackage>.MethodNode<toUC(method.name)>;<\n>}>
+<tree.simpleMethodsUnique:{method | import <parseTreePackage>.SimpleMethodNode<toUC(method.name)>;<\n>}>
+<tree.nestedMethodsUnique:{method | import <parseTreePackage>.NestedMethodNode<toUC(method.name)>;<\n>}>
+>>
+
+
+getBody(tree) ::= <<
+	<tree.allScopes:{scope | public void visit(final ScopeNode<scope.name> scopeNode<scope.name>) { \}<\n>}>
+	<tree.methodsUnique:{m | public void visit(final MethodNode<toUC(m.name)> methodNode<toUC(m.name)>) { \}<\n>}>
+	<tree.simpleMethodsUnique:{m | public void visit(final SimpleMethodNode<toUC(m.name)> simpleMethodNode<toUC(m.name)>) { \}<\n>}>
+	<tree.nestedMethodsUnique:{m | public void visit(final NestedMethodNode<toUC(m.name)> nestedMethodNode<toUC(m.name)>) { \}<\n>}>
+>>
+
+
+toUC(str) ::= <<
+<str; format="cap">
+>>

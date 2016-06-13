@@ -1,0 +1,26 @@
+scopeNode(dslNameUC, packageName, visitorGenPackageName, iName) ::= <<
+<getHeader(dslNameUC, packageName, visitorGenPackageName)>
+
+public final class ScopeNode<iName> extends AScopeNode {
+	
+	public ScopeNode<iName>(final List\<AMethodNode> list) {
+		super("<iName>", list);
+	}
+	
+	@Override
+	public void accept(final AVisitor visitor) {
+		((A<dslNameUC>Visitor) visitor).visit(this);
+	}
+}
+>>
+
+getHeader(dslNameUC, packageName, visitorGenPackageName) ::= <<
+package <packageName>;
+
+import java.util.List;
+
+import <visitorGenPackageName>.A<dslNameUC>Visitor;
+import parseTree.AMethodNode;
+import parseTree.AScopeNode;
+import visitor.AVisitor;
+>>

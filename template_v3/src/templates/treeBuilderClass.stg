@@ -1,0 +1,101 @@
+class(dslName, packageName, firstInterfaceName, interfaceNames, scopesList) ::= <<
+package <packageName>;
+
+import java.util.List;
+import java.util.ArrayList;
+
+import parseTree.ParseTree;
+import parseTree.AScopeNode;
+import parseTree.AMethodNode;
+import <dslName>.<firstInterfaceName>;
+<interfaceNames:{iName | import <dslName>.<iName>;<\n>}>
+<! scopesList:{scopeObject | <getImports(scopeObject.methods, scopeObject.simpleMethods, scopeObject.nestedMethods, packageName)>} !>
+
+public final class <toUC(dslName)>TreeBuilder {
+	private ParseTree parseTree;
+	<interfaceNames:{iName | private final <iName>Scope <toLC(iName)>Scope;<\n>}>
+	private List\<AScopeNode> scopeNodeList;
+	
+	private <toUC(dslName)>TreeBuilder() {
+		<interfaceNames:{iName | this.<toLC(iName)>Scope = this.new <iName>Scope();<\n>}>
+		this.scopeNodeList = new ArrayList\<AScopeNode>();
+	}
+	
+	public static <firstInterfaceName>Scope begin() {
+		return new <toUC(dslName)>TreeBuilder().new <firstInterfaceName>Scope();
+	}
+	
+	<scopesList.allScopes:{scopeObject | <scope(dslName, scopeObject.name, scopeObject.allMethods)>}>
+	
+}
+>>
+
+
+getImports(methods, simpleMethods, nestedMethods, packageName) ::= <<
+<methods:{method | import MethodNode<toUC(method.name)>;<\n>}>
+<simpleMethods:{simpleMethod | import SimpleMethodNode<toUC(simpleMethod.name)>;<\n>}>
+<nestedMethods:{nestedMethod | import NestedMethodNode<toUC(nestedMethod.name)>;<\n>}>
+>>
+
+
+scope(dslName, interfaceName, methodList) ::= <<
+public final class <interfaceName>Scope implements <interfaceName> {
+
+	private List\<AMethodNode> methodList<interfaceName>;
+	
+	private <interfaceName>Scope() {
+		methodList<interfaceName> = new ArrayList\<AMethodNode>();
+	}
+	
+	<methodList: {m | <method(dslName, interfaceName, m.name, m.returnType, m.parameterType, m.parameterName, m.hasParameter, m.scopeEnds, m.treeEnds)>}>
+}
+
+>>
+
+
+method(dslName, iName, mName, returnType, paramType, paramName, hasParam, scopeEnds, treeEnds) ::= <<
+@Override
+public <getReturnType(toUC(returnType))> <toLC(mName)>(<getSignature(paramType, paramName, hasParam)>) {
+	AMethodNode m = new <if(hasParam)><methodTypeMap.(paramType)><endif>MethodNode<toUC(mName)>(<paramName>);
+	methodList<iName>.add(m);
+	
+	<if(scopeEnds)>
+	// new ScopeNode
+	AScopeNode scopeNode<iName> = new ScopeNode<iName>(methodList<iName>);
+	<toUC(dslName)>TreeBuilder.this.scopeNodeList.add(scopeNode<iName>);
+	
+	<endif>
+	<if(treeEnds)>
+	// new ParseTree
+	parseTree = new ParseTree(scopeNodeList);
+	
+	<endif>
+	return <getReturnLine(scopeEnds, treeEnds, toLC(iName), toUC(dslName))>;	
+}
+
+
+>>
+
+getReturnType(returnTypeUC) ::= "<returnTypeUC><if(scopeEnds&&!treeEnds)>Scope<endif>"
+
+getSignature(paramType, paramName, hasParam) ::= "<if(hasParam)>final <getParamType(paramType)> <paramName><endif>"
+
+getParamType(paramType) ::= "<paramType>"
+
+getReturnLine(scopeEnds, treeEnds, iNameLC, dslNameUC) ::= <<
+<if(scopeEnds)><dslNameUC>TreeBuilder.<endif>this<if(treeEnds)>.parseTree<elseif(scopeEnds)>.<toLC(returnType)>Scope<endif>
+>>
+
+methodTypeMap ::= [
+	"ParseTree":"Nested",
+	default:"Simple"
+]
+
+toUC(str) ::= <<
+<str; format="cap">
+>>
+
+toLC(str) ::= <<
+<str; format="lower">
+>>
+
