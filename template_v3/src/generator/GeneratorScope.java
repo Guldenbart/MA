@@ -16,7 +16,6 @@ import java.util.List;
  * @see GeneratorMethod
  * @see ScopeNode
  */
- // TODO Frage: ^ zu kompliziert oder wäre es kürzer zu ungenau/falsch?
 final class GeneratorScope implements Iterable<GeneratorMethod> {
 
 	/**
