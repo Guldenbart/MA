@@ -7,6 +7,8 @@ import java.util.Set;
 
 /**
  * Root class for all Generator* objects.
+ * 
+ * Similar to the ParseTree, one 
  * @author Daniel Fritz
  *
  */

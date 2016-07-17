@@ -8,6 +8,7 @@ public class GeneratorMain {
 
 	public static void main(String[] args) {
 		
+		// initialize default values:
 		// Path to the package where the dsl interfaces are (package name == DSL name):
 		final Path dslPath = Paths.get("./src/exprDSL/");
 		
@@ -19,6 +20,18 @@ public class GeneratorMain {
 		
 		// What is the name of the interface that has the first method?
 		final String firstIName = "Start";
+		
+		/*
+		for (String arg : args) {
+			
+			if (arg.charAt(0) != '-') {
+				
+			}
+			if (arg.length() < 4) {
+				
+			}
+		}
+		*/
 			
 		Generator g = new Generator(dslPath, parseTreeGenPath, visitorGenPath, firstIName);
 		try {
