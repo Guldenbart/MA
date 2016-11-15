@@ -267,4 +267,6 @@ final class GeneratorMethod {
 		
 		return result;
 	}
+	
+	//TODO Methoden, die in Templates gebraucht werden, und mit 'is' anfangen: möglicherweise kann man das 'is' weglassen
 }
