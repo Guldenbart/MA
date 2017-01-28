@@ -226,7 +226,15 @@ final class GeneratorMethod {
 		return sb.toString();
 	}
 	
-	//TODO may comment on this?
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 * 
+	 * Two methods are considered to be equal if their names are equal AND if either both methods
+	 * have 'ParseTree' as their argument or both don't.
+	 * That's because methods if two methods meet these conditions, the resulting MethodNode class
+	 * would be identical for both methods.
+	 */
 	@Override
 	public boolean equals(final Object o) {
 		if (this == o) {
@@ -253,6 +261,9 @@ final class GeneratorMethod {
 		return false;
 	}
 	
+	/*
+	 * see 'equals' 
+	 */
 	@Override
 	public int hashCode() {
 		int result = 17;

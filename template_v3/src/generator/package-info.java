@@ -6,6 +6,7 @@
  * and wrapped into {@link GeneratorParseTree}, {@link GeneratorScope} and {@link GeneratorMethod}
  * objects. Afterwards, the template files are fed with that information.
  * 
+ * 
  * @see {@link http://www.stringtemplate.org/}
  * @author Daniel Fritz
  */

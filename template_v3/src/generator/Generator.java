@@ -73,7 +73,7 @@ public final class Generator {
 	 * so that later, we put every method in the correct scope.
 	 * 
 	 * The key of each map entry is an interface and the value is
-	 * a list of all interfaces that the <key> interface extends, plus itself.
+	 * a list of all interfaces that the <code>key</code> interface extends, plus itself.
 	 */
 	private Map<Class<?>, List<Class<?>>> interfaceMap;
 	
@@ -153,8 +153,10 @@ public final class Generator {
 		if (!checkAllRequirements()) {
 			System.err.println("Generator could not be started "
 					+ "because the input didn't satisfy the specifications.");
+			
 			return;
 		}
+		
 		createPackages();
 		runTemplates();
 	}
@@ -188,7 +190,6 @@ public final class Generator {
 				Class<?> c = Class.forName(this.dslName + '.' + interfaceName);
 				
 				if (!c.isInterface()) {
-					// TODO FRAGE: Sollte das eher eine Exception sein?
 					System.err.println("class " + c.getName()
 						+ " is not an interface and will be ignored!");
 					continue;
@@ -197,7 +198,7 @@ public final class Generator {
 				Class<?>[] classArray = c.getInterfaces();
 				
 				List<Class<?>> interfaceMapValue = new ArrayList<Class<?>>();
-				// add yourself first; this makes it easier when evaluating the list later
+				// add yourself first; this makes it easier when evaluating the list later TODO why??
 				interfaceMapValue.add(c);
 				
 				// now, add all interfaces that you extend
@@ -208,12 +209,12 @@ public final class Generator {
 				this.interfaceMap.put(c, interfaceMapValue);
 				
 			} catch (ClassNotFoundException e) {
-				System.err.println("There is no such class named " + e.getClass() + '!');
+				System.err.println("ClassNotFoundException: " + e.getCause());
 				e.printStackTrace();
 				continue;
 			}
 		}
-		stream.close();
+		stream.close(); // TODO muss das auch im cath passieren?
 	}
 	
 	/**
