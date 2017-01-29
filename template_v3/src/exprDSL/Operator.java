@@ -23,7 +23,6 @@ public interface Operator extends End {
 	 */
 	Operator plus(ParseTree tree);
 	
-	
 	/**
 	 * subtract a simple value from your expression.
 	 * @param value	the desired value

@@ -68,9 +68,9 @@ public final class Generator {
 	/**
 	 * Map to match interfaces with the interfaces they extend:
 	 * 
-	 * If interface A extends interface B, the methods of B have to go
-	 * into the scope of interface A. We have to store these relations
-	 * so that later, we put every method in the correct scope.
+	 * If interface A extends interface B, the methods of B have to go into the scope of
+	 * interface A. We have to store these relations so that later, we put every method in the
+	 * correct scope.
 	 * 
 	 * The key of each map entry is an interface and the value is
 	 * a list of all interfaces that the <code>key</code> interface extends, plus itself.
@@ -80,8 +80,45 @@ public final class Generator {
 	/**
 	 * Set with all interface types that will generate a scope even if they appear in
 	 * {@link #skipList}.
-	 * We add the return types of a method to this set except when the interface that the method
-	 * is in extends the interface of the return type.
+	 * <p>
+	 * We add the return types of all methods to this set [except when the interface that the method
+	 * is in extends the interface of the return type.] TODO stimmt das in der Klammer??
+	 * 
+	 * We need this for the following case:
+	 * <p>
+	 * <code>
+	 * 	interface A {<br>
+	 * 		&emsp;B a();<br>
+	 *  }<br>
+	 *  interface B extends C {<br>
+	 *  	&emsp;C b();<br>
+	 *  }<br>
+	 *  interface C {<br>
+	 *  	&emsp;End c();<br>
+	 *  }<br>
+	 * </code>
+	 * 
+	 * so that
+	 * <br>
+	 * <code>
+	 * a().c().end();<br>
+	 * a().b().c().end();<br>
+	 * </code>
+	 * 
+	 * are the only allowed sequences. That means that <code>c()</code> has to be in
+	 * <code>BScope</code> and in <code>CScope</code>.
+	 * <p>
+	 * In <code>keepList</code> we save the types of all methods so that we know which Scopes have
+	 * to be generated:<br>
+	 * If <code>b()</code> was to be allowed to be called repeatedly (<code>B b()</code>), there
+	 * wouldn't be a need for <code>CScope</code>, because you can always call the <code>c()</code>
+	 * in BScope after calling <code>B() n</code>times.<br>
+	 * In the example above, you may only call <code>b()</code> once which means you have to leave
+	 * <code>BScope</code> after that.<br>
+	 * The information whether to generate<code>CScope</code> or not comes from looking at
+	 * <code>{@link #skipList}</code> and <code>keepList</code>:<br>
+	 * If an interface is in <code>skipList</code> and NOT in <code>keepList</code>, no Scope will
+	 * be generated off it.
 	 */
 	private Set<String> keepList;
 	
@@ -93,7 +130,7 @@ public final class Generator {
 	
 	/**
 	 * {@link GeneratorParseTree} object that holds all {@link GeneratorScope} and
-	 * {@link GeneratorMethod} objects necessary for code genration.
+	 * {@link GeneratorMethod} objects necessary for code generation.
 	 */
 	private GeneratorParseTree tree;
 	
@@ -179,15 +216,19 @@ public final class Generator {
 				continue;
 			}
 			
-			String fileName = filePath.toString();
-			if (fileName.contentEquals("package-info.java")) {
+			//TODO Code dieser Methode bereinigen
+			//String fileName = filePath.toString();
+			String fileName = filePath.toFile().getName();
+			//if (fileName.contentEquals("package-info.java")) {
+			if (fileName.contentEquals("package-info")) {
 				// nothing to do here
 				continue;
 			}
 			
 			try {
-				String interfaceName = fileName.substring(0, fileName.lastIndexOf("."));
-				Class<?> c = Class.forName(this.dslName + '.' + interfaceName);
+				//String interfaceName = fileName.substring(0, fileName.lastIndexOf("."));
+				//Class<?> c = Class.forName(this.dslName + '.' + interfaceName);
+				Class<?> c = Class.forName(this.dslName + '.' + fileName);
 				
 				if (!c.isInterface()) {
 					System.err.println("class " + c.getName()
@@ -198,13 +239,13 @@ public final class Generator {
 				Class<?>[] classArray = c.getInterfaces();
 				
 				List<Class<?>> interfaceMapValue = new ArrayList<Class<?>>();
-				// add yourself first; this makes it easier when evaluating the list later TODO why??
+				// add yourself first; this makes it easier when evaluating the list later | TODO why??
 				interfaceMapValue.add(c);
 				
 				// now, add all interfaces that you extend
 				for (Class<?> clazz : classArray) {
 					interfaceMapValue.add(clazz);
-					this.skipList.add(clazz.getSimpleName().toString());
+					this.skipList.add(clazz.getSimpleName());
 				}
 				this.interfaceMap.put(c, interfaceMapValue);
 				
@@ -214,14 +255,15 @@ public final class Generator {
 				continue;
 			}
 		}
-		stream.close(); // TODO muss das auch im cath passieren?
+		stream.close(); // TODO muss das auch im catch passieren?
 	}
 	
 	/**
 	 * Method that is responsible for building a list of <code>GeneratorScope</code> objects.
+	 * <p>
 	 * We store all information from the grammar defining interfaces that is needed to
 	 * generate the desired code. The information is retrieved using the Java reflection API.
-	 * <p>
+	 * <br>
 	 * Most of the work is done by {@link #createGeneratorScope(String, List)}.
 	 * 
 	 * @return the list of GeneratorScope objects
@@ -240,7 +282,7 @@ public final class Generator {
 		}
 		
 		for (GeneratorScope gs : generatorScopeList) {
-			if(this.skipList.contains(gs.getName()) && !this.keepList.contains(gs.getName())) {
+			if (this.skipList.contains(gs.getName()) && !this.keepList.contains(gs.getName())) {
 				generatorScopeList.remove(gs);
 			}
 		}
@@ -262,13 +304,15 @@ public final class Generator {
 	 * @see GeneratorMethod
 	 */
 	private GeneratorScope createGeneratorScope(final String iName, final List<Class<?>> list) {
+		
 		// We give this to the GeneratorScope in the end
 		List<GeneratorMethod> generatorMethodList = new ArrayList<GeneratorMethod>();
 		
 		for (Class<?> clazz : list) {
 			for (Method method : clazz.getDeclaredMethods()) {
 				if (method.getParameters().length > 1) {
-					System.err.println("only one argument per Method allowed!");
+					System.err.println("only one argument per Method allowed!\nThe outcome of this"
+							+ "generation can not be predicted but will be most likely wrong.");
 					continue;
 				}
 				
@@ -293,7 +337,8 @@ public final class Generator {
 				generatorMethodList.add(genMethod);
 				this.keepList.add(retType);
 			}
-		}		
+		}
+
 		return new GeneratorScope(iName, generatorMethodList);
 	}
 	
