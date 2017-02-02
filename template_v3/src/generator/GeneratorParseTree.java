@@ -7,7 +7,7 @@ import java.util.Set;
 
 /**
  * Root class for all Generator* objects.
- * 
+ * <p>
  * Similar to the ParseTree, there is one GeneratorParseTree that holds a list of 
  * <code>GeneratorScope</code> objects.
  * @author Daniel Fritz

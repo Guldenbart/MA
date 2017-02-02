@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * class that wraps everything we need to know about a method scope
  * for code generation.
+ * <p>
  * Each GeneratorScope object holds all {@link GeneratorMethod} objects that
  * represent a method that belongs to the scope this object represents.
  * 
@@ -19,26 +20,27 @@ import java.util.List;
 final class GeneratorScope implements Iterable<GeneratorMethod> {
 
 	/**
-	 * name of the interface that gives this scope its name.
+	 * Name of the interface that gives this scope its name.
 	 */
 	private String scopeName;
 	
 	/**
-	 * collection of all GeneratorMethod objects which belong to this scope.
+	 * Collection of all GeneratorMethod objects which belong to this scope.
 	 */
 	private List<GeneratorMethod> methods;
 	
 	
 	/**
-	 * constructor that initializes <code>interfaceName</code> and
+	 * Constructor that initializes <code>interfaceName</code> and
 	 * <code>methods</code> of the object.
 	 * @param iName interface name.
 	 * @param list ArrayList of GeneratorMethod objects.
 	 */
-	public GeneratorScope(final String iName, final List<GeneratorMethod> list) {
+	GeneratorScope(final String iName, final List<GeneratorMethod> list) {
 		scopeName = iName;
 		methods = list;
 	}
+	
 	
 	/**
 	 * gets the name of the interface.
@@ -48,13 +50,15 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 		return scopeName;
 	}
 	
+	
 	/**
 	 * gets the list of all GeneratorMethod objects. 
-	 * @return ArrayList of GeneratorMethod objects
+	 * @return List of GeneratorMethod objects
 	 */
 	public List<GeneratorMethod> getAllMethods() {
 		return methods;
 	}
+	
 	
 	/**
 	 * gets a list of all <code>GeneratorMethod</code> objects with no argument.
@@ -73,6 +77,7 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 		
 		return mList;
 	}
+	
 	
 	/**
 	 * gets a list of all <code>GeneratorMethod</code> objects with a simple
@@ -93,6 +98,7 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 		return smList;
 	}
 	
+	
 	/**
 	 * gets a list of all <code>GeneratorMethod</code> objects with a nested
 	 * argument.
@@ -111,6 +117,7 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 		
 		return nmList;
 	}
+	
 
 	/**
 	 * Composes the file path for the {@link ScopeNode} file that is generated
@@ -123,19 +130,32 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 		return basePath.resolve(Paths.get("ScopeNode" + scopeName + ".java"));
 	}
 	
+	
+	/**
+	 * gets the number of methods of this Scope.
+	 * @return number of methods
+	 */
 	public int size() {
 		return this.methods.size();
 	}
 	
-	public GeneratorMethod get(int index) {
+	
+	/**
+	 * gets the method at the position given by <code>index</code>.
+	 * @param index  index of the method you want 
+	 * @return  method at position <code>index</code>.
+	 */
+	public GeneratorMethod get(final int index) {
 		return this.methods.get(index);
 	}
 	
-	public boolean contains(GeneratorMethod gm) {
+	
+	// TODO only private?
+	public boolean contains(final GeneratorMethod gm) {
 		return this.methods.contains(gm);
 	}
 	
-	public int lastIndexOf(Object o) {
+	public int lastIndexOf(final Object o) {
 		return this.methods.lastIndexOf(o);
 	}
 	
@@ -157,7 +177,7 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 	}
 	
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (this == o) {
 			return true;
 		}
@@ -170,7 +190,7 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 			return false;
 		}
 		
-		GeneratorScope gs = (GeneratorScope)o;
+		GeneratorScope gs = GeneratorScope.class.cast(o);
 		
 		if (!this.scopeName.equals(gs.scopeName)) {
 			return false;

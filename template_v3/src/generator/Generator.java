@@ -30,6 +30,9 @@ import org.stringtemplate.v4.StringRenderer;
  */
 public final class Generator {
 	
+	//TODO generate info into generated files that files are generated + timestamp
+	//TODO use FindBugs
+	
 	/**
 	 * Name of the DSL, inferred from {@link #sourcePath}.
 	 */
@@ -67,11 +70,11 @@ public final class Generator {
 	
 	/**
 	 * Map to match interfaces with the interfaces they extend:
-	 * 
+	 * <p>
 	 * If interface A extends interface B, the methods of B have to go into the scope of
 	 * interface A. We have to store these relations so that later, we put every method in the
 	 * correct scope.
-	 * 
+	 * <p>
 	 * The key of each map entry is an interface and the value is
 	 * a list of all interfaces that the <code>key</code> interface extends, plus itself.
 	 */
@@ -112,10 +115,10 @@ public final class Generator {
 	 * to be generated:<br>
 	 * If <code>b()</code> was to be allowed to be called repeatedly (<code>B b()</code>), there
 	 * wouldn't be a need for <code>CScope</code>, because you can always call the <code>c()</code>
-	 * in BScope after calling <code>B() n</code>times.<br>
+	 * in BScope after calling <code>b() n</code> times.<br>
 	 * In the example above, you may only call <code>b()</code> once which means you have to leave
 	 * <code>BScope</code> after that.<br>
-	 * The information whether to generate<code>CScope</code> or not comes from looking at
+	 * The information whether to generate <code>CScope</code> or not comes from looking at
 	 * <code>{@link #skipList}</code> and <code>keepList</code>:<br>
 	 * If an interface is in <code>skipList</code> and NOT in <code>keepList</code>, no Scope will
 	 * be generated off it.
@@ -216,18 +219,13 @@ public final class Generator {
 				continue;
 			}
 			
-			//TODO Code dieser Methode bereinigen
-			//String fileName = filePath.toString();
 			String fileName = filePath.toFile().getName();
-			//if (fileName.contentEquals("package-info.java")) {
 			if (fileName.contentEquals("package-info")) {
 				// nothing to do here
 				continue;
 			}
 			
 			try {
-				//String interfaceName = fileName.substring(0, fileName.lastIndexOf("."));
-				//Class<?> c = Class.forName(this.dslName + '.' + interfaceName);
 				Class<?> c = Class.forName(this.dslName + '.' + fileName);
 				
 				if (!c.isInterface()) {
@@ -253,6 +251,7 @@ public final class Generator {
 				System.err.println("ClassNotFoundException: " + e.getCause());
 				e.printStackTrace();
 				continue;
+				// TODO does the continue really work here?
 			}
 		}
 		stream.close(); // TODO muss das auch im catch passieren?
@@ -344,7 +343,7 @@ public final class Generator {
 	
 	/**
 	 * Method that invokes creation of packages where the generated files should be saved.
-	 * 
+	 * <p>
 	 * It uses {@link #createFolder(Path)} to generate all folders recursively.
 	 * @throws IOException
 	 */
@@ -360,6 +359,7 @@ public final class Generator {
 	 */
 	private void createFolder(final Path path) throws IOException {
 		Path parent = path.getParent();
+		
 		// exit condition:
 		if (parent == null) {
 			if (!Files.exists(path)) {
@@ -554,8 +554,8 @@ public final class Generator {
 	}
 	
 	/**
-	 * checks if at least one method exists that concludes a DSL statement.
-	 * Therefore, it has to have the return type <code>ParseTree</code>.
+	 * Checks if at least one method exists that concludes a DSL statement.<br>
+	 * Only methods that have the return type <code>ParseTree</code> do so.
 	 * 
 	 * @param genScopeList list of all {@link GeneratorScope} objects needed for the generation
 	 * of code later.
