@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -219,14 +220,17 @@ public final class Generator {
 				continue;
 			}
 			
-			String fileName = filePath.toFile().getName();
-			if (fileName.contentEquals("package-info")) {
+			
+			// TODO maybe find a prettier solution for getting the classname (without manually stripping off the ".java") 
+			String fileName = filePath.toString();
+			if (fileName.contentEquals("package-info.java")) {
 				// nothing to do here
 				continue;
 			}
 			
 			try {
-				Class<?> c = Class.forName(this.dslName + '.' + fileName);
+				String interfaceName = fileName.substring(0, fileName.lastIndexOf("."));
+				Class<?> c = Class.forName(this.dslName + '.' + interfaceName);
 				
 				if (!c.isInterface()) {
 					System.err.println("class " + c.getName()
@@ -280,10 +284,11 @@ public final class Generator {
 			generatorScopeList.add(genScope);
 		}
 		
-		for (GeneratorScope gs : generatorScopeList) {
+		for (Iterator<GeneratorScope> iterator = generatorScopeList.iterator(); iterator.hasNext(); ) {
+			GeneratorScope gs = iterator.next();
 			if (this.skipList.contains(gs.getName()) && !this.keepList.contains(gs.getName())) {
-				generatorScopeList.remove(gs);
-			}
+		        iterator.remove();
+		    }
 		}
 		
 		return generatorScopeList;

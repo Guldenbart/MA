@@ -40,7 +40,7 @@ public class GeneratorMain {
 		CommandLine cmd;
 		
 		try {
-				cmd = parser.parse(options, args);
+			cmd = parser.parse(options, args);
 		} catch (ParseException e) {
 			System.out.println(e.getMessage());
 			formatter.printHelp("utility-name", options);
@@ -54,7 +54,7 @@ public class GeneratorMain {
 		final Path dslPath;
 		String inputString = cmd.getOptionValue("input");
 		
-		if (inputString.equals(null)) {
+		if (inputString == null || inputString.equals(null)) {
 			dslPath = Paths.get("./src/exprDSL/");
 		} else {
 			dslPath = Paths.get(inputString);
@@ -65,7 +65,7 @@ public class GeneratorMain {
 		final Path parseTreeGenPath;
 		String parseTreeString = cmd.getOptionValue("parseTree");
 		
-		if (parseTreeString.equals(null)) {
+		if (parseTreeString == null || parseTreeString.equals(null)) {
 			parseTreeGenPath = Paths.get("./src-gen/parseTreeGen");
 		} else {
 			parseTreeGenPath = Paths.get(parseTreeString);
@@ -76,7 +76,7 @@ public class GeneratorMain {
 		final Path visitorGenPath;
 		String visitorString = cmd.getOptionValue("visitor");
 		
-		if (visitorString.equals(null)) {
+		if (visitorString == null || visitorString.equals(null)) {
 			visitorGenPath = Paths.get("./src-gen/visitorGen");
 		} else {
 			visitorGenPath = Paths.get(visitorString);
@@ -86,7 +86,7 @@ public class GeneratorMain {
 		final String firstIName;
 		String firstString = cmd.getOptionValue("first");
 		
-		if (firstString.equals(null)) {
+		if (firstString == null || firstString.equals(null)) {
 			firstIName = "Start";
 		} else {
 			firstIName = firstString;

@@ -51,7 +51,7 @@ public final class NestedMethodNode<toUC(method.name)> extends ANestedMethodNode
 }
 >>
 
-getParamType(paraamType) ::= <%<primitiveTypeMap.(paraamType)>%> 
+getParamType(paraamType) ::= <%<primitiveTypeMap.(paraamType)>%>
 
 primitiveTypeMap ::= [
 	"boolean":"Boolean",
