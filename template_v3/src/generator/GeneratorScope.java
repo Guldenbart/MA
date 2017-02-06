@@ -150,14 +150,17 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 	}
 	
 	
-	// TODO only private?
-	public boolean contains(final GeneratorMethod gm) {
+	/**
+	 * helper method for {@link #equals(Object)}.
+	 * 
+	 * Looks up, if this object contains <code>gm</code>. 
+	 * @param gm  method we are looking for.
+	 * @return  true, if this objects' {@link #methods} contains <code>gm</code>; otherwise false.
+	 */
+	private boolean contains(final GeneratorMethod gm) {
 		return this.methods.contains(gm);
 	}
-	
-	public int lastIndexOf(final Object o) {
-		return this.methods.lastIndexOf(o);
-	}
+
 	
 	@Override
 	public String toString() {

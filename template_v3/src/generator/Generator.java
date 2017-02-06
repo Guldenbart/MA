@@ -147,6 +147,7 @@ public final class Generator {
 	 * 	are generated to.
 	 * @param visitorGenPath path where all files related to the visitor
 	 * 	are generated to.
+	 * @param firstIName  name of the first interface in the sequence of grammar interfaces.
 	 * @see ParseTree
 	 * @see AVisitor
 	 */
@@ -185,7 +186,7 @@ public final class Generator {
 	 * <li>{@link #runTemplates(List)}: invokes the code generation.
 	 * </ul><p>
 	 * 
-	 * @throws IOException
+	 * @throws IOException  
 	 */
 	public void generate() throws IOException {
 		fillInterfaceMap();
@@ -221,7 +222,8 @@ public final class Generator {
 			}
 			
 			
-			// TODO maybe find a prettier solution for getting the classname (without manually stripping off the ".java") 
+			// TODO maybe find a prettier solution for getting the classname
+			// (without manually stripping off the ".java") 
 			String fileName = filePath.toString();
 			if (fileName.contentEquals("package-info.java")) {
 				// nothing to do here
@@ -284,10 +286,10 @@ public final class Generator {
 			generatorScopeList.add(genScope);
 		}
 		
-		for (Iterator<GeneratorScope> iterator = generatorScopeList.iterator(); iterator.hasNext(); ) {
-			GeneratorScope gs = iterator.next();
+		for (Iterator<GeneratorScope> it = generatorScopeList.iterator(); it.hasNext(); ) {
+			GeneratorScope gs = it.next();
 			if (this.skipList.contains(gs.getName()) && !this.keepList.contains(gs.getName())) {
-		        iterator.remove();
+		        it.remove();
 		    }
 		}
 		

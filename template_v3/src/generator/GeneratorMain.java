@@ -54,7 +54,7 @@ public class GeneratorMain {
 		final Path dslPath;
 		String inputString = cmd.getOptionValue("input");
 		
-		if (inputString == null || inputString.equals(null)) {
+		if (inputString == null) {
 			dslPath = Paths.get("./src/exprDSL/");
 		} else {
 			dslPath = Paths.get(inputString);
@@ -65,7 +65,7 @@ public class GeneratorMain {
 		final Path parseTreeGenPath;
 		String parseTreeString = cmd.getOptionValue("parseTree");
 		
-		if (parseTreeString == null || parseTreeString.equals(null)) {
+		if (parseTreeString == null) {
 			parseTreeGenPath = Paths.get("./src-gen/parseTreeGen");
 		} else {
 			parseTreeGenPath = Paths.get(parseTreeString);
@@ -76,7 +76,7 @@ public class GeneratorMain {
 		final Path visitorGenPath;
 		String visitorString = cmd.getOptionValue("visitor");
 		
-		if (visitorString == null || visitorString.equals(null)) {
+		if (visitorString == null) {
 			visitorGenPath = Paths.get("./src-gen/visitorGen");
 		} else {
 			visitorGenPath = Paths.get(visitorString);
@@ -86,7 +86,7 @@ public class GeneratorMain {
 		final String firstIName;
 		String firstString = cmd.getOptionValue("first");
 		
-		if (firstString == null || firstString.equals(null)) {
+		if (firstString == null || firstString.equals("")) {
 			firstIName = "Start";
 		} else {
 			firstIName = firstString;
