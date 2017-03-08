@@ -3,6 +3,7 @@ package generator;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.logging.Level;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -34,6 +35,10 @@ public class GeneratorMain {
 		input.setRequired(true);
 		options.addOption(first);
 		
+		Option log = new Option("l", "log", true, "level of Generator logger");
+		input.setRequired(false);
+		options.addOption(log);
+		
 		
 		CommandLineParser parser = new DefaultParser();
 		HelpFormatter formatter = new HelpFormatter();
@@ -58,6 +63,7 @@ public class GeneratorMain {
 			dslPath = Paths.get("./src/exprDSL/");
 		} else {
 			dslPath = Paths.get(inputString);
+			// TODO überprüfen, ob Pfad exisitiert
 		}
 		
 		
@@ -86,7 +92,8 @@ public class GeneratorMain {
 		final String firstIName;
 		String firstString = cmd.getOptionValue("first");
 		
-		if (firstString == null || firstString.equals("")) {
+		if (firstString == null || ("").equals(firstString)) {
+			// TODO kann es überhaupt null sein, wenn es required ist?
 			firstIName = "Start";
 		} else {
 			firstIName = firstString;
@@ -94,6 +101,16 @@ public class GeneratorMain {
 		
 			
 		Generator g = new Generator(dslPath, parseTreeGenPath, visitorGenPath, firstIName);
+		
+		final String logLevel = cmd.getOptionValue("log");
+		if (logLevel == null) {
+			Generator.setLogLevel(Level.INFO);
+		} else {
+			// TODO tut "parse" das, was es soll?
+			final Level lvl = Level.parse(logLevel);
+			Generator.setLogLevel(lvl);
+		}
+		
 		try {
 			g.generate();
 		} catch (IOException e) {

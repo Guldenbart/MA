@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.nio.file.DirectoryStream;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
@@ -32,7 +35,8 @@ import org.stringtemplate.v4.StringRenderer;
 public final class Generator {
 	
 	//TODO generate info into generated files that files are generated + timestamp
-	//TODO use FindBugs
+	
+	private final static Logger LOGGER = Logger.getLogger(Generator.class.getName());
 	
 	/**
 	 * Name of the DSL, inferred from {@link #sourcePath}.
@@ -168,8 +172,31 @@ public final class Generator {
 		this.visitorDestPackage = (this.visitorDestPath.subpath(
 				this.visitorDestPath.getNameCount() - 1, this.visitorDestPath.getNameCount()
 				)).toString();
+		
+		Generator.LOGGER.setLevel(Level.SEVERE);
 	}
 	
+	private void logStart() {
+		LOGGER.severe("================================================================================");
+		LOGGER.info("***** DSL generator setup: *****");
+		LOGGER.info("*");
+		LOGGER.info("* name of your DSL: " + this.dslName);
+		LOGGER.info("* path where sources will be read from: " + this.sourcePath);
+		LOGGER.info("* path where files related to parse tree will be generated to: " + this.parseTreeDestPath);
+		LOGGER.info("* path where files related to visitor will be generated to: " + this.visitorDestPath);
+		LOGGER.info("* name of the grammar interface that includes the entry point to your DSL:" + this.firstInterfaceName);
+		LOGGER.info("********************************************************************************");
+	}
+	
+	private void logEnd() {
+		LOGGER.severe("DSL generation ended: SUCCESS.");
+		LOGGER.severe("================================================================================");
+	}
+	
+	public static void setLogLevel(Level lvl) {
+		Generator.LOGGER.setLevel(lvl);
+	}
+
 	/**
 	 * method that invokes the code generation steps.
 	 * <p>
@@ -188,12 +215,14 @@ public final class Generator {
 	 * 
 	 * @throws IOException  
 	 */
-	public void generate() throws IOException {
+	public void generate() throws IOException{
+		logStart();
+		
 		fillInterfaceMap();
 		
 		this.tree = new GeneratorParseTree(buildGenScopeList());
 		if (!checkAllRequirements()) {
-			System.err.println("Generator could not be started "
+			LOGGER.severe("Generator could not be started "
 					+ "because the input didn't satisfy the specifications.");
 			
 			return;
@@ -201,6 +230,8 @@ public final class Generator {
 		
 		createPackages();
 		runTemplates();
+		
+		logEnd();
 	}
 	
 	/**
@@ -212,7 +243,7 @@ public final class Generator {
 	private void fillInterfaceMap() throws IOException {
 		
 		// throws IOException
-		DirectoryStream<Path> stream = Files.newDirectoryStream(this.sourcePath);
+		DirectoryStream<Path> stream = Files.newDirectoryStream(this.sourcePath, "*.java");
 		
 		for (Path file : stream) {			
 			Path filePath = file.getFileName();
@@ -235,7 +266,7 @@ public final class Generator {
 				Class<?> c = Class.forName(this.dslName + '.' + interfaceName);
 				
 				if (!c.isInterface()) {
-					System.err.println("class " + c.getName()
+					LOGGER.severe("class " + c.getName()
 						+ " is not an interface and will be ignored!");
 					continue;
 				}
@@ -354,7 +385,7 @@ public final class Generator {
 	 * It uses {@link #createFolder(Path)} to generate all folders recursively.
 	 * @throws IOException
 	 */
-	private void createPackages() throws IOException {
+	private void createPackages(){
 		createFolder(this.parseTreeDestPath);
 		createFolder(this.visitorDestPath);
 	}
@@ -364,20 +395,35 @@ public final class Generator {
 	 * @param path Path that will be created if it doesn't exist.
 	 * @throws IOException
 	 */
-	private void createFolder(final Path path) throws IOException {
+	private void createFolder(final Path path) {
 		Path parent = path.getParent();
 		
 		// exit condition:
 		if (parent == null) {
-			if (!Files.exists(path)) {
+			try {
 				Files.createDirectory(path);
+			} catch (FileAlreadyExistsException fae) {
+				LOGGER.severe("directory " + path + " could not be created because it already exists!");
+				fae.printStackTrace();
+			} catch (IOException e) {
+				LOGGER.severe("directory " + path + " could not be created! Reason: " + e.getMessage());
+				e.printStackTrace();
 			}
 			return;
 		}
 		
+		// TODO was passiert, wenn nicht erfolgreich (keine Zugriffsrechte o.ä.)?
 		createFolder(parent);
 		if (!Files.exists(path)) {
-			Files.createDirectory(path);
+			try {
+				Files.createDirectory(path);
+			} catch (FileAlreadyExistsException fae) {
+				LOGGER.severe("directory " + path + " could not be created because it already exists!");
+				fae.printStackTrace();
+			} catch (IOException e) {
+				LOGGER.severe("directory " + path + " could not be created! Reason: " + e.getMessage());
+				e.printStackTrace();
+			}
 		}
 		return;
 	}
