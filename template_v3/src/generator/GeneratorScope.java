@@ -166,7 +166,7 @@ final class GeneratorScope implements Iterable<GeneratorMethod> {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("Scope " + this.scopeName + ":\n");
+		sb.append("GeneratorScope for scope " + this.scopeName + "; methods:\n");
 		for (GeneratorMethod gm : methods) {
 			sb.append("\t" + gm.toString() + "\n");
 		}

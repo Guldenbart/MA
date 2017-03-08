@@ -212,6 +212,7 @@ final class GeneratorMethod {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
+		sb.append("GeneratorMethod for method: ");
 		sb.append(returnType);
 		sb.append(" ");
 		sb.append(name);
